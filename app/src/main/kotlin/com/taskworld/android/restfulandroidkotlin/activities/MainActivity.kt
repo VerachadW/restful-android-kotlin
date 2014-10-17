@@ -1,11 +1,8 @@
-package com.taskworld.android.restfulandroidkotlin
+package com.taskworld.android.restfulandroidkotlin.activities
 
 import android.app.Activity
 import android.os.Bundle
-
-/**
- * Created by Kittinun Vantasin on 10/17/14.
- */
+import com.taskworld.android.restfulandroidkotlin.R
 
 class MainActivity : Activity() {
 
@@ -14,4 +11,3 @@ class MainActivity : Activity() {
         setContentView(R.layout.activity_main)
     }
 }
-

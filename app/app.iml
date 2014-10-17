@@ -84,6 +84,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="kotlin-stdlib-0.9.66" level="project" />
     <orderEntry type="library" exported="" name="kotlin-runtime-0.9.66" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-20.0.0" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-20.0.0" level="project" />
     <orderEntry type="library" exported="" name="realm-android-0.71.0" level="project" />
   </component>
 </module>

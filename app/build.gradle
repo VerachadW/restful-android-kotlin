@@ -38,6 +38,13 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    //android support lib
+    compile 'com.android.support:support-v4:20.0.0'
+
+    //kotlin support
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    //realm
     compile 'io.realm:realm-android:0.71.0'
 }
