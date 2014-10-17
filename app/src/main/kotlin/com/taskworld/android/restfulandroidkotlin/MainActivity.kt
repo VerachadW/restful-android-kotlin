@@ -1,16 +1,17 @@
-package poc.tw.realmkotlin
+package com.taskworld.android.restfulandroidkotlin
 
 import android.app.Activity
 import android.os.Bundle
 
 /**
- * Created by VerachadW on 10/17/2014 AD.
+ * Created by Kittinun Vantasin on 10/17/14.
  */
 
-class MyActivity : Activity() {
+class MainActivity : Activity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super<Activity>.onCreate(savedInstanceState)
-
+        setContentView(R.layout.activity_main)
     }
-
 }
+
