@@ -41,10 +41,11 @@ dependencies {
 
     //android support lib
     compile 'com.android.support:support-v4:20.0.0'
-
     //kotlin support
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
+    //eventbus
+    compile 'de.greenrobot:eventbus:2.2.1'
     //realm
     compile 'io.realm:realm-android:0.71.0'
 }

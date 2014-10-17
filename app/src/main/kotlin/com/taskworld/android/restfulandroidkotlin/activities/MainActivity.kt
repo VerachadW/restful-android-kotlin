@@ -1,13 +1,14 @@
 package com.taskworld.android.restfulandroidkotlin.activities
 
-import android.app.Activity
-import android.os.Bundle
+import android.util.Log
 import com.taskworld.android.restfulandroidkotlin.R
 
-class MainActivity : Activity() {
+class MainActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super<Activity>.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override val mContentLayoutResourceId: Int = R.layout.activity_main
+
+    override fun setUp() {
+        Log.i("${tag()}::setUp", "log")
     }
+
 }
