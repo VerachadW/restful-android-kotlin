@@ -13,6 +13,7 @@ import com.taskworld.android.restfulandroidkotlin.events.BaseEvent
 
 abstract class BaseActivity : FragmentActivity() {
 
+    //static instantiate
     class object {
         public fun newInstance(context: Context): Intent {
             return Intent(context, javaClass<BaseActivity>())
@@ -30,7 +31,7 @@ abstract class BaseActivity : FragmentActivity() {
             handleSavedInstanceState(savedInstanceState)
         }
 
-        val intentExtras: Bundle? = getIntent().getExtras()
+        val intentExtras = getIntent().getExtras()
         if (intentExtras != null) {
             handleIntentExtras(intentExtras)
         }
@@ -59,9 +60,5 @@ abstract class BaseActivity : FragmentActivity() {
 
     public fun onEvent(event: BaseEvent) {
 
-    }
-
-    public final fun tag(): String {
-        return this.getLocalClassName()
     }
 }
