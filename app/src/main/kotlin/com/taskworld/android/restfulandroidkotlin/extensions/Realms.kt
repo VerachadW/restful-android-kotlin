@@ -23,6 +23,13 @@ fun <T: RealmObject> Realm.update(clazz: Class<T>, key: String, value: String, f
     return realmObject
 }
 
+fun <T: RealmObject> Realm.deleteAll(clazz: Class<T>) {
+    beginTransaction()
+    var results = where(clazz).findAll()
+    results.clear()
+    commitTransaction()
+}
+
 fun <T: RealmObject> Realm.delete(clazz: Class<T>, key: String, value: String) {
     beginTransaction()
     var results = where(clazz).equalTo(key, value).findAll()

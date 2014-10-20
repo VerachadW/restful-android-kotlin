@@ -99,5 +99,7 @@ class ProductEditActivity : BaseActivity() {
         if (mProductName == null) return
         val r = Realm.getInstance(this)
         r.delete(javaClass<Product>(), Product.Field.name.toString(), mProductName!!)
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 }

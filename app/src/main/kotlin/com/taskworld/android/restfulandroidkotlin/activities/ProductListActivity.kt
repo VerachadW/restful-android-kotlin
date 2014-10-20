@@ -18,6 +18,7 @@ import com.taskworld.android.restfulandroidkotlin.Product
 import android.app.Activity
 import com.taskworld.android.restfulandroidkotlin.extensions.TAG
 import android.util.Log
+import com.taskworld.android.restfulandroidkotlin.extensions.deleteAll
 
 /**
  * Created by Kittinun Vantasin on 10/18/14.
@@ -68,7 +69,11 @@ class ProductListActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.getItemId()) {
             R.id.miAddProduct -> navigateToProductEditActivity()
-            R.id.miDeleteAll -> Realm.deleteRealmFile(this)
+            R.id.miDeleteAll -> {
+                val r = Realm.getInstance(this)
+                r.deleteAll(javaClass<Product>())
+                fetchProducts()
+            }
         }
         return super<BaseActivity>.onOptionsItemSelected(item)
     }
