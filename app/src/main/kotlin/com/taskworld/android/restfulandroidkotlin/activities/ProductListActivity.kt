@@ -16,6 +16,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.taskworld.android.restfulandroidkotlin.Product
 import android.app.Activity
+import com.taskworld.android.restfulandroidkotlin.extensions.TAG
+import android.util.Log
 
 /**
  * Created by Kittinun Vantasin on 10/18/14.
@@ -34,6 +36,7 @@ class ProductListActivity : BaseActivity() {
     //data
     var mItems by Delegates.observable(listOf<Product>(), {
         meta, oldItems, newItems ->
+        Log.i(TAG(), "${oldItems.size} -> ${newItems.size}")
         mProductAdapter.clear()
         mProductAdapter.addAll(newItems)
         mProductAdapter.notifyDataSetChanged()
@@ -71,7 +74,7 @@ class ProductListActivity : BaseActivity() {
     }
 
     fun navigateToProductEditActivity() {
-        startActivity(ProductEditActivity.newInstance(this))
+        startActivityForResult(ProductEditActivity.newInstance(this), 999)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

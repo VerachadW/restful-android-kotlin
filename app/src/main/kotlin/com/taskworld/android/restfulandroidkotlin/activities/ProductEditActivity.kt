@@ -15,6 +15,7 @@ import android.widget.Button
 import com.taskworld.android.restfulandroidkotlin.extensions.create
 import com.taskworld.android.restfulandroidkotlin.extensions.update
 import android.app.Activity
+import com.taskworld.android.restfulandroidkotlin.extensions.delete
 
 /**
  * Created by Kittinun Vantasin on 10/20/14.
@@ -95,6 +96,8 @@ class ProductEditActivity : BaseActivity() {
     }
 
     fun deleteProduct() {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (mProductName == null) return
+        val r = Realm.getInstance(this)
+        r.delete(javaClass<Product>(), Product.Field.name.toString(), mProductName!!)
     }
 }
