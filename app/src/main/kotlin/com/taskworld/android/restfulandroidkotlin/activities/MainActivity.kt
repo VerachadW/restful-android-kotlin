@@ -1,15 +1,22 @@
 package com.taskworld.android.restfulandroidkotlin.activities
 
-import android.util.Log
 import com.taskworld.android.restfulandroidkotlin.R
-import com.taskworld.android.restfulandroidkotlin.extensions.TAG
+import kotlin.properties.Delegates
+import com.taskworld.android.restfulandroidkotlin.extensions.findView
+import android.widget.Button
+import android.content.Intent
 
 class MainActivity : BaseActivity() {
 
-    override val mContentLayoutResourceId: Int = R.layout.activity_main
+    override val mContentLayoutResourceId = R.layout.activity_main
+
+    //widgets
+    val btCheckProduct by Delegates.lazy { findView<Button>(R.id.btCheck) }
 
     override fun setUp() {
-        Log.i("${TAG()}", "setUp")
+        btCheckProduct.setOnClickListener { view ->
+            startActivity(ProductListActivity.newInstance(this))
+        }
     }
 
 }

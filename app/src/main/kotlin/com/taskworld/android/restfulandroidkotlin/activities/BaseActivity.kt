@@ -13,14 +13,14 @@ import com.taskworld.android.restfulandroidkotlin.events.BaseEvent
 
 abstract class BaseActivity : FragmentActivity() {
 
+    abstract val mContentLayoutResourceId: Int
+
     //static instantiate
     class object {
         public fun newInstance(context: Context): Intent {
             return Intent(context, javaClass<BaseActivity>())
         }
     }
-
-    abstract val mContentLayoutResourceId: Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super<FragmentActivity>.onCreate(savedInstanceState)
