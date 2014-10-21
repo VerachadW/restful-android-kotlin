@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import kotlin.properties.Delegates
-import com.taskworld.android.restfulandroidkotlin.extensions.findView
+import com.taskworld.android.restfulandroidkotlin.extensions.bindView
 import android.widget.ListView
 import android.view.Menu
 import android.view.MenuItem
@@ -29,7 +29,7 @@ class ProductListActivity : BaseActivity() {
     override val mContentLayoutResourceId = R.layout.activity_list_product
 
     //widgets
-    val lvProduct by Delegates.lazy { findView<ListView>(R.id.lvProduct) }
+    val lvProduct by Delegates.lazy { bindView<ListView>(R.id.lvProduct) }
 
     //adapter
     val mProductAdapter: ProductAdapter by Delegates.lazy { ProductAdapter() }
@@ -99,8 +99,8 @@ class ProductListActivity : BaseActivity() {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
             val view = super<ArrayAdapter>.getView(position, convertView, parent)
-            val tv1 = view.findView<TextView>(android.R.id.text1)
-            val tv2 = view.findView<TextView>(android.R.id.text2)
+            val tv1 = view.bindView<TextView>(android.R.id.text1)
+            val tv2 = view.bindView<TextView>(android.R.id.text2)
             val product = getItem(position)
             tv1.setText(product.getName())
             tv2.setText("$${product.getPrice().toString()}")
