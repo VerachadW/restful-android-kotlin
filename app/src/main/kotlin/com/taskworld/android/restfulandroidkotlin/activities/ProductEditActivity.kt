@@ -12,10 +12,9 @@ import kotlin.properties.Delegates
 import com.taskworld.android.restfulandroidkotlin.extensions.findView
 import android.widget.EditText
 import android.widget.Button
-import com.taskworld.android.restfulandroidkotlin.extensions.create
-import com.taskworld.android.restfulandroidkotlin.extensions.update
 import android.app.Activity
 import com.taskworld.android.restfulandroidkotlin.extensions.delete
+import com.taskworld.android.restfulandroidkotlin.extensions.updateOrCreate
 
 /**
  * Created by Kittinun Vantasin on 10/20/14.
@@ -79,18 +78,12 @@ class ProductEditActivity : BaseActivity() {
     }
 
     fun saveProduct() {
+        mProductName = etName.getText().toString()
         val r = Realm.getInstance(this)
-        if (mProduct == null) {
-            r.create(javaClass<Product>(), { it ->
-                it.setName(etName.getText().toString())
-                it.setPrice(etPrice.getText().toString().toInt())
-            })
-        } else {
-            r.update(javaClass<Product>(), Product.Field.name.toString(), mProductName!!, { it ->
-                it.setName(etName.getText().toString())
-                it.setPrice(etPrice.getText().toString().toInt())
-            })
-        }
+        r.updateOrCreate(javaClass<Product>(), Product.Field.name.toString(), mProductName!!, { it ->
+            it.setName(etName.getText().toString())
+            it.setPrice(etPrice.getText().toString().toInt())
+        })
         setResult(Activity.RESULT_OK)
         finish()
     }
