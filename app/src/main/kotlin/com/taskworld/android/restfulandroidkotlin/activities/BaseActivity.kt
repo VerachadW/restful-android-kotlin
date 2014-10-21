@@ -59,6 +59,5 @@ abstract class BaseActivity : FragmentActivity() {
     }
 
     public fun onEvent(event: BaseEvent) {
-
     }
 }
