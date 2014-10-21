@@ -16,7 +16,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.taskworld.android.restfulandroidkotlin.Product
 import android.app.Activity
-import com.taskworld.android.restfulandroidkotlin.extensions.TAG
+import com.taskworld.android.restfulandroidkotlin.extensions.tag
 import android.util.Log
 import com.taskworld.android.restfulandroidkotlin.extensions.deleteAll
 
@@ -37,7 +37,7 @@ class ProductListActivity : BaseActivity() {
     //data
     var mItems by Delegates.observable(listOf<Product>(), {
         meta, oldItems, newItems ->
-        Log.i(TAG(), "${oldItems.size} -> ${newItems.size}")
+        Log.i(tag(), "${oldItems.size} -> ${newItems.size}")
         mProductAdapter.clear()
         mProductAdapter.addAll(newItems)
         mProductAdapter.notifyDataSetChanged()
@@ -91,6 +91,7 @@ class ProductListActivity : BaseActivity() {
 
     fun fetchProducts() {
         mItems = Realm.getInstance(this).where(javaClass<Product>()).findAll()
+
     }
 
     inner class ProductAdapter : ArrayAdapter<Product>(this,
