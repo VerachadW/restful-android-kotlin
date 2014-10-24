@@ -48,4 +48,10 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.2.1'
     //realm
     compile 'io.realm:realm-android:0.71.0'
+
+    //robospice+retrofit
+    compile 'com.octo.android.robospice:robospice-retrofit:+'
+
+    //okhttpclient
+    compile 'com.squareup.okhttp:okhttp:+'
 }
