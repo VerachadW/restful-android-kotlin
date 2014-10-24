@@ -7,3 +7,4 @@ package com.taskworld.android.restfulandroidkotlin.extensions
 fun <T> T.tag(): String {
     return javaClass.getSimpleName()
 }
+

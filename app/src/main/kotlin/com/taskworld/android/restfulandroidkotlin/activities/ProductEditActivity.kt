@@ -9,7 +9,7 @@ import android.os.Bundle
 import io.realm.Realm
 import com.taskworld.android.restfulandroidkotlin.Product
 import kotlin.properties.Delegates
-import com.taskworld.android.restfulandroidkotlin.extensions.findView
+import com.taskworld.android.restfulandroidkotlin.extensions.bindView
 import android.widget.EditText
 import android.widget.Button
 import android.app.Activity
@@ -25,9 +25,9 @@ class ProductEditActivity : BaseActivity() {
     override val mContentLayoutResourceId = R.layout.activity_product_edit
 
     //widgets
-    val etName by Delegates.lazy { findView<EditText>(R.id.etName) }
-    val etPrice by Delegates.lazy { findView<EditText>(R.id.etPrice) }
-    val btDelete by Delegates.lazy { findView<Button>(R.id.btDelete) }
+    val etName by Delegates.lazy { bindView<EditText>(R.id.etName) }
+    val etPrice by Delegates.lazy { bindView<EditText>(R.id.etPrice) }
+    val btDelete by Delegates.lazy { bindView<Button>(R.id.btDelete) }
 
     //data
     var mProductName: String? = null
