@@ -34,6 +34,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
 }
 
 dependencies {
@@ -52,6 +57,4 @@ dependencies {
     //robospice+retrofit
     compile 'com.octo.android.robospice:robospice-retrofit:+'
 
-    //okhttpclient
-    compile 'com.squareup.okhttp:okhttp:+'
 }

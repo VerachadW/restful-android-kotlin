@@ -1,6 +1,6 @@
 package com.taskworld.android.restfulandroidkotlin.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kittinun Vantasin on 10/24/14.
@@ -35,7 +35,12 @@ public class Movie {
         this.popularityScore = popularityScore;
     }
 
-    public static class List extends ArrayList<Movie> {
+    public static class ResultList {
 
+        private List<Movie> results;
+
+        public List<Movie> getResults() {
+            return results;
+        }
     }
 }
