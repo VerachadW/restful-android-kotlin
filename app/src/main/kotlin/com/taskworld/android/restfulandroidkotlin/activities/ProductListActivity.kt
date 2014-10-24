@@ -14,7 +14,7 @@ import android.widget.ArrayAdapter
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.taskworld.android.restfulandroidkotlin.Product
+import com.taskworld.android.restfulandroidkotlin.model.Product
 import android.app.Activity
 import com.taskworld.android.restfulandroidkotlin.extensions.tag
 import android.util.Log
@@ -35,7 +35,7 @@ class ProductListActivity : BaseActivity() {
     val mProductAdapter: ProductAdapter by Delegates.lazy { ProductAdapter() }
 
     //data
-    var mItems by Delegates.observable(listOf<Product>(), {
+    var mItems by Delegates.observable(listOf<com.taskworld.android.restfulandroidkotlin.model.Product>(), {
         meta, oldItems, newItems ->
         Log.i(tag(), "${oldItems.size} -> ${newItems.size}")
         mProductAdapter.clear()
@@ -71,7 +71,7 @@ class ProductListActivity : BaseActivity() {
             R.id.miAddProduct -> navigateToProductEditActivity()
             R.id.miDeleteAll -> {
                 val r = Realm.getInstance(this)
-                r.deleteAll(javaClass<Product>())
+                r.deleteAll(javaClass<com.taskworld.android.restfulandroidkotlin.model.Product>())
                 fetchProducts()
             }
         }
@@ -90,11 +90,11 @@ class ProductListActivity : BaseActivity() {
     }
 
     fun fetchProducts() {
-        mItems = Realm.getInstance(this).where(javaClass<Product>()).findAll()
+        mItems = Realm.getInstance(this).where(javaClass<com.taskworld.android.restfulandroidkotlin.model.Product>()).findAll()
 
     }
 
-    inner class ProductAdapter : ArrayAdapter<Product>(this,
+    inner class ProductAdapter : ArrayAdapter<com.taskworld.android.restfulandroidkotlin.model.Product>(this,
             android.R.layout.simple_expandable_list_item_2, android.R.id.text1, mItems) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
