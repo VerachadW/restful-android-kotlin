@@ -1,5 +1,8 @@
 package com.taskworld.android.restfulandroidkotlin.helper
 
+import com.taskworld.android.restfulandroidkotlin.extensions.tag
+import android.util.Log
+
 /**
  * Created by VerachadW on 10/24/2014 AD.
  */
@@ -9,22 +12,36 @@ abstract class MessageConverter() {
        val endpoint: String
 
        when (message.opt) {
-           TransactionMessage.DatabaseOpt.INSERT -> endpoint = generateInsertEndPoint(message)
-           else -> endpoint = "Error"
-
+           TransactionMessage.DatabaseOpt.INSERT -> endpoint = generateInsertEndPoint(message as InsertMessage)
+           TransactionMessage.DatabaseOpt.UPDATE -> endpoint = generateUpdateEndPoint(message as UpdateMessage)
+           TransactionMessage.DatabaseOpt.DELETE -> endpoint = generateDeleteEndPoint(message as DeleteMessage)
+           else -> throw IllegalStateException()
        }
 
        return endpoint
     }
 
-    abstract fun generateInsertEndPoint(message: TransactionMessage): String
+    abstract fun generateInsertEndPoint(message: InsertMessage): String
+    abstract fun generateUpdateEndPoint(message: UpdateMessage): String
+    abstract fun generateDeleteEndPoint(message: DeleteMessage): String
 
 }
 
 class ProductConverter(): MessageConverter() {
+    override fun generateDeleteEndPoint(message: DeleteMessage): String {
+        return "Delete Product: ${message.key}"
+    }
 
-    override fun generateInsertEndPoint(message: TransactionMessage): String {
-        return "INSERT new Product : ${message.key}"
+    override fun generateUpdateEndPoint(message: UpdateMessage): String {
+        var changeBuilder: StringBuilder = StringBuilder()
+        for (entry in message.changeSet) {
+            changeBuilder.append(entry.getKey()).append(":").append(entry.value).append("\n")
+        }
+        return "Update Product: ${changeBuilder.toString()}"
+    }
+
+    override fun generateInsertEndPoint(message: InsertMessage): String {
+        return "Insert Product: ${message.key}"
     }
 
 }

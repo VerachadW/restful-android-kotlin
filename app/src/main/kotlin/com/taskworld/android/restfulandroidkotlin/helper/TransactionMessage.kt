@@ -5,7 +5,7 @@ import com.taskworld.android.restfulandroidkotlin.helper.TransactionMessage.Data
 /**
  * Created by VerachadW on 10/24/2014 AD.
  */
-abstract class TransactionMessage(var opt: DatabaseOpt, var table: String, var key: String) {
+abstract class TransactionMessage(val opt: DatabaseOpt, val table: String, val key: String) {
 
     enum class DatabaseOpt {
         INSERT
@@ -14,3 +14,9 @@ abstract class TransactionMessage(var opt: DatabaseOpt, var table: String, var k
     }
 
 }
+
+abstract class InsertMessage(table: String, key: String): TransactionMessage(DatabaseOpt.INSERT, table, key)
+
+abstract class UpdateMessage(table: String, key: String, var changeSet: Map<String, String>): TransactionMessage(DatabaseOpt.UPDATE, table, key)
+
+abstract class DeleteMessage(table: String, key: String): TransactionMessage(DatabaseOpt.DELETE, table, key)
