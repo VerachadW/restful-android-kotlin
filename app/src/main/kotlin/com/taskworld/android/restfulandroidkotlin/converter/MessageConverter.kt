@@ -1,7 +1,11 @@
-package com.taskworld.android.restfulandroidkotlin.helper
+package com.taskworld.android.restfulandroidkotlin.converter
 
 import com.taskworld.android.restfulandroidkotlin.extensions.tag
 import android.util.Log
+import com.taskworld.android.restfulandroidkotlin.helper.message.InsertMessage
+import com.taskworld.android.restfulandroidkotlin.helper.message.TransactionMessage
+import com.taskworld.android.restfulandroidkotlin.helper.message.DeleteMessage
+import com.taskworld.android.restfulandroidkotlin.helper.message.UpdateMessage
 
 /**
  * Created by VerachadW on 10/24/2014 AD.
@@ -27,21 +31,3 @@ abstract class MessageConverter() {
 
 }
 
-class ProductConverter(): MessageConverter() {
-    override fun generateDeleteEndPoint(message: DeleteMessage): String {
-        return "Delete Product: ${message.key}"
-    }
-
-    override fun generateUpdateEndPoint(message: UpdateMessage): String {
-        var changeBuilder: StringBuilder = StringBuilder()
-        for (entry in message.changeSet) {
-            changeBuilder.append(entry.getKey()).append(":").append(entry.value).append("\n")
-        }
-        return "Update Product: ${changeBuilder.toString()}"
-    }
-
-    override fun generateInsertEndPoint(message: InsertMessage): String {
-        return "Insert Product: ${message.key}"
-    }
-
-}

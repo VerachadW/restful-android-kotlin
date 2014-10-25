@@ -10,13 +10,16 @@ import com.taskworld.android.restfulandroidkotlin.helper.message.InsertProductMe
 import com.taskworld.android.restfulandroidkotlin.helper.message.UpdateProductMessage
 import com.taskworld.android.restfulandroidkotlin.extensions.delete
 import com.taskworld.android.restfulandroidkotlin.helper.message.DeleteProductMessage
+import com.taskworld.android.restfulandroidkotlin.converter.MessageConverter
+import com.taskworld.android.restfulandroidkotlin.converter.ProductMsgConverter
+import io.realm.RealmQuery
 
 /**
  * Created by VerachadW on 10/23/2014 AD.
  */
 
 class ProductServiceHelper(ctx: Context, clazz: Class<Product>): BaseServiceHelper<Product>(ctx, clazz) {
-    override val transactionConverter: MessageConverter = ProductConverter()
+    override val transactionConverter: MessageConverter = ProductMsgConverter()
 
     public fun createProduct(name: String, price: Int): Product{
         var product = realmDatabase.create(clazz, {product ->
@@ -29,7 +32,7 @@ class ProductServiceHelper(ctx: Context, clazz: Class<Product>): BaseServiceHelp
     }
 
     public fun updateProduct(key: String, newPrice: Int): Product{
-        var (newProduct, changeSet) = realmDatabase.update(clazz, "name", key, {product, changes ->
+        var (newProduct, changeSet) = realmDatabase.update(clazz, Product.Field.name.toString(), key, {product, changes ->
 
             product.setPrice(newPrice)
             changes.put(Product.Field.price.name(), newPrice.toString())
@@ -40,10 +43,9 @@ class ProductServiceHelper(ctx: Context, clazz: Class<Product>): BaseServiceHelp
     }
 
     public fun deleteProduct(key: String) {
-        realmDatabase.delete(clazz, "name", key)
+        realmDatabase.delete(clazz, Product.Field.name.toString(), key)
         val message = DeleteProductMessage(key)
         addTransactionMessage(message)
     }
-
 
 }

@@ -5,6 +5,8 @@ import android.content.Context
 import io.realm.Realm
 import kotlin.properties.Delegates
 import android.util.Log
+import com.taskworld.android.restfulandroidkotlin.helper.message.TransactionMessage
+import com.taskworld.android.restfulandroidkotlin.converter.MessageConverter
 
 abstract class BaseServiceHelper<T: RealmObject>(protected var ctx: Context, protected var clazz: Class<T>) {
 

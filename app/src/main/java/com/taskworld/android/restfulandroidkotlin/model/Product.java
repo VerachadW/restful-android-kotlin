@@ -7,6 +7,7 @@ import io.realm.RealmObject;
  */
 public class Product extends RealmObject {
 
+    public static final String TABLE_NAME = "Product";
     public enum Field {
         name,
         price

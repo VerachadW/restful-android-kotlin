@@ -1,6 +1,6 @@
-package com.taskworld.android.restfulandroidkotlin.helper
+package com.taskworld.android.restfulandroidkotlin.helper.message
 
-import com.taskworld.android.restfulandroidkotlin.helper.TransactionMessage.DatabaseOpt
+import com.taskworld.android.restfulandroidkotlin.helper.message.TransactionMessage.DatabaseOpt
 
 /**
  * Created by VerachadW on 10/24/2014 AD.
