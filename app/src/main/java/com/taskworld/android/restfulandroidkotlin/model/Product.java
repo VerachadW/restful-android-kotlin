@@ -1,4 +1,4 @@
-package com.taskworld.android.restfulandroidkotlin;
+package com.taskworld.android.restfulandroidkotlin.model;
 
 import io.realm.RealmObject;
 

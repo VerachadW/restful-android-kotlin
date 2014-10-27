@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.Context
 import android.os.Bundle
 import io.realm.Realm
-import com.taskworld.android.restfulandroidkotlin.Product
 import kotlin.properties.Delegates
 import com.taskworld.android.restfulandroidkotlin.extensions.bindView
 import android.widget.EditText
@@ -15,6 +14,7 @@ import android.widget.Button
 import android.app.Activity
 import com.taskworld.android.restfulandroidkotlin.extensions.delete
 import com.taskworld.android.restfulandroidkotlin.extensions.updateOrCreate
+import com.taskworld.android.restfulandroidkotlin.model.Product
 
 /**
  * Created by Kittinun Vantasin on 10/20/14.
