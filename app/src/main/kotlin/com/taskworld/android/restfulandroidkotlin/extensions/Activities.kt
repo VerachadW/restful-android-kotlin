@@ -15,11 +15,6 @@ fun <T: View> Activity.bindView(id: Int) : T {
     return view as T
 }
 
-fun Activity.toast(text: CharSequence?) {
-    if (text == null) return
-    Toast.makeText(this, text, Toast.LENGTH_LONG).show()
-}
-
 fun Activity.toast(text: String?) {
     if (text == null) return
     Toast.makeText(this, text, Toast.LENGTH_LONG).show()
