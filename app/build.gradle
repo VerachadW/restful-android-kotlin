@@ -56,5 +56,8 @@ dependencies {
 
     //robospice+retrofit
     compile 'com.octo.android.robospice:robospice-retrofit:+'
+    //okhttpclient
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
 
 }

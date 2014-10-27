@@ -2,7 +2,7 @@ package com.taskworld.android.restfulandroidkotlin.network.service
 
 import com.octo.android.robospice.retrofit.RetrofitGsonSpiceService
 import retrofit.RestAdapter
-import com.taskworld.android.restfulandroidkotlin.api.TheMovieDB
+import com.taskworld.android.restfulandroidkotlin.network.api.TheMovieDBAPI
 
 class TheMovieDBSpiceService : RetrofitGsonSpiceService() {
 
@@ -27,6 +27,6 @@ class TheMovieDBSpiceService : RetrofitGsonSpiceService() {
 
     override fun onCreate() {
         super<RetrofitGsonSpiceService>.onCreate()
-        addRetrofitInterface(javaClass<TheMovieDB>())
+        addRetrofitInterface(javaClass<TheMovieDBAPI>())
     }
 }
