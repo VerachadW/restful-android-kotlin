@@ -14,11 +14,11 @@ import android.widget.ArrayAdapter
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.taskworld.android.restfulandroidkotlin.model.Product
 import android.app.Activity
 import com.taskworld.android.restfulandroidkotlin.extensions.tag
 import android.util.Log
 import com.taskworld.android.restfulandroidkotlin.extensions.deleteAll
+import com.taskworld.android.restfulandroidkotlin.model.Product
 
 /**
  * Created by Kittinun Vantasin on 10/18/14.
@@ -26,7 +26,7 @@ import com.taskworld.android.restfulandroidkotlin.extensions.deleteAll
 
 class ProductListActivity : BaseActivity() {
 
-    override val mContentLayoutResourceId = R.layout.activity_list_product
+    override val mContentLayoutResourceId = R.layout.activity_product_list
 
     //widgets
     val lvProduct by Delegates.lazy { bindView<ListView>(R.id.lvProduct) }
@@ -35,7 +35,7 @@ class ProductListActivity : BaseActivity() {
     val mProductAdapter: ProductAdapter by Delegates.lazy { ProductAdapter() }
 
     //data
-    var mItems by Delegates.observable(listOf<com.taskworld.android.restfulandroidkotlin.model.Product>(), {
+    var mItems by Delegates.observable(listOf<Product>(), {
         meta, oldItems, newItems ->
         Log.i(tag(), "${oldItems.size} -> ${newItems.size}")
         mProductAdapter.clear()
@@ -71,7 +71,7 @@ class ProductListActivity : BaseActivity() {
             R.id.miAddProduct -> navigateToProductEditActivity()
             R.id.miDeleteAll -> {
                 val r = Realm.getInstance(this)
-                r.deleteAll(javaClass<com.taskworld.android.restfulandroidkotlin.model.Product>())
+                r.deleteAll(javaClass<Product>())
                 fetchProducts()
             }
         }
@@ -90,11 +90,11 @@ class ProductListActivity : BaseActivity() {
     }
 
     fun fetchProducts() {
-        mItems = Realm.getInstance(this).where(javaClass<com.taskworld.android.restfulandroidkotlin.model.Product>()).findAll()
+        mItems = Realm.getInstance(this).where(javaClass<Product>()).findAll()
 
     }
 
-    inner class ProductAdapter : ArrayAdapter<com.taskworld.android.restfulandroidkotlin.model.Product>(this,
+    inner class ProductAdapter : ArrayAdapter<Product>(this,
             android.R.layout.simple_expandable_list_item_2, android.R.id.text1, mItems) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {

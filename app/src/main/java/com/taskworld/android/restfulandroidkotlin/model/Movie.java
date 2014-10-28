@@ -9,7 +9,7 @@ public class Movie {
 
     private int id;
     private String title;
-    private float popularityScore;
+    private float popularity;
 
     public int getId() {
         return id;
@@ -27,12 +27,12 @@ public class Movie {
         this.title = title;
     }
 
-    public float getPopularityScore() {
-        return popularityScore;
+    public float getPopularity() {
+        return popularity;
     }
 
-    public void setPopularityScore(float popularityScore) {
-        this.popularityScore = popularityScore;
+    public void setPopularity(float popularity) {
+        this.popularity = popularity;
     }
 
     public static class ResultList {
