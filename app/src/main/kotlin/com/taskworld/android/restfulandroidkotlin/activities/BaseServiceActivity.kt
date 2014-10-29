@@ -21,7 +21,7 @@ abstract class BaseServiceActivity : BaseActivity() {
         mSpiceManager.shouldStop()
     }
 
-    fun getServiceManager(): SpiceManager {
+    fun getServiceSpiceManager(): SpiceManager {
         return mSpiceManager
     }
 

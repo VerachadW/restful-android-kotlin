@@ -2,10 +2,12 @@ package com.taskworld.android.restfulandroidkotlin.model;
 
 import java.util.List;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Kittinun Vantasin on 10/24/14.
  */
-public class Movie {
+public class Movie extends RealmObject {
 
     private int id;
     private String title;

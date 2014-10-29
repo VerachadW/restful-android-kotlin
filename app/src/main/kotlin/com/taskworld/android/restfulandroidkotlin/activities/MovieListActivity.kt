@@ -14,8 +14,9 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.taskworld.android.restfulandroidkotlin.network.request.DiscoverMovieSpiceRequest
-import com.taskworld.android.restfulandroidkotlin.network.response.EventBusResponseListener
+import com.taskworld.android.restfulandroidkotlin.network.resource.client.ResourceClient
+import com.taskworld.android.restfulandroidkotlin.network.resource.router.ResourceRouterImpl
+import com.taskworld.android.restfulandroidkotlin.network.resource.router.ResourceRouterImpl
 
 /**
  * Created by Kittinun Vantasin on 10/28/14.
@@ -47,7 +48,10 @@ class MovieListActivity : BaseServiceActivity() {
         super<BaseServiceActivity>.onCreate(savedInstanceState)
 
         lvMovie.setAdapter(mMovieAdapter)
-        getServiceManager().execute(DiscoverMovieSpiceRequest("popularity.desc"), EventBusResponseListener<Movie.ResultList>())
+        val client = ResourceClient.Builder()
+                .setRouter(ResourceRouterImpl("now_playing"))
+                .setSpiceManager(getServiceSpiceManager()).build()
+        client.findAll(javaClass<Movie>())
     }
 
     fun onEvent(items: Movie.ResultList) {
