@@ -63,7 +63,7 @@ class ResourceClient(builder: ResourceClient.Builder) {
     fun <T: RealmObject> findAll(clazz: Class<T>, args: Map<String, String>?) {
         val httpVerb = "get"
         val action = "list"
-        val path = mResourceRouter!!.pathForAction(action, clazz, args)
+        val path = mResourceRouter!!.getPathForAction(action, clazz, args)
 
         //db call
         val results = mRealm?.where(clazz)?.findAll()
@@ -89,7 +89,7 @@ class ResourceClient(builder: ResourceClient.Builder) {
             newArgs.putAll(args)
         }
 
-        val path = mResourceRouter!!.pathForAction(action, clazz, newArgs)
+        val path = mResourceRouter!!.getPathForAction(action, clazz, newArgs)
 
         //db call
         val result = mRealm?.where(clazz)?.equalTo("id", id)?.findFirst()

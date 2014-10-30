@@ -9,21 +9,21 @@ import com.taskworld.android.restfulandroidkotlin.extensions.plus
 
 trait ResourceRouter {
 
-    fun <T : RealmObject> pathForAction(action: String, clazz: Class<T>): String? {
-        return pathForAction(action, clazz, null)
+    fun <T : RealmObject> getPathForAction(action: String, clazz: Class<T>): String? {
+        return getPathForAction(action, clazz, null)
     }
 
-    fun <T : RealmObject> pathForAction(action: String, clazz: Class<T>, args: Map<String, Any>?): String? {
+    fun <T : RealmObject> getPathForAction(action: String, clazz: Class<T>, args: Map<String, Any>?): String? {
         if (action.equalsIgnoreCase("list")) {
-            return pathForListOnResource(clazz, args)
+            return getPathForListOnResource(clazz, args)
         } else if (action.isEmpty()) {
-            return pathForSingleOnResource(clazz, args)
+            return getPathForSingleOnResource(clazz, args)
         }
         return null
     }
 
-    fun <T : RealmObject> pathForListOnResource(clazz: Class<T>, args: Map<String, Any>?): String
-    fun <T : RealmObject> pathForSingleOnResource(clazz: Class<T>, args: Map<String, Any>?): String
+    fun <T : RealmObject> getPathForListOnResource(clazz: Class<T>, args: Map<String, Any>?): String
+    fun <T : RealmObject> getPathForSingleOnResource(clazz: Class<T>, args: Map<String, Any>?): String
 }
 
 class ResourceRouterImpl private (val extraPath: String?) : ResourceRouter {
@@ -33,7 +33,7 @@ class ResourceRouterImpl private (val extraPath: String?) : ResourceRouter {
         fun newInstance(extraPath: String) = ResourceRouterImpl(extraPath)
     }
 
-    override fun <T : RealmObject> pathForListOnResource(clazz: Class<T>, args: Map<String, Any>?): String {
+    override fun <T : RealmObject> getPathForListOnResource(clazz: Class<T>, args: Map<String, Any>?): String {
         val builder = StringBuilder(clazz.getSimpleName().toLowerCase())
         if (extraPath != null) {
             builder + "/" + extraPath
@@ -41,7 +41,7 @@ class ResourceRouterImpl private (val extraPath: String?) : ResourceRouter {
         return builder.toString()
     }
 
-    override fun <T : RealmObject> pathForSingleOnResource(clazz: Class<T>, args: Map<String, Any>?): String {
+    override fun <T : RealmObject> getPathForSingleOnResource(clazz: Class<T>, args: Map<String, Any>?): String {
         val idValue = args?.get("id")
         if (idValue == null) throw IllegalArgumentException()
 
