@@ -33,7 +33,7 @@ class ProductEditActivity : BaseActivity() {
     var mProductName: String? = null
     var mProduct: Product? = null
 
-    var mServiceHelper: ProductServiceHelper = ProductServiceHelper(this, javaClass<Product>())
+    val mServiceHelper: ProductServiceHelper = ProductServiceHelper(this, javaClass<Product>())
 
     class object {
         val ARG_PRODUCT_NAME = "product_name"
