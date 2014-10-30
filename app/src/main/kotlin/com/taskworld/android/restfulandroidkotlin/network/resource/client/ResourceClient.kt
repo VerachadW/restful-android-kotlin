@@ -7,7 +7,9 @@ import io.realm.RealmObject
 import de.greenrobot.event.EventBus
 import com.taskworld.android.restfulandroidkotlin.network.request.GetListMovieSpiceRequest
 import com.taskworld.android.restfulandroidkotlin.network.response.EventBusResponseListener
-import com.taskworld.android.restfulandroidkotlin.network.resource.router.ResourceRouterImpl
+import com.taskworld.android.restfulandroidkotlin.network.request.GetMovieSpiceRequest
+import com.taskworld.android.restfulandroidkotlin.extensions.toStartingLetterUppercase
+import com.octo.android.robospice.request.SpiceRequest
 
 class ResourceClient(builder: ResourceClient.Builder) {
 
@@ -23,6 +25,10 @@ class ResourceClient(builder: ResourceClient.Builder) {
     }
 
     class object {
+
+        private val REQUEST_PACKAGE = "com.taskworld.android.restfulandroidkotlin.network.request"
+        private val REQUEST_CLASS_PREFIX = "SpiceRequest"
+
         inner class Builder {
 
             var manager: SpiceManager? = null
@@ -55,13 +61,55 @@ class ResourceClient(builder: ResourceClient.Builder) {
     }
 
     fun <T: RealmObject> findAll(clazz: Class<T>, args: Map<String, String>?) {
-        val path = mResourceRouter!!.pathForAction("list", clazz, args)
+        val httpVerb = "get"
+        val action = "list"
+        val path = mResourceRouter!!.pathForAction(action, clazz, args)
 
         //db call
         val results = mRealm?.where(clazz)?.findAll()
-        if (results != null) EventBus.getDefault().post(results)
+        if (results != null) {
+            EventBus.getDefault().post(results)
+        }
 
         //network
-        mSpiceManager?.execute(GetListMovieSpiceRequest(path!!), EventBusResponseListener())
+        executeWithEventBusListener<T>(httpVerb, action, clazz.getSimpleName(), path!!)
+    }
+
+
+    fun <T: RealmObject> find(clazz: Class<T>, id: String) {
+        find(clazz, id, null)
+    }
+
+    fun <T: RealmObject> find(clazz: Class<T>, id: String, args: Map<String, String>?) {
+        val httpVerb = "get"
+        val action = ""
+
+        var newArgs = hashMapOf("id" to id)
+        if (args != null) {
+            newArgs.putAll(args)
+        }
+
+        val path = mResourceRouter!!.pathForAction(action, clazz, newArgs)
+
+        //db call
+        val result = mRealm?.where(clazz)?.equalTo("id", id)?.findFirst()
+        if (result != null) {
+            EventBus.getDefault().post(result)
+        }
+
+        //network
+        executeWithEventBusListener<T>(httpVerb, action, clazz.getSimpleName(), path!!)
+    }
+
+    fun <T> executeWithEventBusListener(httpVerb: String, action: String, resourceName: String, requestPath: String) {
+        val className = listOf(httpVerb.toStartingLetterUppercase(),
+                action.toStartingLetterUppercase(),
+                resourceName.toStartingLetterUppercase(),
+                REQUEST_CLASS_PREFIX).join("")
+        val constructorOfClassName = Class.forName(REQUEST_PACKAGE + "." + className).getConstructor(javaClass<String>())
+
+        [suppress("unchecked_cast")]
+        val requestInstance = constructorOfClassName.newInstance(requestPath) as SpiceRequest<T>
+        mSpiceManager?.execute(requestInstance, EventBusResponseListener())
     }
 }

@@ -7,7 +7,7 @@ import com.taskworld.android.restfulandroidkotlin.network.service.TheMovieDBSpic
  * Created by Kittinun Vantasin on 10/24/14.
  */
 
-abstract class BaseServiceActivity : BaseActivity() {
+abstract class BaseSpiceActivity : BaseActivity() {
 
     val mSpiceManager: SpiceManager = SpiceManager(javaClass<TheMovieDBSpiceService>())
 

@@ -16,13 +16,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.taskworld.android.restfulandroidkotlin.network.resource.client.ResourceClient
 import com.taskworld.android.restfulandroidkotlin.network.resource.router.ResourceRouterImpl
-import com.taskworld.android.restfulandroidkotlin.network.resource.router.ResourceRouterImpl
+import com.taskworld.android.restfulandroidkotlin.extensions.toast
 
 /**
  * Created by Kittinun Vantasin on 10/28/14.
  */
 
-class MovieListActivity : BaseServiceActivity() {
+class MovieListActivity : BaseSpiceActivity() {
 
     override val mContentLayoutResourceId: Int = R.layout.activity_movie_list;
 
@@ -45,17 +45,26 @@ class MovieListActivity : BaseServiceActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super<BaseServiceActivity>.onCreate(savedInstanceState)
+        super<BaseSpiceActivity>.onCreate(savedInstanceState)
 
         lvMovie.setAdapter(mMovieAdapter)
         val client = ResourceClient.Builder()
-                .setRouter(ResourceRouterImpl("now_playing"))
+                .setRouter(ResourceRouterImpl.newInstance("now_playing"))
                 .setSpiceManager(getServiceSpiceManager()).build()
         client.findAll(javaClass<Movie>())
     }
 
     fun onEvent(items: Movie.ResultList) {
         mItems = items.getResults()
+
+        val client = ResourceClient.Builder()
+                .setRouter(ResourceRouterImpl.newInstance())
+                .setSpiceManager(getServiceSpiceManager()).build()
+        client.find(javaClass<Movie>(), "180299")
+    }
+
+    fun onEvent(item: Movie) {
+        toast(item.getTitle())
     }
 
     inner class MovieAdapter : ArrayAdapter<Movie>(this,

@@ -14,7 +14,7 @@ class EventBusResponseListener<T> : RequestListener<T> {
         EventBus.getDefault().post(spiceException)
     }
 
-    override fun onRequestSuccess(result: T?) {
+    override fun onRequestSuccess(result: T) {
         EventBus.getDefault().post(result)
     }
 

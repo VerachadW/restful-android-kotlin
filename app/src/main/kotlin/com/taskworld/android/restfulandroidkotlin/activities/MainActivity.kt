@@ -14,14 +14,14 @@ class MainActivity : BaseActivity() {
 
     //widgets
     val btCheckProduct by Delegates.lazy { bindView<Button>(R.id.btCheck) }
-    val btFetchMovie by Delegates.lazy { bindView<Button>(R.id.btFetchMovie) }
+    val btCheckMovie by Delegates.lazy { bindView<Button>(R.id.btCheckMovie) }
 
     override fun setUp() {
         btCheckProduct.setOnClickListener { view ->
             startActivity(ProductListActivity.newInstance(this))
         }
 
-        btFetchMovie.setOnClickListener { view ->
+        btCheckMovie.setOnClickListener { view ->
             startActivity(MovieListActivity.newInstance(this))
         }
     }
