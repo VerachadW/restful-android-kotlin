@@ -1,11 +1,15 @@
 package com.taskworld.android.restfulandroidkotlin.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 
 /**
  * Created by Kittinun Vantasin on 10/19/14.
  */
 public class Product extends RealmObject {
+
+    @Ignore
+    public static final String TABLE_NAME = "Product";
 
     public enum Field {
         name,

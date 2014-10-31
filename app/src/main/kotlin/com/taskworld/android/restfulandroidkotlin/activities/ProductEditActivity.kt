@@ -13,8 +13,8 @@ import android.widget.EditText
 import android.widget.Button
 import android.app.Activity
 import com.taskworld.android.restfulandroidkotlin.extensions.delete
-import com.taskworld.android.restfulandroidkotlin.extensions.updateOrCreate
 import com.taskworld.android.restfulandroidkotlin.model.Product
+import com.taskworld.android.restfulandroidkotlin.helper.ProductServiceHelper
 
 /**
  * Created by Kittinun Vantasin on 10/20/14.
@@ -32,6 +32,8 @@ class ProductEditActivity : BaseActivity() {
     //data
     var mProductName: String? = null
     var mProduct: Product? = null
+
+    val mServiceHelper: ProductServiceHelper = ProductServiceHelper(this, javaClass<Product>())
 
     class object {
         val ARG_PRODUCT_NAME = "product_name"
@@ -79,19 +81,15 @@ class ProductEditActivity : BaseActivity() {
 
     fun saveProduct() {
         mProductName = etName.getText().toString()
-        val r = Realm.getInstance(this)
-        r.updateOrCreate(javaClass<Product>(), Product.Field.name.toString(), mProductName!!, { it ->
-            it.setName(etName.getText().toString())
-            it.setPrice(etPrice.getText().toString().toInt())
-        })
+        val price = etPrice.getText().toString().toInt()
+        mServiceHelper.createProduct(mProductName!!, price)
         setResult(Activity.RESULT_OK)
         finish()
     }
 
     fun deleteProduct() {
         if (mProductName == null) return
-        val r = Realm.getInstance(this)
-        r.delete(javaClass<Product>(), Product.Field.name.toString(), mProductName!!)
+        mServiceHelper.deleteProduct(mProductName!!)
         setResult(Activity.RESULT_OK)
         finish()
     }
