@@ -8,7 +8,7 @@ import de.greenrobot.event.EventBus
  * Created by Kittinun Vantasin on 10/24/14.
  */
 
-class EventBusResponseListener<T> : RequestListener<T> {
+class EventBusRequestListener<T> : RequestListener<T> {
 
     override fun onRequestFailure(spiceException: SpiceException?) {
         EventBus.getDefault().post(spiceException)

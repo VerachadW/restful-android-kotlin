@@ -6,7 +6,7 @@ import io.realm.Realm
 import io.realm.RealmObject
 import de.greenrobot.event.EventBus
 import com.taskworld.android.restfulandroidkotlin.network.request.GetListMovieSpiceRequest
-import com.taskworld.android.restfulandroidkotlin.network.response.EventBusResponseListener
+import com.taskworld.android.restfulandroidkotlin.network.response.EventBusRequestListener
 import com.taskworld.android.restfulandroidkotlin.network.request.GetMovieSpiceRequest
 import com.taskworld.android.restfulandroidkotlin.extensions.toStartingLetterUppercase
 import com.octo.android.robospice.request.SpiceRequest
@@ -110,6 +110,6 @@ class ResourceClient(builder: ResourceClient.Builder) {
 
         [suppress("unchecked_cast")]
         val requestInstance = constructorOfClassName.newInstance(requestPath) as SpiceRequest<T>
-        mSpiceManager?.execute(requestInstance, EventBusResponseListener())
+        mSpiceManager?.execute(requestInstance, EventBusRequestListener())
     }
 }
