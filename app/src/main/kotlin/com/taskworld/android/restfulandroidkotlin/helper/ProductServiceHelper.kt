@@ -1,10 +1,7 @@
 package com.taskworld.android.restfulandroidkotlin.helper
 
-import com.taskworld.android.restfulandroidkotlin.Product
-import io.realm.Realm
 import com.taskworld.android.restfulandroidkotlin.extensions.create
 import android.content.Context
-import android.util.Log
 import com.taskworld.android.restfulandroidkotlin.extensions.update
 import com.taskworld.android.restfulandroidkotlin.helper.message.InsertProductMessage
 import com.taskworld.android.restfulandroidkotlin.helper.message.UpdateProductMessage
@@ -12,7 +9,7 @@ import com.taskworld.android.restfulandroidkotlin.extensions.delete
 import com.taskworld.android.restfulandroidkotlin.helper.message.DeleteProductMessage
 import com.taskworld.android.restfulandroidkotlin.converter.MessageConverter
 import com.taskworld.android.restfulandroidkotlin.converter.ProductMsgConverter
-import io.realm.RealmQuery
+import com.taskworld.android.restfulandroidkotlin.model.Product
 
 /**
  * Created by VerachadW on 10/23/2014 AD.

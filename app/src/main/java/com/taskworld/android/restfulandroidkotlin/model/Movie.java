@@ -2,14 +2,16 @@ package com.taskworld.android.restfulandroidkotlin.model;
 
 import java.util.List;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Kittinun Vantasin on 10/24/14.
  */
-public class Movie {
+public class Movie extends RealmObject {
 
     private int id;
     private String title;
-    private float popularityScore;
+    private float popularity;
 
     public int getId() {
         return id;
@@ -27,12 +29,12 @@ public class Movie {
         this.title = title;
     }
 
-    public float getPopularityScore() {
-        return popularityScore;
+    public float getPopularity() {
+        return popularity;
     }
 
-    public void setPopularityScore(float popularityScore) {
-        this.popularityScore = popularityScore;
+    public void setPopularity(float popularity) {
+        this.popularity = popularity;
     }
 
     public static class ResultList {

@@ -30,6 +30,9 @@
         <activity android:name=".activities.ProductEditActivity"
                   android:label="@string/app_name" />
 
+        <activity android:name=".activities.MovieListActivity"
+                  android:label="@string/app_name" />
+
     </application>
 
 </manifest>

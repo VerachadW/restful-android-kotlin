@@ -1,9 +1,6 @@
 package com.taskworld.android.restfulandroidkotlin.helper.message
 
-import com.taskworld.android.restfulandroidkotlin.helper.message.InsertMessage
-import com.taskworld.android.restfulandroidkotlin.helper.message.UpdateMessage
-import com.taskworld.android.restfulandroidkotlin.helper.message.DeleteMessage
-import com.taskworld.android.restfulandroidkotlin.Product
+import com.taskworld.android.restfulandroidkotlin.model.Product
 
 /**
  * Created by VerachadW on 10/24/2014 AD.

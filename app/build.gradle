@@ -55,7 +55,12 @@ dependencies {
     compile 'io.realm:realm-android:0.71.0'
 
     //robospice+retrofit
-    compile 'com.octo.android.robospice:robospice-retrofit:+'
+    compile ('com.octo.android.robospice:robospice-retrofit:+') {
+        exclude module: 'gson'
+    }
+
+    compile 'com.google.code.gson:gson:1.7.2'
+
     //okhttpclient
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
