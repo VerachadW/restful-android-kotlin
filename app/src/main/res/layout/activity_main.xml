@@ -13,10 +13,18 @@
             android:layout_height="wrap_content"
             android:text="Check Products" />
 
+    <Button
+        android:id="@+id/btLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btCheck"
+        android:text="Login"/>
+
     <Button android:id="@+id/btCheckMovie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btCheck"
-            android:text="Check Movies" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btLogin"
+        android:text="Check Movies"
+        android:enabled="false"/>
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.taskworld.android.restfulandroidkotlin.network.resource.router
+package com.taskworld.android.restfulandroidkotlin.resource.router
 
 import io.realm.RealmObject
 import com.taskworld.android.restfulandroidkotlin.extensions.plus

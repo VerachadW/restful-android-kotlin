@@ -14,9 +14,10 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.taskworld.android.restfulandroidkotlin.network.resource.client.ResourceClient
-import com.taskworld.android.restfulandroidkotlin.network.resource.router.ResourceRouterImpl
+import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
+import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 import com.taskworld.android.restfulandroidkotlin.extensions.toast
+import io.realm.Realm
 
 /**
  * Created by Kittinun Vantasin on 10/28/14.
@@ -38,6 +39,8 @@ class MovieListActivity : BaseSpiceActivity() {
         mMovieAdapter.notifyDataSetChanged()
     })
 
+    val mRealm by Delegates.lazy { Realm.getInstance(this) }
+
     class object {
         public fun newInstance(context: Context): Intent {
             return Intent(context, javaClass<MovieListActivity>())
@@ -49,6 +52,7 @@ class MovieListActivity : BaseSpiceActivity() {
 
         lvMovie.setAdapter(mMovieAdapter)
         val client = ResourceClient.Builder()
+                .setRealm(mRealm)
                 .setRouter(ResourceRouterImpl.newInstance("now_playing"))
                 .setSpiceManager(getServiceSpiceManager()).build()
         client.findAll(javaClass<Movie>())
@@ -58,6 +62,7 @@ class MovieListActivity : BaseSpiceActivity() {
         mItems = items.getResults()
 
         val client = ResourceClient.Builder()
+                .setRealm(mRealm)
                 .setRouter(ResourceRouterImpl.newInstance())
                 .setSpiceManager(getServiceSpiceManager()).build()
         client.find(javaClass<Movie>(), "180299")
