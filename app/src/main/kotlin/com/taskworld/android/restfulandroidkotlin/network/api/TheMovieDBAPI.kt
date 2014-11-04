@@ -31,10 +31,10 @@ trait TheMovieDBAPI {
         fun getRequestToken(): Map<String, String>
 
         GET("/authentication/token/validate_with_login")
-        fun validateToken(): Map<String, String>
+        fun validateToken(Query("username") username: String, Query("password") password: String, Query("request_token") token: String): Map<String, String>
 
         GET("/authentication/session/new")
-        fun getNewSession(): Map<String, String>
+        fun getNewSession(Query("request_token") token: String): Map<String, String>
     }
 
 }

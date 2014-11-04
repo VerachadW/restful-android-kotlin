@@ -7,11 +7,11 @@ import com.taskworld.android.restfulandroidkotlin.network.api.TheMovieDBAPI
 /**
  * Created by VerachadW on 11/4/14.
  */
-class GetNewSessionSpiceRequest :
+class GetNewSessionSpiceRequest(val token: String) :
         RetrofitSpiceRequest<Map<String, String>, TheMovieDBAPI.Authentication>(javaClass<Map<String, String>>(), javaClass<TheMovieDBAPI.Authentication>()) {
 
     override fun loadDataFromNetwork(): Map<String, String>? {
-        return getService().getNewSession()
+        return getService().getNewSession(token)
     }
 
 }
