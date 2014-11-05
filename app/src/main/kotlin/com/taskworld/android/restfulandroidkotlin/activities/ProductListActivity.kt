@@ -3,7 +3,6 @@ package com.taskworld.android.restfulandroidkotlin.activities
 import com.taskworld.android.restfulandroidkotlin.R
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import kotlin.properties.Delegates
 import com.taskworld.android.restfulandroidkotlin.extensions.bindView
 import android.widget.ListView
@@ -28,15 +27,14 @@ class ProductListActivity : BaseActivity() {
 
     override val mContentLayoutResourceId = R.layout.activity_product_list
 
-    //widgets
+    //widget
     val lvProduct by Delegates.lazy { bindView<ListView>(R.id.lvProduct) }
 
     //adapter
     val mProductAdapter: ProductAdapter by Delegates.lazy { ProductAdapter() }
 
     //data
-    var mItems by Delegates.observable(listOf<Product>(), {
-        meta, oldItems, newItems ->
+    var mItems by Delegates.observable(arrayListOf<Product>(), { meta, oldItems, newItems ->
         Log.i(tag(), "${oldItems.size} -> ${newItems.size}")
         mProductAdapter.clear()
         mProductAdapter.addAll(newItems)
@@ -49,9 +47,8 @@ class ProductListActivity : BaseActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super<BaseActivity>.onCreate(savedInstanceState)
-
+    override fun setUp() {
+        mItems.clear()
         lvProduct.setAdapter(mProductAdapter)
         lvProduct.setOnItemClickListener { (adapterView, view, position, id) ->
             val selectedProduct = mProductAdapter.getItem(position)
@@ -90,8 +87,7 @@ class ProductListActivity : BaseActivity() {
     }
 
     fun fetchProducts() {
-        mItems = Realm.getInstance(this).where(javaClass<Product>()).findAll()
-
+        mItems = Realm.getInstance(this).where(javaClass<Product>()).findAll().toArrayList()
     }
 
     inner class ProductAdapter : ArrayAdapter<Product>(this,

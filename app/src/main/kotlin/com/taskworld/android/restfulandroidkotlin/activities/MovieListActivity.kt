@@ -1,7 +1,6 @@
 package com.taskworld.android.restfulandroidkotlin.activities
 
 import com.taskworld.android.restfulandroidkotlin.R
-import android.os.Bundle
 import kotlin.properties.Delegates
 import android.content.Context
 import android.content.Intent
@@ -27,12 +26,14 @@ class MovieListActivity : BaseSpiceActivity() {
 
     override val mContentLayoutResourceId: Int = R.layout.activity_movie_list;
 
+    //widget
     val lvMovie by Delegates.lazy { bindView<ListView>(R.id.lvMovie) }
 
+    //adapter
     val mMovieAdapter by Delegates.lazy { MovieAdapter() }
 
-    var mItems by Delegates.observable(listOf<Movie>(), {
-        meta, oldItems, newItems ->
+    //data
+    var mItems by Delegates.observable(arrayListOf<Movie>(), { meta, oldItems, newItems ->
         Log.i(tag(), "${oldItems.size} -> ${newItems.size}")
         mMovieAdapter.clear()
         mMovieAdapter.addAll(newItems)
@@ -47,9 +48,8 @@ class MovieListActivity : BaseSpiceActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super<BaseSpiceActivity>.onCreate(savedInstanceState)
-
+    override fun setUp() {
+        mItems.clear()
         lvMovie.setAdapter(mMovieAdapter)
         val client = ResourceClient.Builder()
                 .setRealm(mRealm)
@@ -59,7 +59,7 @@ class MovieListActivity : BaseSpiceActivity() {
     }
 
     fun onEvent(items: Movie.ResultList) {
-        mItems = items.getResults()
+        mItems = items.getResults().toArrayList()
 
         val client = ResourceClient.Builder()
                 .setRealm(mRealm)

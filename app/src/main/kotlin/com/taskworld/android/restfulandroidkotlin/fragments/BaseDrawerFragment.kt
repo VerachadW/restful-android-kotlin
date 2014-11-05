@@ -59,6 +59,8 @@ abstract class BaseDrawerFragment : BaseFragment() {
                 if (!isAdded()) return
 
                 getActivity().invalidateOptionsMenu()
+
+                onDrawerClosed()
             }
 
             override fun onDrawerOpened(drawerView: View?) {
@@ -66,6 +68,7 @@ abstract class BaseDrawerFragment : BaseFragment() {
                 if (!isAdded()) return
 
                 getActivity().invalidateOptionsMenu()
+                onDrawerOpened()
             }
         }
 
@@ -91,8 +94,14 @@ abstract class BaseDrawerFragment : BaseFragment() {
         dlDrawer?.closeDrawer(mDrawerGravity)
     }
 
+    open fun onDrawerClosed() {
+    }
+
     fun openDrawer() {
         dlDrawer?.openDrawer(mDrawerGravity)
+    }
+
+    open fun onDrawerOpened() {
     }
 
 }
