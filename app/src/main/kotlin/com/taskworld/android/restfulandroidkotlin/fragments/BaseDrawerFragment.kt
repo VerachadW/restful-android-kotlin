@@ -24,7 +24,15 @@ abstract class BaseDrawerFragment : BaseFragment() {
     var dlDrawer: DrawerLayout? = null
     var mDrawerToggle: ActionBarDrawerToggle? = null
 
+    var mDrawerGravity = GravityCompat.START
     var mDirection: Direction = Direction.LEFT
+        set(value) {
+            $mDirection = value
+            when (value) {
+                is Direction.LEFT -> mDrawerGravity = GravityCompat.START
+                is Direction.RIGHT -> mDrawerGravity = GravityCompat.END
+            }
+        }
 
     public fun setUpAsLeftDrawer(drawerLayout: DrawerLayout, toolbar: Toolbar) {
         setUpDrawer(Direction.LEFT, drawerLayout, toolbar)
@@ -38,7 +46,7 @@ abstract class BaseDrawerFragment : BaseFragment() {
         mDirection = direction
         dlDrawer = drawerLayout
 
-//        dlDrawer.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
+        //        dlDrawer.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START)
         mDrawerToggle = object : ActionBarDrawerToggle(
                 getActivity(),
                 dlDrawer,
@@ -80,21 +88,11 @@ abstract class BaseDrawerFragment : BaseFragment() {
     }
 
     fun closeDrawer() {
-        var gravity = GravityCompat.START
-        when (mDirection) {
-            is Direction.LEFT -> gravity = GravityCompat.START
-            is Direction.RIGHT -> gravity = GravityCompat.END
-        }
-        dlDrawer?.closeDrawer(gravity)
+        dlDrawer?.closeDrawer(mDrawerGravity)
     }
 
     fun openDrawer() {
-        var gravity = GravityCompat.START
-        when (mDirection) {
-            is Direction.LEFT -> gravity = GravityCompat.START
-            is Direction.RIGHT -> gravity = GravityCompat.END
-        }
-        dlDrawer?.openDrawer(gravity)
+        dlDrawer?.openDrawer(mDrawerGravity)
     }
 
 }
