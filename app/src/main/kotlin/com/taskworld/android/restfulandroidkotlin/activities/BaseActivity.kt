@@ -1,17 +1,17 @@
 package com.taskworld.android.restfulandroidkotlin.activities
 
-import android.support.v4.app.FragmentActivity
 import android.os.Bundle
 import android.content.Context
 import android.content.Intent
 import de.greenrobot.event.EventBus
 import com.taskworld.android.restfulandroidkotlin.events.BaseEvent
+import android.support.v7.app.ActionBarActivity
 
 /**
  * Created by Kittinun Vantasin on 10/17/14.
  */
 
-abstract class BaseActivity : FragmentActivity() {
+abstract class BaseActivity : ActionBarActivity() {
 
     abstract val mContentLayoutResourceId: Int
 
@@ -23,7 +23,7 @@ abstract class BaseActivity : FragmentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super<FragmentActivity>.onCreate(savedInstanceState)
+        super<ActionBarActivity>.onCreate(savedInstanceState)
 
         setContentView(mContentLayoutResourceId)
 
@@ -40,12 +40,12 @@ abstract class BaseActivity : FragmentActivity() {
     }
 
     override fun onResume() {
-        super<FragmentActivity>.onResume()
+        super<ActionBarActivity>.onResume()
         EventBus.getDefault().register(this)
     }
 
     override fun onPause() {
-        super<FragmentActivity>.onPause()
+        super<ActionBarActivity>.onPause()
         EventBus.getDefault().unregister(this)
     }
 
