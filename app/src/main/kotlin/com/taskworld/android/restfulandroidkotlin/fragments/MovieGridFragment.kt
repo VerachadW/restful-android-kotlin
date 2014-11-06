@@ -15,6 +15,11 @@ import com.taskworld.android.restfulandroidkotlin.network.resource.client.Resour
 import com.taskworld.android.restfulandroidkotlin.network.resource.router.ResourceRouterImpl
 import android.os.Bundle
 import com.squareup.picasso.Picasso
+import android.graphics.Rect
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import com.taskworld.android.restfulandroidkotlin.extensions.toast
 
 /**
  * Created by Kittinun Vantasin on 11/6/14.
@@ -49,10 +54,12 @@ class MovieGridFragment : BaseSpiceFragment() {
     }
 
     override fun setUp() {
+        setHasOptionsMenu(true)
     }
 
     override fun setUpUI(view: View?) {
         rvMovie.setLayoutManager(createLayoutManager())
+        rvMovie.addItemDecoration(createItemDecoration())
         //set adapter
         rvMovie.setAdapter(mMovieAdapter)
 
@@ -60,6 +67,19 @@ class MovieGridFragment : BaseSpiceFragment() {
                 .setRouter(ResourceRouterImpl.newInstance(mAction!!))
                 .setSpiceManager(getServiceSpiceManager()).build()
         client.findAll(javaClass<Movie>())
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater!!.inflate(R.menu.menu_grid_movie, menu)
+        super<BaseSpiceFragment>.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.getItemId()) {
+            R.id.miAdd -> addMovie()
+            R.id.miRemove -> removeMovie()
+        }
+        return super<BaseSpiceFragment>.onOptionsItemSelected(item)
     }
 
     override fun handleArguments(args: Bundle) {
@@ -74,7 +94,27 @@ class MovieGridFragment : BaseSpiceFragment() {
         return LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false)
     }
 
-    inner class MovieRecycleViewAdapter() : RecyclerView.Adapter<MovieRecycleViewAdapter.MovieViewHolder>() {
+    fun createItemDecoration(): RecyclerView.ItemDecoration {
+        return InsetDecoration()
+    }
+
+    fun addMovie() {
+        var m = Movie()
+
+        m.setTitle("My new movie")
+        m.setPosterPath("/aJemoN7F9GrAYjIL94KXww3QWP9.jpg")
+        m.setPopularity((Math.random() * 100).toFloat())
+
+        mItems.add(1, m)
+        mMovieAdapter.notifyItemInserted(1)
+    }
+
+    fun removeMovie() {
+        mItems.remove(0)
+        mMovieAdapter.notifyItemRemoved(0)
+    }
+
+    inner class MovieRecycleViewAdapter : RecyclerView.Adapter<MovieRecycleViewAdapter.MovieViewHolder>() {
 
         override fun onCreateViewHolder(container: ViewGroup?, viewType: Int): MovieViewHolder? {
             val view = LayoutInflater.from(container?.getContext()).inflate(R.layout.recycle_view_item_movie, container, false)
@@ -96,6 +136,12 @@ class MovieGridFragment : BaseSpiceFragment() {
             val tvMovieTitle by Delegates.lazy { itemView.bindView<TextView>(R.id.tvMovieTitle) }
             val tvMoviePopularScore by Delegates.lazy { itemView.bindView<TextView>(R.id.tvMoviePopularScore) }
             val ivMovieCover by Delegates.lazy { itemView.bindView<ImageView>(R.id.ivMovieCover) }
+        }
+    }
+
+    inner class InsetDecoration : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
+            outRect!!.set(8, 8, 8, 8)
         }
     }
 }

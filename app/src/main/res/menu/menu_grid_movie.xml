@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/miAddProduct"
+    <item android:id="@+id/miAdd"
           android:title="Add"
           android:showAsAction="always" />
 
-    <item android:id="@+id/miDeleteAll"
-          android:title="Delete All"
+    <item android:id="@+id/miRemove"
+          android:title="Remove"
           android:showAsAction="always" />
 </menu>
