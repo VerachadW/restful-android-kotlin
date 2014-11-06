@@ -31,4 +31,11 @@
         android:layout_gravity="start"
         android:name="com.taskworld.android.restfulandroidkotlin.fragments.MainNavigationDrawerFragment" />
 
+    <fragment
+        android:id="@+id/fgRightNavigationDrawer"
+        android:layout_width="320dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:name="com.taskworld.android.restfulandroidkotlin.fragments.MovieCategoryDrawerFragment" />
+
 </android.support.v4.widget.DrawerLayout>

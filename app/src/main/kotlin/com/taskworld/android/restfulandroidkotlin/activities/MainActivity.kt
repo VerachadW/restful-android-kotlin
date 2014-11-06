@@ -16,6 +16,7 @@ import com.taskworld.android.restfulandroidkotlin.Preference
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.Toolbar
 import com.taskworld.android.restfulandroidkotlin.fragments.MovieGridFragment
+import com.taskworld.android.restfulandroidkotlin.fragments.BaseDrawerFragment
 
 class MainActivity : BaseSpiceActivity() {
 
@@ -23,7 +24,11 @@ class MainActivity : BaseSpiceActivity() {
 
     //widgets
     val fgLeftNavigationDrawer by Delegates.lazy {
-        getSupportFragmentManager().findFragmentById(R.id.fgLeftNavigationDrawer) as MainNavigationDrawerFragment
+        getSupportFragmentManager().findFragmentById(R.id.fgLeftNavigationDrawer) as BaseDrawerFragment
+    }
+
+    val fgRightNavigationDrawer by Delegates.lazy {
+        getSupportFragmentManager().findFragmentById(R.id.fgRightNavigationDrawer) as BaseDrawerFragment
     }
 
     val dlMain by Delegates.lazy { bindView<DrawerLayout>(R.id.dlMain) }
@@ -32,10 +37,7 @@ class MainActivity : BaseSpiceActivity() {
     override fun setUp() {
         setSupportActionBar(tbMain)
         fgLeftNavigationDrawer.setUpAsLeftDrawer(dlMain, tbMain)
-
-        btLogin.setOnClickListener { view ->
-            getServiceSpiceManager().execute(GetTokenSpiceRequest(), EventBusRequestListener())
-        }
+        fgRightNavigationDrawer.setUpAsRightDrawer(dlMain, tbMain)
 
         val ft = getSupportFragmentManager().beginTransaction()
         ft.replace(R.id.flContainer, MovieGridFragment.newInstance("popular"))

@@ -41,8 +41,7 @@ class MovieGridFragment : BaseSpiceFragment() {
     var mAction: String? = null
 
     class object {
-
-        val ARG_MOVIE_ACTION = "movie_action"
+        val ARG_MOVIE_ACTION = "movie_category"
 
         fun newInstance(action: String): MovieGridFragment {
             val fragment = MovieGridFragment()
@@ -76,10 +75,14 @@ class MovieGridFragment : BaseSpiceFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.getItemId()) {
+            R.id.miCategory -> openRightDrawer()
             R.id.miAdd -> addMovie()
             R.id.miRemove -> removeMovie()
         }
         return super<BaseSpiceFragment>.onOptionsItemSelected(item)
+    }
+
+    fun openRightDrawer() {
     }
 
     override fun handleArguments(args: Bundle) {
