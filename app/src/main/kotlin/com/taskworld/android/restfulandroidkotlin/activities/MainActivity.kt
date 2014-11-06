@@ -15,6 +15,7 @@ import com.taskworld.android.restfulandroidkotlin.network.request.GetNewSessionS
 import com.taskworld.android.restfulandroidkotlin.Preference
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.Toolbar
+import com.taskworld.android.restfulandroidkotlin.fragments.MovieGridFragment
 
 class MainActivity : BaseSpiceActivity() {
 
@@ -27,7 +28,6 @@ class MainActivity : BaseSpiceActivity() {
 
     val dlMain by Delegates.lazy { bindView<DrawerLayout>(R.id.dlMain) }
     val tbMain by Delegates.lazy { bindView<Toolbar>(R.id.tbMain) }
-    val btLogin by Delegates.lazy { bindView<Button>(R.id.btLogin) }
 
     override fun setUp() {
         setSupportActionBar(tbMain)
@@ -36,6 +36,10 @@ class MainActivity : BaseSpiceActivity() {
         btLogin.setOnClickListener { view ->
             getServiceSpiceManager().execute(GetTokenSpiceRequest(), EventBusRequestListener())
         }
+
+        val ft = getSupportFragmentManager().beginTransaction()
+        ft.replace(R.id.flContainer, MovieGridFragment.newInstance("popular"))
+        ft.commit()
     }
 
     public fun onEvent(map: Map<String, String>) {
@@ -47,5 +51,4 @@ class MainActivity : BaseSpiceActivity() {
             getServiceSpiceManager().execute(GetNewSessionSpiceRequest(map.get("request_token")!!), EventBusRequestListener())
         }
     }
-
 }

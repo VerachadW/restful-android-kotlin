@@ -26,7 +26,7 @@ abstract class BaseDrawerFragment : BaseFragment() {
 
     var mDrawerGravity = GravityCompat.START
     var mDirection: Direction = Direction.LEFT
-        set(value) {
+        set (value) {
             $mDirection = value
             when (value) {
                 is Direction.LEFT -> mDrawerGravity = GravityCompat.START

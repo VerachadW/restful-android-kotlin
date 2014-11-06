@@ -21,13 +21,6 @@ abstract class BaseFragment : Fragment() {
     //widgets
     var vRoot: View? = null
 
-    //static instantiate
-    class object {
-        public fun newInstance(context: Context): Intent {
-            return Intent(context, javaClass<BaseFragment>())
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super<Fragment>.onCreate(savedInstanceState)
 
@@ -61,10 +54,10 @@ abstract class BaseFragment : Fragment() {
         EventBus.getDefault().unregister(this)
     }
 
-    open fun handleSavedInstanceState(savedInstanceState: Bundle?) {
+    open fun handleSavedInstanceState(savedInstanceState: Bundle) {
     }
 
-    open fun handleArguments(args: Bundle?) {
+    open fun handleArguments(args: Bundle) {
     }
 
     open fun setUp() {

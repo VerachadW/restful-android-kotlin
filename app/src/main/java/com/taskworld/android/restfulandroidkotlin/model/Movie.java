@@ -1,5 +1,7 @@
 package com.taskworld.android.restfulandroidkotlin.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 import io.realm.RealmObject;
@@ -12,6 +14,9 @@ public class Movie extends RealmObject {
     private int id;
     private String title;
     private float popularity;
+
+    @SerializedName("poster_path")
+    private String posterPath;
 
     public int getId() {
         return id;
@@ -35,6 +40,14 @@ public class Movie extends RealmObject {
 
     public void setPopularity(float popularity) {
         this.popularity = popularity;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
     }
 
     public static class ResultList {
