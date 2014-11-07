@@ -29,8 +29,8 @@ abstract class BaseDrawerFragment : BaseFragment() {
         set (value) {
             $mDirection = value
             when (value) {
-                is Direction.LEFT -> mDrawerGravity = GravityCompat.START
-                is Direction.RIGHT -> mDrawerGravity = GravityCompat.END
+                Direction.LEFT -> mDrawerGravity = GravityCompat.START
+                Direction.RIGHT -> mDrawerGravity = GravityCompat.END
             }
         }
 
@@ -104,4 +104,11 @@ abstract class BaseDrawerFragment : BaseFragment() {
     open fun onDrawerOpened() {
     }
 
+    fun toggleDrawer() {
+        if (dlDrawer!!.isDrawerOpen(mDrawerGravity)) {
+            closeDrawer()
+        } else {
+            openDrawer()
+        }
+    }
 }

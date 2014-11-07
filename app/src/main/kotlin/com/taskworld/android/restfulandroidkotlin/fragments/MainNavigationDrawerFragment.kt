@@ -24,10 +24,11 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
 
     override val mContentLayoutResourceId: Int = R.layout.fragment_main_navigation_drawer
 
-    var mCurrentSelectedPosition = 0
-
     //widgets
     val lvDrawer by Delegates.lazy { getRootView()!!.bindView<ListView>(R.id.lvMainNavigation) }
+
+    //data
+    var mCurrentSelectedPosition = 0
 
     override fun setUp() {
     }

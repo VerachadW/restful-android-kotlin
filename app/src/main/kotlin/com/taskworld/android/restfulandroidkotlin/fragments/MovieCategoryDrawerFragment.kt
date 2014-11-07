@@ -6,6 +6,8 @@ import com.taskworld.android.restfulandroidkotlin.extensions.bindView
 import kotlin.properties.Delegates
 import android.view.View
 import android.widget.ArrayAdapter
+import de.greenrobot.event.EventBus
+import com.taskworld.android.restfulandroidkotlin.events.MovieCategorySelectedEvent
 
 /**
  * Created by Kittinun Vantasin on 11/6/14.
@@ -18,14 +20,32 @@ class MovieCategoryDrawerFragment : BaseDrawerFragment() {
     //widgets
     val lvDrawer by Delegates.lazy { getRootView()!!.bindView<ListView>(R.id.lvMovieCategory) }
 
+    //data
+    var mCurrentSelectedPosition = 0
+
     override fun setUp() {
     }
 
     override fun setUpUI(view: View?) {
+        val categories = listOf("popular", "upcoming", "now_playing")
+
         lvDrawer.setAdapter(ArrayAdapter(
                 getActivity(),
-                android.R.layout.simple_list_item_1,
+                android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                listOf("latest", "upcoming", "now_playing", "popular")))
+                categories))
+
+        setSelectedItem(0)
+
+        lvDrawer.setOnItemClickListener { (adapterView, view, position, id) ->
+            setSelectedItem(position)
+            EventBus.getDefault().post(MovieCategorySelectedEvent(categories[position]))
+        }
+    }
+
+    fun setSelectedItem(position: Int) {
+        mCurrentSelectedPosition = position
+        lvDrawer.setItemChecked(position, true)
+        closeDrawer()
     }
 }

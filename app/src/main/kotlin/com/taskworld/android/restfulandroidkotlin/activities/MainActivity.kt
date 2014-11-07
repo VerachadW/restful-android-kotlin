@@ -2,7 +2,6 @@ package com.taskworld.android.restfulandroidkotlin.activities
 
 import com.taskworld.android.restfulandroidkotlin.R
 import kotlin.properties.Delegates
-import com.taskworld.android.restfulandroidkotlin.fragments.MainNavigationDrawerFragment
 import com.taskworld.android.restfulandroidkotlin.extensions.bindView
 import android.widget.Button
 import com.taskworld.android.restfulandroidkotlin.model.Movie
@@ -17,6 +16,8 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.Toolbar
 import com.taskworld.android.restfulandroidkotlin.fragments.MovieGridFragment
 import com.taskworld.android.restfulandroidkotlin.fragments.BaseDrawerFragment
+import com.taskworld.android.restfulandroidkotlin.events.DrawerToggleEvent
+import com.taskworld.android.restfulandroidkotlin.fragments.BaseDrawerFragment.Direction
 
 class MainActivity : BaseSpiceActivity() {
 
@@ -51,6 +52,13 @@ class MainActivity : BaseSpiceActivity() {
             Preference.getInstance(this).setSessionId(map.get("session_id")!!)
         } else {
             getServiceSpiceManager().execute(GetNewSessionSpiceRequest(map.get("request_token")!!), EventBusRequestListener())
+        }
+    }
+
+    fun onEvent(event: DrawerToggleEvent) {
+        when (event.direction) {
+            Direction.LEFT -> fgLeftNavigationDrawer.toggleDrawer()
+            Direction.RIGHT -> fgRightNavigationDrawer.toggleDrawer()
         }
     }
 }

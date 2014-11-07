@@ -20,6 +20,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import com.taskworld.android.restfulandroidkotlin.extensions.toast
+import de.greenrobot.event.EventBus
+import com.taskworld.android.restfulandroidkotlin.events.DrawerToggleEvent
+import com.taskworld.android.restfulandroidkotlin.fragments.BaseDrawerFragment.Direction
+import com.taskworld.android.restfulandroidkotlin.events.MovieCategorySelectedEvent
 
 /**
  * Created by Kittinun Vantasin on 11/6/14.
@@ -38,15 +42,26 @@ class MovieGridFragment : BaseSpiceFragment() {
     val mMovieAdapter by Delegates.lazy { MovieRecycleViewAdapter() }
 
     //data
-    var mAction: String? = null
+    var mCategory by Delegates.vetoable("", { meta, oldCategory, newCategory ->
+        var isAllowed = false
+        if (!newCategory.isEmpty()) {
+            val client = ResourceClient.Builder()
+                    .setRouter(ResourceRouterImpl.newInstance(newCategory))
+                    .setSpiceManager(getServiceSpiceManager()).build()
+
+            client.findAll(javaClass<Movie>())
+            isAllowed = true
+        }
+        isAllowed
+    })
 
     class object {
-        val ARG_MOVIE_ACTION = "movie_category"
+        val ARG_MOVIE_CATEGORY = "movie_category"
 
         fun newInstance(action: String): MovieGridFragment {
             val fragment = MovieGridFragment()
             val args = Bundle()
-            args.putString(ARG_MOVIE_ACTION, action)
+            args.putString(ARG_MOVIE_CATEGORY, action)
             fragment.setArguments(args)
             return fragment
         }
@@ -61,11 +76,6 @@ class MovieGridFragment : BaseSpiceFragment() {
         rvMovie.addItemDecoration(createItemDecoration())
         //set adapter
         rvMovie.setAdapter(mMovieAdapter)
-
-        val client = ResourceClient.Builder()
-                .setRouter(ResourceRouterImpl.newInstance(mAction!!))
-                .setSpiceManager(getServiceSpiceManager()).build()
-        client.findAll(javaClass<Movie>())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -83,14 +93,19 @@ class MovieGridFragment : BaseSpiceFragment() {
     }
 
     fun openRightDrawer() {
+        EventBus.getDefault().post(DrawerToggleEvent(Direction.RIGHT))
     }
 
     override fun handleArguments(args: Bundle) {
-        mAction = args.getString(ARG_MOVIE_ACTION)
+        mCategory = args.getString(ARG_MOVIE_CATEGORY)
     }
 
     fun onEvent(items: Movie.ResultList) {
         mItems = items.getResults().toArrayList()
+    }
+
+    fun onEvent(event: MovieCategorySelectedEvent) {
+        mCategory = event.category
     }
 
     fun createLayoutManager(): RecyclerView.LayoutManager {
