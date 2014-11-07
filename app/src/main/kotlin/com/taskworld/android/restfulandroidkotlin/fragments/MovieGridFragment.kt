@@ -21,9 +21,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import com.taskworld.android.restfulandroidkotlin.extensions.toast
 import de.greenrobot.event.EventBus
-import com.taskworld.android.restfulandroidkotlin.events.DrawerToggleEvent
+import com.taskworld.android.restfulandroidkotlin.events.OnDrawerToggledEvent
 import com.taskworld.android.restfulandroidkotlin.fragments.BaseDrawerFragment.Direction
-import com.taskworld.android.restfulandroidkotlin.events.MovieCategorySelectedEvent
+import com.taskworld.android.restfulandroidkotlin.events.OnMovieCategorySelectedEvent
+import com.taskworld.android.restfulandroidkotlin.events.OnToolbarTitleChangedEvent
 
 /**
  * Created by Kittinun Vantasin on 11/6/14.
@@ -93,7 +94,7 @@ class MovieGridFragment : BaseSpiceFragment() {
     }
 
     fun openRightDrawer() {
-        EventBus.getDefault().post(DrawerToggleEvent(Direction.RIGHT))
+        EventBus.getDefault().post(OnDrawerToggledEvent(Direction.RIGHT))
     }
 
     override fun handleArguments(args: Bundle) {
@@ -104,8 +105,9 @@ class MovieGridFragment : BaseSpiceFragment() {
         mItems = items.getResults().toArrayList()
     }
 
-    fun onEvent(event: MovieCategorySelectedEvent) {
+    fun onEvent(event: OnMovieCategorySelectedEvent) {
         mCategory = event.category
+        EventBus.getDefault().post(OnToolbarTitleChangedEvent(mCategory.toUpperCase()))
     }
 
     fun createLayoutManager(): RecyclerView.LayoutManager {

@@ -15,12 +15,19 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:minHeight="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" />
+            android:background="?attr/colorPrimary">
+
+            <TextView
+                android:id="@+id/tvBarTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </android.support.v7.widget.Toolbar>
 
         <FrameLayout
             android:id="@+id/flContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
@@ -29,13 +36,13 @@
         android:layout_width="320dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:name="com.taskworld.android.restfulandroidkotlin.fragments.MainNavigationDrawerFragment" />
+        android:name="com.taskworld.android.restfulandroidkotlin.fragments.MainNavigationDrawerFragment"/>
 
     <fragment
         android:id="@+id/fgRightNavigationDrawer"
         android:layout_width="320dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:name="com.taskworld.android.restfulandroidkotlin.fragments.MovieCategoryDrawerFragment" />
+        android:name="com.taskworld.android.restfulandroidkotlin.fragments.MovieCategoryDrawerFragment"/>
 
 </android.support.v4.widget.DrawerLayout>

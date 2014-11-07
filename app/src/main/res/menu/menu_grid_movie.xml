@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/miCategory"
-          android:title="Cat"
-          android:showAsAction="always" />
+          android:title="Category"
+          app:showAsAction="always" />
 
     <item android:id="@+id/miAdd"
           android:title="Add"
-          android:showAsAction="collapseActionView" />
+          app:showAsAction="collapseActionView" />
 
     <item android:id="@+id/miRemove"
           android:title="Remove"
-          android:showAsAction="collapseActionView" />
+          app:showAsAction="collapseActionView" />
 </menu>

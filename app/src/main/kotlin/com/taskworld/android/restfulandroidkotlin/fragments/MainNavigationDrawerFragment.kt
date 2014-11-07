@@ -71,7 +71,7 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
         Picasso.with(getActivity()).load("http://2.bp.blogspot.com/-6oNTuKj2y1I/VDW1uaZUu3I/AAAAAAAALDc/tJM0s5p1-5o/s1600/Untitled-1.jpg").into(ivNavigationCover)
 
         val tvNavigationName = llNavigationHeader.bindView<TextView>(R.id.tvNavigationName)
-        tvNavigationName.setText("john.doe@google.com")
+        tvNavigationName.setText("john.doe@themoviedb.org")
         return llNavigationHeader
     }
 }

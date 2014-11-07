@@ -16,14 +16,18 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.Toolbar
 import com.taskworld.android.restfulandroidkotlin.fragments.MovieGridFragment
 import com.taskworld.android.restfulandroidkotlin.fragments.BaseDrawerFragment
-import com.taskworld.android.restfulandroidkotlin.events.DrawerToggleEvent
+import com.taskworld.android.restfulandroidkotlin.events.OnDrawerToggledEvent
 import com.taskworld.android.restfulandroidkotlin.fragments.BaseDrawerFragment.Direction
+import android.widget.TextView
+import com.taskworld.android.restfulandroidkotlin.events.OnToolbarTitleChangedEvent
 
 class MainActivity : BaseSpiceActivity() {
 
     override val mContentLayoutResourceId = R.layout.activity_main
 
     //widgets
+    val tvBarTitle by Delegates.lazy { bindView<TextView>(R.id.tvBarTitle) }
+
     val fgLeftNavigationDrawer by Delegates.lazy {
         getSupportFragmentManager().findFragmentById(R.id.fgLeftNavigationDrawer) as BaseDrawerFragment
     }
@@ -40,8 +44,10 @@ class MainActivity : BaseSpiceActivity() {
         fgLeftNavigationDrawer.setUpAsLeftDrawer(dlMain, tbMain)
         fgRightNavigationDrawer.setUpAsRightDrawer(dlMain, tbMain)
 
+        val popularCategory = "popular"
+        tvBarTitle.setText(popularCategory.toUpperCase())
         val ft = getSupportFragmentManager().beginTransaction()
-        ft.replace(R.id.flContainer, MovieGridFragment.newInstance("popular"))
+        ft.replace(R.id.flContainer, MovieGridFragment.newInstance(popularCategory))
         ft.commit()
     }
 
@@ -55,10 +61,14 @@ class MainActivity : BaseSpiceActivity() {
         }
     }
 
-    fun onEvent(event: DrawerToggleEvent) {
+    fun onEvent(event: OnDrawerToggledEvent) {
         when (event.direction) {
             Direction.LEFT -> fgLeftNavigationDrawer.toggleDrawer()
             Direction.RIGHT -> fgRightNavigationDrawer.toggleDrawer()
         }
+    }
+
+    fun onEvent(event: OnToolbarTitleChangedEvent) {
+        tvBarTitle.setText(event.title)
     }
 }

@@ -7,7 +7,7 @@ import kotlin.properties.Delegates
 import android.view.View
 import android.widget.ArrayAdapter
 import de.greenrobot.event.EventBus
-import com.taskworld.android.restfulandroidkotlin.events.MovieCategorySelectedEvent
+import com.taskworld.android.restfulandroidkotlin.events.OnMovieCategorySelectedEvent
 
 /**
  * Created by Kittinun Vantasin on 11/6/14.
@@ -39,7 +39,7 @@ class MovieCategoryDrawerFragment : BaseDrawerFragment() {
 
         lvDrawer.setOnItemClickListener { (adapterView, view, position, id) ->
             setSelectedItem(position)
-            EventBus.getDefault().post(MovieCategorySelectedEvent(categories[position]))
+            EventBus.getDefault().post(OnMovieCategorySelectedEvent(categories[position]))
         }
     }
 

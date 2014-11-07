@@ -6,6 +6,6 @@ import com.taskworld.android.restfulandroidkotlin.fragments.BaseDrawerFragment.D
  * Created by Kittinun Vantasin on 11/6/14.
  */
 
-class DrawerToggleEvent(val direction: Direction) : BaseEvent() {
+class OnDrawerToggledEvent(val direction: Direction) : BaseEvent() {
 
 }
