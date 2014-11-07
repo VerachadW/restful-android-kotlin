@@ -1,14 +1,13 @@
 package com.taskworld.android.restfulandroidkotlin.fragments
 
 import android.support.v4.app.Fragment
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import com.taskworld.android.restfulandroidkotlin.events.BaseEvent
 import de.greenrobot.event.EventBus
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.View
+import kotlin.properties.Delegates
 
 /**
  * Created by Kittinun Vantasin on 11/5/14.
@@ -19,7 +18,7 @@ abstract class BaseFragment : Fragment() {
     abstract val mContentLayoutResourceId: Int
 
     //widgets
-    var vRoot: View? = null
+    var vRoot: View by Delegates.notNull()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super<Fragment>.onCreate(savedInstanceState)
@@ -63,10 +62,10 @@ abstract class BaseFragment : Fragment() {
     open fun setUp() {
     }
 
-    open fun setUpUI(view: View?) {
+    open fun setUpUI(view: View) {
     }
 
-    fun getRootView(): View? {
+    fun getRootView(): View {
         return vRoot
     }
 

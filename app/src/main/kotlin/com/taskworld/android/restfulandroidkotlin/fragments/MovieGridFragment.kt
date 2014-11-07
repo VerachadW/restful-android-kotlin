@@ -34,17 +34,17 @@ class MovieGridFragment : BaseSpiceFragment() {
 
     override val mContentLayoutResourceId: Int = R.layout.fragment_movie_grid
 
-    var mItems by Delegates.observable(arrayListOf<Movie>(), { meta, oldItems, newItems ->
-        mMovieAdapter.notifyDataSetChanged()
-    })
-
     //widgets
-    val rvMovie by Delegates.lazy { getRootView()!!.bindView<RecyclerView>(R.id.rvMovie) }
+    val rvMovie by Delegates.lazy { getRootView().bindView<RecyclerView>(R.id.rvMovie) }
+
+    //adapter
     val mMovieAdapter by Delegates.lazy { MovieRecycleViewAdapter() }
 
     //data
+    var mItems by Delegates.observable(arrayListOf<Movie>(), { meta, oldItems, newItems ->
+        mMovieAdapter.notifyDataSetChanged()
+    })
     var mCategory = ""
-
     val mBus = EventBus()
 
     class object {
@@ -64,7 +64,7 @@ class MovieGridFragment : BaseSpiceFragment() {
         mBus.register(this)
     }
 
-    override fun setUpUI(view: View?) {
+    override fun setUpUI(view: View) {
         rvMovie.setLayoutManager(createLayoutManager())
         rvMovie.addItemDecoration(createItemDecoration())
         //set adapter
@@ -146,7 +146,7 @@ class MovieGridFragment : BaseSpiceFragment() {
         }
 
         override fun onBindViewHolder(viewHolder: MovieViewHolder, position: Int) {
-            val m = mItems.get(position)
+            val m = mItems[position]
             viewHolder.tvMovieTitle.setText(m.getTitle())
             viewHolder.tvMoviePopularScore.setText(m.getPopularity().toString())
             Picasso.with(getActivity()).load("https://image.tmdb.org/t/p/w500/" + m.getPosterPath()).into(viewHolder.ivMovieCover)

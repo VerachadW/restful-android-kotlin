@@ -5,8 +5,8 @@ import retrofit.http.Query
 import com.taskworld.android.restfulandroidkotlin.model.Movie
 import retrofit.http.POST
 import retrofit.http.Body
-import retrofit.http.Path
 import retrofit.http.EncodedPath
+import com.taskworld.android.restfulandroidkotlin.model.TV
 
 /**
  * Created by Kittinun Vantasin on 10/24/14.
@@ -15,7 +15,6 @@ import retrofit.http.EncodedPath
 trait TheMovieDBAPI {
 
     trait MovieAPI {
-        //movie
         GET("/{path}")
         fun get(EncodedPath("path") path: String): Movie
 
@@ -37,5 +36,15 @@ trait TheMovieDBAPI {
         fun getNewSession(Query("request_token") token: String): Map<String, String>
     }
 
+    trait TVAPI {
+        GET("/{path}")
+        fun get(EncodedPath("path") path: String): TV
+
+        GET("/{path}")
+        fun getList(EncodedPath("path") path: String): TV.ResultList
+
+        POST("/{path}")
+        fun post(EncodedPath("path") path: String, Body TV: TV)
+    }
 }
 

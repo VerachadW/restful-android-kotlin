@@ -2,12 +2,12 @@ package com.taskworld.android.restfulandroidkotlin.fragments
 
 import com.taskworld.android.restfulandroidkotlin.R
 import kotlin.properties.Delegates
-import android.support.v4.view.ViewPager
 import com.taskworld.android.restfulandroidkotlin.extensions.bindView
-import android.view.View
+import android.support.v4.view.ViewPager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.Fragment
+import android.view.View
 import de.greenrobot.event.EventBus
 import com.taskworld.android.restfulandroidkotlin.events.OnToolbarTitleChangedEvent
 import android.support.v4.view.PagerAdapter
@@ -16,22 +16,20 @@ import android.support.v4.view.PagerAdapter
  * Created by Kittinun Vantasin on 11/7/14.
  */
 
-class MovieFragment : BaseFragment() {
+class TVFragment : BaseFragment() {
 
-    override val mContentLayoutResourceId: Int = R.layout.fragment_movie
+    override val mContentLayoutResourceId: Int = R.layout.fragment_tv
 
     //widgets
-    val vpMovie by Delegates.lazy { getRootView().bindView<ViewPager>(R.id.vpMovie) }
-
-    //adapter
-    val mMovieViewPagerAdapter by Delegates.lazy { MovieViewPagerAdapter(getFragmentManager()) }
+//    val vpTV by Delegates.lazy { getRootView().bindView<ViewPager>(R.id.vpTV) }
+    var vpTV: ViewPager by Delegates.notNull()
 
     //data
-    val mMovieCategories = listOf("now_playing", "top_rated")
+    val mTVCategories = listOf("airing_today", "popular")
 
     class object {
-        fun newInstance(): MovieFragment {
-            return MovieFragment()
+        fun newInstance(): TVFragment {
+           return TVFragment()
         }
     }
 
@@ -39,23 +37,25 @@ class MovieFragment : BaseFragment() {
     }
 
     override fun setUpUI(view: View) {
-        vpMovie.setAdapter(mMovieViewPagerAdapter)
-        vpMovie.setOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener() {
+        vpTV = view.bindView<ViewPager>(R.id.vpTV)
+        val adapter = TVViewPagerAdapter(getFragmentManager())
+        vpTV.setAdapter(adapter)
+        vpTV.setOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                EventBus.getDefault().post(OnToolbarTitleChangedEvent(mMovieViewPagerAdapter.getPageTitle(position).toString()))
+                EventBus.getDefault().post(OnToolbarTitleChangedEvent(adapter.getPageTitle(position).toString()))
             }
         })
-        mMovieViewPagerAdapter.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
     }
 
-    inner class MovieViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+    inner class TVViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getCount(): Int {
-            return mMovieCategories.size
+            return mTVCategories.size
         }
 
         override fun getItem(position: Int): Fragment? {
-            return MovieGridFragment.newInstance(mMovieCategories[position])
+            return TVGridFragment.newInstance(mTVCategories[position])
         }
 
         override fun getItemPosition(`object`: Any?): Int {
@@ -63,7 +63,7 @@ class MovieFragment : BaseFragment() {
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
-            return mMovieCategories[position].toUpperCase()
+            return mTVCategories[position].toUpperCase()
         }
     }
 }

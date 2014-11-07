@@ -25,7 +25,7 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
     override val mContentLayoutResourceId: Int = R.layout.fragment_main_navigation_drawer
 
     //widgets
-    val lvDrawer by Delegates.lazy { getRootView()!!.bindView<ListView>(R.id.lvMainNavigation) }
+    val lvDrawer by Delegates.lazy { getRootView().bindView<ListView>(R.id.lvMainNavigation) }
 
     //data
     var mCurrentSelectedPosition = 0
@@ -33,26 +33,30 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
     override fun setUp() {
     }
 
-    override fun setUpUI(view: View?) {
+    override fun setUpUI(view: View) {
         lvDrawer.addHeaderView(createHeaderView())
 
         lvDrawer.setAdapter(ArrayAdapter(
                 getActivity(),
-                android.R.layout.simple_list_item_1,
+                android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                listOf("Movie List", "Product List")))
+                listOf("Movies", "TVs")))
 
+        lvDrawer.setItemChecked(1, true)
         lvDrawer.setOnItemClickListener { parent, view, position, id ->
-            selectItem(position)
+            val ft = getFragmentManager().beginTransaction()
             when (position) {
-                1 -> startActivity(MovieListActivity.newInstance(getActivity()))
-                2 -> startActivity(ProductListActivity.newInstance(getActivity()))
+                1 -> ft.replace(R.id.flContainer, MovieFragment.newInstance())
+                2 -> ft.replace(R.id.flContainer, TVFragment.newInstance())
             }
+            ft.commit()
+            selectItem(position)
         }
     }
 
     fun selectItem(position: Int) {
         mCurrentSelectedPosition = position
+        lvDrawer.setItemChecked(position, true)
         closeDrawer()
     }
 

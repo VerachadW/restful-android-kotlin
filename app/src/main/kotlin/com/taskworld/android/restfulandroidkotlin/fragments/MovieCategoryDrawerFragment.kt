@@ -18,7 +18,7 @@ class MovieCategoryDrawerFragment : BaseDrawerFragment() {
     override val mContentLayoutResourceId: Int = R.layout.fragment_movie_category_drawer
 
     //widgets
-    val lvDrawer by Delegates.lazy { getRootView()!!.bindView<ListView>(R.id.lvMovieCategory) }
+    val lvDrawer by Delegates.lazy { getRootView().bindView<ListView>(R.id.lvMovieCategory) }
 
     //data
     var mCurrentSelectedPosition = 0
@@ -26,7 +26,7 @@ class MovieCategoryDrawerFragment : BaseDrawerFragment() {
     override fun setUp() {
     }
 
-    override fun setUpUI(view: View?) {
+    override fun setUpUI(view: View) {
         val categories = listOf("popular", "upcoming", "now_playing")
 
         lvDrawer.setAdapter(ArrayAdapter(

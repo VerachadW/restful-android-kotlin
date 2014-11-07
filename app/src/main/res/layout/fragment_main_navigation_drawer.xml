@@ -3,5 +3,6 @@
           android:id="@+id/lvMainNavigation"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
+          android:choiceMode="singleChoice"
           android:background="@android:color/darker_gray" />
 
