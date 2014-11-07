@@ -26,7 +26,7 @@ class MovieFragment : BaseFragment() {
     val mMovieViewPagerAdapter by Delegates.lazy { MovieViewPagerAdapter(getFragmentManager()) }
 
     //data
-    val mMovieCategories = listOf("popular", "upcoming", "now_playing")
+    val mMovieCategories = listOf("now_playing", "top_rated")
 
     class object {
         fun newInstance(): MovieFragment {

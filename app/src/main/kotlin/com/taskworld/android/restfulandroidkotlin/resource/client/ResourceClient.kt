@@ -21,12 +21,14 @@ class ResourceClient(builder: ResourceClient.Builder) {
     private var mSpiceManager: SpiceManager? = null
     private var mResourceRouter: ResourceRouter? = null
     private var mRealm: Realm? = null
+    private var mBus: EventBus
 
     //initialize
     {
         mSpiceManager = builder.manager
         mResourceRouter = builder.router
         mRealm = builder.realm
+        mBus = builder.bus ?: EventBus.getDefault()
     }
 
     class object {
@@ -39,6 +41,7 @@ class ResourceClient(builder: ResourceClient.Builder) {
             var manager: SpiceManager? = null
             var router: ResourceRouter? = null
             var realm: Realm? = null
+            var bus: EventBus? = null
 
             fun setSpiceManager(manager: SpiceManager): Builder {
                 this.manager = manager
@@ -52,6 +55,11 @@ class ResourceClient(builder: ResourceClient.Builder) {
 
             fun setRealm(realm: Realm): Builder {
                 this.realm = realm
+                return this
+            }
+
+            fun setEventBus(bus: EventBus): Builder {
+                this.bus = bus
                 return this
             }
 
@@ -164,6 +172,6 @@ class ResourceClient(builder: ResourceClient.Builder) {
 
         [suppress("unchecked_cast")]
         val requestInstance = constructorOfClassName.newInstance(requestPath) as SpiceRequest<T>
-        mSpiceManager?.execute(requestInstance, EventBusRequestListener())
+        mSpiceManager?.execute(requestInstance, EventBusRequestListener.newInstance(mBus))
     }
 }
