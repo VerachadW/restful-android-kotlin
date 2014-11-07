@@ -14,12 +14,12 @@ import com.taskworld.android.restfulandroidkotlin.network.request.GetNewSessionS
 import com.taskworld.android.restfulandroidkotlin.Preference
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.Toolbar
-import com.taskworld.android.restfulandroidkotlin.fragments.MovieGridFragment
 import com.taskworld.android.restfulandroidkotlin.fragments.BaseDrawerFragment
 import com.taskworld.android.restfulandroidkotlin.events.OnDrawerToggledEvent
 import com.taskworld.android.restfulandroidkotlin.fragments.BaseDrawerFragment.Direction
 import android.widget.TextView
 import com.taskworld.android.restfulandroidkotlin.events.OnToolbarTitleChangedEvent
+import com.taskworld.android.restfulandroidkotlin.fragments.MovieFragment
 
 class MainActivity : BaseSpiceActivity() {
 
@@ -47,7 +47,7 @@ class MainActivity : BaseSpiceActivity() {
         val popularCategory = "popular"
         tvBarTitle.setText(popularCategory.toUpperCase())
         val ft = getSupportFragmentManager().beginTransaction()
-        ft.replace(R.id.flContainer, MovieGridFragment.newInstance(popularCategory))
+        ft.replace(R.id.flContainer, MovieFragment.newInstance())
         ft.commit()
     }
 

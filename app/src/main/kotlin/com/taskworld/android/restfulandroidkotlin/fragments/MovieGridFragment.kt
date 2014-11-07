@@ -25,6 +25,8 @@ import com.taskworld.android.restfulandroidkotlin.events.OnDrawerToggledEvent
 import com.taskworld.android.restfulandroidkotlin.fragments.BaseDrawerFragment.Direction
 import com.taskworld.android.restfulandroidkotlin.events.OnMovieCategorySelectedEvent
 import com.taskworld.android.restfulandroidkotlin.events.OnToolbarTitleChangedEvent
+import android.util.Log
+import com.taskworld.android.restfulandroidkotlin.extensions.tag
 
 /**
  * Created by Kittinun Vantasin on 11/6/14.
@@ -86,7 +88,7 @@ class MovieGridFragment : BaseSpiceFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.getItemId()) {
-            R.id.miCategory -> openRightDrawer()
+            R.id.miSearch -> Log.i(tag(), "search")
             R.id.miAdd -> addMovie()
             R.id.miRemove -> removeMovie()
         }
