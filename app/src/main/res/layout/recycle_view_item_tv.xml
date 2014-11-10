@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tool="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content" >
 
     <ImageView
         android:id="@+id/ivTVCover"
@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:maxLines="2"
         tool:text="The Raid 2" />
 
@@ -26,7 +26,7 @@
         android:layout_below="@id/tvTVTitle"
         android:layout_marginTop="20dp"
         android:padding="15dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         tool:text="45.2834734" />
 
 </RelativeLayout>

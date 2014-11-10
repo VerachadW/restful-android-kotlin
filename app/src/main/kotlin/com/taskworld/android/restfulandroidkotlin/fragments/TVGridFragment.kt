@@ -77,14 +77,7 @@ class TVGridFragment : BaseSpiceFragment() {
     }
 
     fun createLayoutManager(): RecyclerView.LayoutManager {
-        val lm = GridLayoutManager(getActivity(), 2)
-        lm.setSpanSizeLookup(object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                val hash = mItems[position].hashCode()
-                return 1 + (Math.abs(hash) % lm.getSpanCount());
-            }
-        })
-        return lm
+        return GridLayoutManager(getActivity(), 2)
     }
 
     override fun onDestroy() {
