@@ -6,6 +6,8 @@ import android.content.Intent
 import de.greenrobot.event.EventBus
 import com.taskworld.android.restfulandroidkotlin.events.BaseEvent
 import android.support.v7.app.ActionBarActivity
+import android.util.Log
+import com.taskworld.android.restfulandroidkotlin.extensions.tag
 
 /**
  * Created by Kittinun Vantasin on 10/17/14.
@@ -37,16 +39,24 @@ abstract class BaseActivity : ActionBarActivity() {
         }
 
         setUp()
+        Log.v(tag(), tag() + "::onCreate()")
     }
 
     override fun onResume() {
         super<ActionBarActivity>.onResume()
         EventBus.getDefault().register(this)
+        Log.v(tag(), tag() + "::onResume()")
     }
 
     override fun onPause() {
         super<ActionBarActivity>.onPause()
         EventBus.getDefault().unregister(this)
+        Log.v(tag(), tag() + "::onPause()")
+    }
+
+    override fun onDestroy() {
+        Log.v(tag(), tag() + "::onDestory()")
+        super<ActionBarActivity>.onDestroy()
     }
 
     open fun handleSavedInstanceState(savedInstanceState: Bundle) {

@@ -23,9 +23,6 @@ class MovieFragment : BaseFragment() {
     //widgets
     val vpMovie by Delegates.lazy { getRootView().bindView<ViewPager>(R.id.vpMovie) }
 
-    //adapter
-    val mMovieViewPagerAdapter by Delegates.lazy { MovieViewPagerAdapter(getFragmentManager()) }
-
     //data
     val mMovieCategories = listOf("now_playing", "top_rated")
 
@@ -39,13 +36,13 @@ class MovieFragment : BaseFragment() {
     }
 
     override fun setUpUI(view: View) {
-        vpMovie.setAdapter(mMovieViewPagerAdapter)
-        vpMovie.setOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener() {
+        val pagerAdapter = MovieViewPagerAdapter(getChildFragmentManager())
+        vpMovie.setAdapter(pagerAdapter)
+        vpMovie.setOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                EventBus.getDefault().post(OnToolbarTitleChangedEvent(mMovieViewPagerAdapter.getPageTitle(position).toString()))
+                EventBus.getDefault().post(OnToolbarTitleChangedEvent(pagerAdapter.getPageTitle(position).toString()))
             }
         })
-        mMovieViewPagerAdapter.notifyDataSetChanged()
     }
 
     inner class MovieViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
@@ -56,10 +53,6 @@ class MovieFragment : BaseFragment() {
 
         override fun getItem(position: Int): Fragment? {
             return MovieGridFragment.newInstance(mMovieCategories[position])
-        }
-
-        override fun getItemPosition(`object`: Any?): Int {
-            return PagerAdapter.POSITION_NONE
         }
 
         override fun getPageTitle(position: Int): CharSequence? {

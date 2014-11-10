@@ -21,8 +21,7 @@ class TVFragment : BaseFragment() {
     override val mContentLayoutResourceId: Int = R.layout.fragment_tv
 
     //widgets
-//    val vpTV by Delegates.lazy { getRootView().bindView<ViewPager>(R.id.vpTV) }
-    var vpTV: ViewPager by Delegates.notNull()
+    val vpTV by Delegates.lazy { getRootView().bindView<ViewPager>(R.id.vpTV) }
 
     //data
     val mTVCategories = listOf("airing_today", "popular")
@@ -37,15 +36,13 @@ class TVFragment : BaseFragment() {
     }
 
     override fun setUpUI(view: View) {
-        vpTV = view.bindView<ViewPager>(R.id.vpTV)
-        val adapter = TVViewPagerAdapter(getFragmentManager())
-        vpTV.setAdapter(adapter)
-        vpTV.setOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener() {
+        val pagerAdapter = TVViewPagerAdapter(getFragmentManager())
+        vpTV.setAdapter(pagerAdapter)
+        vpTV.setOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                EventBus.getDefault().post(OnToolbarTitleChangedEvent(adapter.getPageTitle(position).toString()))
+                EventBus.getDefault().post(OnToolbarTitleChangedEvent(pagerAdapter.getPageTitle(position).toString()))
             }
         })
-        adapter.notifyDataSetChanged()
     }
 
     inner class TVViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
@@ -56,10 +53,6 @@ class TVFragment : BaseFragment() {
 
         override fun getItem(position: Int): Fragment? {
             return TVGridFragment.newInstance(mTVCategories[position])
-        }
-
-        override fun getItemPosition(`object`: Any?): Int {
-            return PagerAdapter.POSITION_NONE
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
