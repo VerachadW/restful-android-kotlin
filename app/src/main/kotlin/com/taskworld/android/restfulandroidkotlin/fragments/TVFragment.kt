@@ -36,7 +36,7 @@ class TVFragment : BaseFragment() {
     }
 
     override fun setUpUI(view: View) {
-        val pagerAdapter = TVViewPagerAdapter(getFragmentManager())
+        val pagerAdapter = TVViewPagerAdapter(getChildFragmentManager())
         vpTV.setAdapter(pagerAdapter)
         vpTV.setOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
