@@ -43,7 +43,7 @@ class MovieListActivity : BaseSpiceActivity() {
     val mRealm by Delegates.lazy { Realm.getInstance(this) }
 
     class object {
-        public fun newInstance(context: Context): Intent {
+        public fun newIntent(context: Context): Intent {
             return Intent(context, javaClass<MovieListActivity>())
         }
     }

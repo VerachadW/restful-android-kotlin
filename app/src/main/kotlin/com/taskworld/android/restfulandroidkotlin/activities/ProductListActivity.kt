@@ -52,7 +52,7 @@ class ProductListActivity : BaseActivity() {
         lvProduct.setAdapter(mProductAdapter)
         lvProduct.setOnItemClickListener { (adapterView, view, position, id) ->
             val selectedProduct = mProductAdapter.getItem(position)
-            startActivityForResult(ProductEditActivity.newInstance(this, selectedProduct.getName()), 999)
+            startActivityForResult(ProductEditActivity.newIntent(this, selectedProduct.getName()), 999)
         }
         fetchProducts()
     }
@@ -76,7 +76,7 @@ class ProductListActivity : BaseActivity() {
     }
 
     fun navigateToProductEditActivity() {
-        startActivityForResult(ProductEditActivity.newInstance(this), 999)
+        startActivityForResult(ProductEditActivity.newIntent(this), 999)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -67,7 +67,6 @@ class ResourceClient(builder: ResourceClient.Builder) {
         }
     }
 
-
     fun <T : RealmObject> create(clazz: Class<T>, f: (it: T) -> Unit) {
         mRealm!!.beginTransaction()
         var entity: T = mRealm!!.createObject(clazz)
@@ -135,12 +134,11 @@ class ResourceClient(builder: ResourceClient.Builder) {
         executeWithEventBusListener<T>(httpVerb, action, clazz.getSimpleName(), path!!)
     }
 
-
-    fun <T: RealmObject> find(clazz: Class<T>, id: String) {
+    fun <T : RealmObject> find(clazz: Class<T>, id: String) {
         find(clazz, id, null)
     }
 
-    fun <T: RealmObject> find(clazz: Class<T>, id: String, args: Map<String, String>?) {
+    fun <T : RealmObject> find(clazz: Class<T>, id: String, args: Map<String, String>?) {
         val httpVerb = "get"
         val action = ""
 
@@ -162,9 +160,16 @@ class ResourceClient(builder: ResourceClient.Builder) {
     }
 
     fun <T> executeWithEventBusListener(httpVerb: String, action: String, resourceName: String, requestPath: String) {
+        var extraPath = ""
+        when (action) {
+            "" -> extraPath = mResourceRouter.extraPathForSingle ?: ""
+            "list" -> extraPath = mResourceRouter.extraPathForList ?: ""
+        }
+
         val className = listOf(httpVerb.toStartingLetterUppercase(),
                 action.toStartingLetterUppercase(),
                 resourceName.toStartingLetterUppercase(),
+                extraPath.replace("_", "").toStartingLetterUppercase(),
                 REQUEST_CLASS_SUFFIX).join("")
         val constructorOfClassName = Class.forName(REQUEST_PACKAGE + "." + className).getConstructor(javaClass<String>())
 

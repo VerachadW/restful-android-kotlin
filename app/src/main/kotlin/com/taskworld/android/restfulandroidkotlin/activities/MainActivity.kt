@@ -32,17 +32,12 @@ class MainActivity : BaseSpiceActivity() {
         getSupportFragmentManager().findFragmentById(R.id.fgLeftNavigationDrawer) as BaseDrawerFragment
     }
 
-    val fgRightNavigationDrawer by Delegates.lazy {
-        getSupportFragmentManager().findFragmentById(R.id.fgRightNavigationDrawer) as BaseDrawerFragment
-    }
-
     val dlMain by Delegates.lazy { bindView<DrawerLayout>(R.id.dlMain) }
     val tbMain by Delegates.lazy { bindView<Toolbar>(R.id.tbMain) }
 
     override fun setUp() {
         setSupportActionBar(tbMain)
         fgLeftNavigationDrawer.setUpAsLeftDrawer(dlMain, tbMain)
-        fgRightNavigationDrawer.setUpAsRightDrawer(dlMain, tbMain)
 
         val popularCategory = "popular"
         tvBarTitle.setText(popularCategory.toUpperCase())
@@ -64,7 +59,6 @@ class MainActivity : BaseSpiceActivity() {
     fun onEvent(event: OnDrawerToggledEvent) {
         when (event.direction) {
             Direction.LEFT -> fgLeftNavigationDrawer.toggleDrawer()
-            Direction.RIGHT -> fgRightNavigationDrawer.toggleDrawer()
         }
     }
 

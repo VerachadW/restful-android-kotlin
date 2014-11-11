@@ -19,12 +19,12 @@ import android.graphics.Rect
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import com.taskworld.android.restfulandroidkotlin.extensions.toast
 import de.greenrobot.event.EventBus
 import com.taskworld.android.restfulandroidkotlin.events.OnMovieCategorySelectedEvent
 import com.taskworld.android.restfulandroidkotlin.events.OnToolbarTitleChangedEvent
 import android.util.Log
 import com.taskworld.android.restfulandroidkotlin.extensions.tag
+import com.taskworld.android.restfulandroidkotlin.activities.MovieDetailActivity
 
 /**
  * Created by Kittinun Vantasin on 11/6/14.
@@ -135,7 +135,8 @@ class MovieGridFragment : BaseSpiceFragment() {
     }
 
     fun onItemClick(position: Int) {
-        toast("${mItems.get(position).getTitle()} : ${mItems.get(position).getPopularity()}")
+        val movie = mItems[position]
+        startActivity(MovieDetailActivity.newIntent(getActivity(), movie.getId()))
     }
 
     inner class MovieRecycleViewAdapter : RecyclerView.Adapter<MovieRecycleViewAdapter.MovieViewHolder>() {

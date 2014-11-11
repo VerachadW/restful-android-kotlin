@@ -31,6 +31,9 @@
 
         <activity android:name=".activities.MovieListActivity"
                   android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        
+        <activity android:name=".activities.MovieDetailActivity"
+                  android:theme="@style/AppTheme.AppCompat.Translucent" />
 
     </application>
 

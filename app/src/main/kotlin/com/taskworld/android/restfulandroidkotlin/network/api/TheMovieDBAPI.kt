@@ -7,6 +7,7 @@ import retrofit.http.POST
 import retrofit.http.Body
 import retrofit.http.EncodedPath
 import com.taskworld.android.restfulandroidkotlin.model.TV
+import com.taskworld.android.restfulandroidkotlin.model.Cast
 
 /**
  * Created by Kittinun Vantasin on 10/24/14.
@@ -18,8 +19,14 @@ trait TheMovieDBAPI {
         GET("/{path}")
         fun get(EncodedPath("path") path: String): Movie
 
-        GET("/{path}")
-        fun getList(EncodedPath("path") path: String): Movie.ResultList
+        GET("/{path}/now_playing")
+        fun getNowPlayingList(EncodedPath("path") path: String): Movie.ResultList
+
+        GET("/{path}/top_rated")
+        fun getTopRatedList(EncodedPath("path") path: String): Movie.ResultList
+
+        GET("/{path}/credits")
+        fun getCastList(EncodedPath("path") path: String): Cast.CastList
 
         POST("/{path}")
         fun post(EncodedPath("path") path: String, Body movie: Movie)
@@ -40,8 +47,11 @@ trait TheMovieDBAPI {
         GET("/{path}")
         fun get(EncodedPath("path") path: String): TV
 
-        GET("/{path}")
-        fun getList(EncodedPath("path") path: String): TV.ResultList
+        GET("/{path}/airing_today")
+        fun getAiringTodayList(EncodedPath("path") path: String): TV.ResultList
+
+        GET("/{path}/popular")
+        fun getPopularList(EncodedPath("path") path: String): TV.ResultList
 
         POST("/{path}")
         fun post(EncodedPath("path") path: String, Body TV: TV)

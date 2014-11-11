@@ -8,6 +8,7 @@ import com.taskworld.android.restfulandroidkotlin.events.BaseEvent
 import android.support.v7.app.ActionBarActivity
 import android.util.Log
 import com.taskworld.android.restfulandroidkotlin.extensions.tag
+import android.view.View
 
 /**
  * Created by Kittinun Vantasin on 10/17/14.
@@ -19,7 +20,7 @@ abstract class BaseActivity : ActionBarActivity() {
 
     //static instantiate
     class object {
-        public fun newInstance(context: Context): Intent {
+        public fun newIntent(context: Context): Intent {
             return Intent(context, javaClass<BaseActivity>())
         }
     }
@@ -27,7 +28,11 @@ abstract class BaseActivity : ActionBarActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super<ActionBarActivity>.onCreate(savedInstanceState)
 
-        setContentView(mContentLayoutResourceId)
+        if (mContentLayoutResourceId != 0) {
+            setContentView(mContentLayoutResourceId)
+        } else {
+            setContentView(createContentView())
+        }
 
         if (savedInstanceState != null) {
             handleSavedInstanceState(savedInstanceState)
@@ -40,6 +45,10 @@ abstract class BaseActivity : ActionBarActivity() {
 
         setUp()
         Log.v(tag(), tag() + "::onCreate()")
+    }
+
+    open fun createContentView(): View {
+        throw UnsupportedOperationException("If mContentLayoutResourceId == 0, createContentView() must be implemented by subclass")
     }
 
     override fun onResume() {

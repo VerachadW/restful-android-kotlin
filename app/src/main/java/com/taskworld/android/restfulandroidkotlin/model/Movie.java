@@ -51,11 +51,12 @@ public class Movie extends RealmObject {
     }
 
     public static class ResultList {
-
         private List<Movie> results;
 
         public List<Movie> getResults() {
             return results;
         }
     }
+
+
 }
