@@ -119,9 +119,7 @@ class ResourceClient(builder: ResourceClient.Builder) {
     fun <T: RealmObject> findAll(clazz: Class<T>, args: Map<String, String>?) {
         //db call
         val results = query(clazz, args)
-        if (results.size() > 0) {
-            EventBus.getDefault().post(results)
-        }
+        EventBus.getDefault().post(results)
 
         val httpVerb = "get"
         val action = "list"
