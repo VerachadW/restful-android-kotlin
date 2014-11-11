@@ -14,12 +14,14 @@ class Preference private (){
         private var mSharedPreferences: SharedPreferences by Delegates.notNull()
         private val NAME = "movie"
         private val SESSION_ID = "session_id"
-        private var mInstance: Preference by Delegates.notNull()
+        private var mInstance: Preference? = null
 
         fun getInstance(context: Context): Preference {
-            mInstance = Preference()
-            mSharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE)
-            return mInstance
+            if (mInstance == null) {
+                mInstance = Preference()
+                mSharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE)
+            }
+            return mInstance!!
         }
     }
 
