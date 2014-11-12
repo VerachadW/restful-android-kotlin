@@ -3,6 +3,7 @@ package com.taskworld.android.restfulandroidkotlin.network
 import com.octo.android.robospice.SpiceManager
 import com.taskworld.android.restfulandroidkotlin.network.action.GetMovieFeedAction
 import com.taskworld.android.restfulandroidkotlin.network.action.GetMovieFeedActionExecutor
+import com.taskworld.android.restfulandroidkotlin.events.BaseEvent
 
 /**
  * Created by Johnny Dew on 11/12/2014 AD.
@@ -19,7 +20,9 @@ class TWActionManager(var spiceManager: SpiceManager) {
 
 }
 
-abstract class ActionExecutor(var action: BaseAction?, var spiceManager: SpiceManager) {
+abstract class ActionExecutor(var action: BaseAction, var spiceManager: SpiceManager) {
+
+    var baseURL: String = ""   //TODO set base URL
 
     abstract fun execute()
 
@@ -36,11 +39,11 @@ abstract class ActionExecutor(var action: BaseAction?, var spiceManager: SpiceMa
 
 }
 
-open class BaseAction {
-
+abstract class BaseAction {
+    abstract val actionPathURL: String
 }
 
-open class BaseReaction {
+open class BaseReaction() : BaseEvent(){
 
 }
 

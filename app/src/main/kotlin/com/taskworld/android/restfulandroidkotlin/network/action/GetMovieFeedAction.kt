@@ -5,6 +5,7 @@ import com.taskworld.android.restfulandroidkotlin.network.BaseReaction
 import com.taskworld.android.restfulandroidkotlin.network.ActionExecutor
 import com.octo.android.robospice.SpiceManager
 import de.greenrobot.event.EventBus
+import com.taskworld.android.restfulandroidkotlin.R
 
 
 /**
@@ -12,6 +13,8 @@ import de.greenrobot.event.EventBus
  */
 
 class GetMovieFeedAction() : BaseAction() {
+    //TODO set path
+    override val actionPathURL: String = "now_playing"
 
 }
 
@@ -34,6 +37,7 @@ class GetMovieFeedActionExecutor(action: GetMovieFeedAction, spiceManager: Spice
         EventBus.getDefault().post(reaction)
 
         //Get API feed : Robospice + Retrofit
+        val url = baseURL + "/" + action.actionPathURL
     }
 
 }
