@@ -8,7 +8,9 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/vpMovieCover"
         android:layout_width="match_parent"
-        android:layout_height="400dp" />
+        android:layout_height="400dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/tvMovieOverview"
