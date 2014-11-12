@@ -14,7 +14,7 @@ import com.taskworld.android.restfulandroidkotlin.R
 
 class GetMovieFeedAction() : BaseAction() {
     //TODO set path
-    override val actionPathURL: String = "now_playing"
+    override val actionPathURL: String = "/movie/now_playing"
 
 }
 
@@ -37,7 +37,7 @@ class GetMovieFeedActionExecutor(action: GetMovieFeedAction, spiceManager: Spice
         EventBus.getDefault().post(reaction)
 
         //Get API feed : Robospice + Retrofit
-        val url = baseURL + "/" + action.actionPathURL
+        val url = baseURL + action.actionPathURL
     }
 
 }
