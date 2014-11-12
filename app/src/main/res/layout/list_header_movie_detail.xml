@@ -8,9 +8,15 @@
     <ImageView
         android:id="@+id/ivMovieDetailCover"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="400dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/tvMovieOverview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp" />
     
     <TextView
         android:layout_width="match_parent"

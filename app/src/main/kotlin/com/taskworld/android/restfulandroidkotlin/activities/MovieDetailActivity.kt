@@ -1,7 +1,6 @@
 package com.taskworld.android.restfulandroidkotlin.activities
 
 import kotlin.properties.Delegates
-import com.taskworld.android.restfulandroidkotlin.R
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.LinearLayoutManager
 import android.content.Context
@@ -21,6 +20,7 @@ import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
 import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 import com.taskworld.android.restfulandroidkotlin.utils.CircularTransform
 import android.view.LayoutInflater
+import com.taskworld.android.restfulandroidkotlin.R
 
 /**
  * Created by Kittinun Vantasin on 11/11/14.
@@ -33,6 +33,7 @@ class MovieDetailActivity : BaseSpiceActivity() {
     //widgets
     //header
     var ivMovieCover: ImageView by Delegates.notNull()
+    var tvMovieOverview: TextView by Delegates.notNull()
 
     //toolbar
     val tbMovieDetail by Delegates.lazy { bindView<Toolbar>(R.id.tbMovieDetail) }
@@ -120,6 +121,7 @@ class MovieDetailActivity : BaseSpiceActivity() {
     fun onEvent(movie: Movie) {
         tvBarTitle.setText(movie.getTitle())
         Picasso.with(this).load("https://image.tmdb.org/t/p/w500/" + movie.getPosterPath()).into(ivMovieCover)
+        tvMovieOverview.setText(movie.getOverview())
     }
 
     fun onEvent(casts: Cast.CastList) {
@@ -129,6 +131,7 @@ class MovieDetailActivity : BaseSpiceActivity() {
     fun createHeaderView(): View {
         val headerView = getLayoutInflater().inflate(R.layout.list_header_movie_detail, null)
         ivMovieCover = headerView.bindView<ImageView>(R.id.ivMovieDetailCover)
+        tvMovieOverview = headerView.bindView<TextView>(R.id.tvMovieOverview)
         return headerView
     }
 

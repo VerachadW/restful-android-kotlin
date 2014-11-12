@@ -13,6 +13,7 @@ public class Movie extends RealmObject {
 
     private int id;
     private String title;
+    private String overview;
     private float popularity;
 
     @SerializedName("poster_path")
@@ -50,6 +51,14 @@ public class Movie extends RealmObject {
         this.posterPath = posterPath;
     }
 
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
     public static class ResultList {
         private List<Movie> results;
 
@@ -57,6 +66,5 @@ public class Movie extends RealmObject {
             return results;
         }
     }
-
 
 }
