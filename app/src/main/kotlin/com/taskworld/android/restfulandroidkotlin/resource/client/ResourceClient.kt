@@ -1,7 +1,7 @@
-package com.taskworld.android.restfulandroidkotlin.network.resource.client
+package com.taskworld.android.restfulandroidkotlin.resource.client
 
 import com.octo.android.robospice.SpiceManager
-import com.taskworld.android.restfulandroidkotlin.network.resource.router.ResourceRouter
+import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouter
 import io.realm.Realm
 import io.realm.RealmObject
 import de.greenrobot.event.EventBus
@@ -10,6 +10,11 @@ import com.taskworld.android.restfulandroidkotlin.network.response.EventBusReque
 import com.taskworld.android.restfulandroidkotlin.network.request.GetMovieSpiceRequest
 import com.taskworld.android.restfulandroidkotlin.extensions.toStartingLetterUppercase
 import com.octo.android.robospice.request.SpiceRequest
+import com.taskworld.android.restfulandroidkotlin.extensions.create
+import com.taskworld.android.restfulandroidkotlin.extensions.update
+import java.util.HashMap
+import io.realm.RealmResults
+import io.realm.RealmQuery
 
 class ResourceClient(builder: ResourceClient.Builder) {
 
@@ -56,20 +61,69 @@ class ResourceClient(builder: ResourceClient.Builder) {
         }
     }
 
+
+    fun <T : RealmObject> create(clazz: Class<T>, f: (it: T) -> Unit) {
+        mRealm!!.beginTransaction()
+        var entity: T = mRealm!!.createObject(clazz)
+        f(entity)
+        mRealm!!.commitTransaction()
+        EventBus.getDefault().post(entity)
+
+        // TODO: Call Create API
+    }
+
+    fun <T : RealmObject> update(clazz: Class<T>, conditionMap: Map<String, String>, f: (it: RealmResults<T>) -> Unit) {
+        mRealm!!.beginTransaction()
+        var results = query(clazz, conditionMap)
+        f(results)
+        mRealm!!.commitTransaction()
+
+        EventBus.getDefault().post(results)
+        // TODO: Send change set to Controller
+
+        // TODO: Call Update API
+    }
+
+    fun <T: RealmObject> delete(clazz: Class<T>, conditionMap: Map<String, String>?) {
+        mRealm!!.beginTransaction()
+        var results = query(clazz, conditionMap)
+
+        // TODO: keep track delete item here
+
+        results.clear()
+        mRealm!!.commitTransaction()
+
+        // TODO: Send change set to Controller
+
+        // TODO: Call Delete API
+    }
+
+    private fun <T : RealmObject> query(clazz: Class<T>, conditionMap: Map<String, String>?): RealmResults<T>{
+        var query: RealmQuery<T> = mRealm!!.where(clazz)
+        if (conditionMap != null) {
+            for ((key, value) in conditionMap) {
+                // TODO: Need to support other logical operator
+                query.equalTo(key, value)
+            }
+        }
+
+        var results = query.findAll()
+
+        return results
+    }
+
     fun <T: RealmObject> findAll(clazz: Class<T>) {
         findAll(clazz, null)
     }
 
     fun <T: RealmObject> findAll(clazz: Class<T>, args: Map<String, String>?) {
+        //db call
+        val results = query(clazz, args)
+        EventBus.getDefault().post(results)
+
         val httpVerb = "get"
         val action = "list"
         val path = mResourceRouter!!.getPathForAction(action, clazz, args)
-
-        //db call
-        val results = mRealm?.where(clazz)?.findAll()
-        if (results != null) {
-            EventBus.getDefault().post(results)
-        }
 
         //network
         executeWithEventBusListener<T>(httpVerb, action, clazz.getSimpleName(), path!!)

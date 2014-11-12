@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-        <service android:name=".network.service.TheMovieDBSpiceService"
+        <service android:name=".network.service.TheMovieAPISpiceService"
                  android:exported="false" />
 
         <activity

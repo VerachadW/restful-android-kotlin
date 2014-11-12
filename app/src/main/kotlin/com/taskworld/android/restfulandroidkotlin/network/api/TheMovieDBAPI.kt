@@ -14,10 +14,6 @@ import retrofit.http.EncodedPath
 
 trait TheMovieDBAPI {
 
-    deprecated("Use getList(...) instead")
-    GET("/discover/movie")
-    fun discoverMovies(Query("sort_by") sortBy: String): Movie.ResultList
-
     trait MovieAPI {
         //movie
         GET("/{path}")
@@ -29,5 +25,17 @@ trait TheMovieDBAPI {
         POST("/{path}")
         fun post(EncodedPath("path") path: String, Body movie: Movie)
     }
+
+    trait Authentication {
+        GET("/authentication/token/new")
+        fun getRequestToken(): Map<String, String>
+
+        GET("/authentication/token/validate_with_login")
+        fun validateToken(Query("username") username: String, Query("password") password: String, Query("request_token") token: String): Map<String, String>
+
+        GET("/authentication/session/new")
+        fun getNewSession(Query("request_token") token: String): Map<String, String>
+    }
+
 }
 

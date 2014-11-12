@@ -13,13 +13,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 20
-    buildToolsVersion "20.0.0"
+    compileSdkVersion 21
+    buildToolsVersion "21.1.1"
 
     defaultConfig {
         applicationId "com.taskworld.android.restfulandroidkotlin"
         minSdkVersion 16
-        targetSdkVersion 20
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
@@ -45,7 +45,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     //android support lib
-    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.android.support:support-v4:21.0.0'
     //kotlin support
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 

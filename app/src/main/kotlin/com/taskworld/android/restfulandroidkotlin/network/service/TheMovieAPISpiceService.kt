@@ -4,7 +4,7 @@ import com.octo.android.robospice.retrofit.RetrofitGsonSpiceService
 import retrofit.RestAdapter
 import com.taskworld.android.restfulandroidkotlin.network.api.TheMovieDBAPI
 
-class TheMovieDBSpiceService : RetrofitGsonSpiceService() {
+class TheMovieAPISpiceService : RetrofitGsonSpiceService() {
 
     class object {
 
