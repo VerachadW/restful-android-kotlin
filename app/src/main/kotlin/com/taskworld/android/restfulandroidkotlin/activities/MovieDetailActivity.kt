@@ -25,6 +25,9 @@ import com.taskworld.android.restfulandroidkotlin.model.Image
 import android.view.ViewGroup.LayoutParams
 import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
 import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
+import com.taskworld.android.restfulandroidkotlin.utils.CircularTransform
+import android.view.LayoutInflater
+import com.taskworld.android.restfulandroidkotlin.R
 
 /**
  * Created by Kittinun Vantasin on 11/11/14.
@@ -36,8 +39,8 @@ class MovieDetailActivity : BaseSpiceActivity() {
 
     //widgets
     //header
+    var ivMovieCover: ImageView by Delegates.notNull()
     var tvMovieOverview: TextView by Delegates.notNull()
-    var vpMovieCover: ViewPager by Delegates.notNull()
 
     //toolbar
     val tbMovieDetail by Delegates.lazy { bindView<Toolbar>(R.id.tbMovieDetail) }
@@ -105,6 +108,7 @@ class MovieDetailActivity : BaseSpiceActivity() {
 
     fun onEvent(movie: Movie) {
         tvBarTitle.setText(movie.getTitle())
+        Picasso.with(this).load("https://image.tmdb.org/t/p/w500/" + movie.getPosterPath()).into(ivMovieCover)
         tvMovieOverview.setText(movie.getOverview())
     }
 
@@ -119,8 +123,8 @@ class MovieDetailActivity : BaseSpiceActivity() {
     fun createHeaderView(): View {
         val headerView = getLayoutInflater().inflate(R.layout.list_header_movie_detail, null)
         tvMovieOverview = headerView.bindView<TextView>(R.id.tvMovieOverview)
-        vpMovieCover = headerView.bindView<ViewPager>(R.id.vpMovieCover)
-        vpMovieCover.setAdapter(mMovieCoverAdapter)
+        ivMovieCover = headerView.bindView<ImageView>(R.id.ivMovieDetailCover)
+        tvMovieOverview = headerView.bindView<TextView>(R.id.tvMovieOverview)
         return headerView
     }
 
