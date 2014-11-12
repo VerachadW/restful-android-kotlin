@@ -6,15 +6,20 @@ import android.widget.ListView
 import com.taskworld.android.restfulandroidkotlin.extensions.bindView
 import android.widget.ArrayAdapter
 import com.taskworld.android.restfulandroidkotlin.R
-import com.taskworld.android.restfulandroidkotlin.activities.MovieListActivity
-import com.taskworld.android.restfulandroidkotlin.activities.ProductListActivity
-import com.taskworld.android.restfulandroidkotlin.extensions.toast
 import android.view.LayoutInflater
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import android.widget.TextView
 import android.util.Log
 import com.taskworld.android.restfulandroidkotlin.extensions.tag
+import android.widget.ImageButton
+import com.octo.android.robospice.SpiceManager
+import com.taskworld.android.restfulandroidkotlin.network.service.TheMovieAPISpiceService
+import com.taskworld.android.restfulandroidkotlin.Preference
+import com.taskworld.android.restfulandroidkotlin.network.request.ValidateTokenSpiceRequest
+import com.taskworld.android.restfulandroidkotlin.network.response.EventBusRequestListener
+import com.taskworld.android.restfulandroidkotlin.network.request.GetNewSessionSpiceRequest
+import com.taskworld.android.restfulandroidkotlin.network.request.GetTokenSpiceRequest
 
 /**
  * Created by Kittinun Vantasin on 11/5/14.
@@ -24,8 +29,11 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
 
     override val mContentLayoutResourceId: Int = R.layout.fragment_main_navigation_drawer
 
+    val mSpiceManager: SpiceManager = SpiceManager(javaClass<TheMovieAPISpiceService>())
+
     //widgets
     val lvDrawer by Delegates.lazy { getRootView().bindView<ListView>(R.id.lvMainNavigation) }
+    var tvAccountName: TextView by Delegates.notNull()
 
     //data
     var mCurrentSelectedPosition = 0
@@ -40,7 +48,7 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                listOf("Movies", "TVs", "Test")))
+                listOf("Movies", "TVs")))
 
         lvDrawer.setItemChecked(1, true)
         lvDrawer.setOnItemClickListener { parent, view, position, id ->
@@ -48,11 +56,20 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
             when (position) {
                 1 -> ft.replace(R.id.flContainer, MovieFragment.newInstance())
                 2 -> ft.replace(R.id.flContainer, TVFragment.newInstance())
-                3 -> ft.replace(R.id.flContainer, TestFragment.newInstance())
             }
             ft.commit()
             selectItem(position)
         }
+    }
+
+    override fun onStart() {
+        super<BaseDrawerFragment>.onStart()
+        mSpiceManager.start(getActivity())
+    }
+
+    override fun onStop() {
+        super<BaseDrawerFragment>.onStop()
+        mSpiceManager.shouldStop()
     }
 
     fun selectItem(position: Int) {
@@ -72,12 +89,32 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
     fun createHeaderView(): View {
         val llNavigationHeader = LayoutInflater.from(getActivity()).inflate(R.layout.list_header_main_navigation, null, false)
 
-        val ivNavigationCover = llNavigationHeader.bindView<ImageView>(R.id.ivNavigationCover)
-        Picasso.with(getActivity()).load("http://2.bp.blogspot.com/-6oNTuKj2y1I/VDW1uaZUu3I/AAAAAAAALDc/tJM0s5p1-5o/s1600/Untitled-1.jpg").into(ivNavigationCover)
+        val ivAccountCover = llNavigationHeader.bindView<ImageView>(R.id.ivAccountCover)
+        Picasso.with(getActivity()).load("http://2.bp.blogspot.com/-6oNTuKj2y1I/VDW1uaZUu3I/AAAAAAAALDc/tJM0s5p1-5o/s1600/Untitled-1.jpg").into(ivAccountCover)
 
-        val tvNavigationName = llNavigationHeader.bindView<TextView>(R.id.tvNavigationName)
-        tvNavigationName.setText("john.doe@themoviedb.org")
+        tvAccountName = llNavigationHeader.bindView<TextView>(R.id.tvAccountName)
+        tvAccountName.setText("Tap at gear icon to login")
+
+        val ibConfig = llNavigationHeader.bindView<ImageButton>(R.id.ibAccountConfig)
+        ibConfig.setOnClickListener { view ->
+            mSpiceManager.execute(GetTokenSpiceRequest(), EventBusRequestListener.newInstance())
+        }
+
         return llNavigationHeader
+    }
+
+    public fun onEvent(map: Map<String, String>) {
+        val accountName = "twmobile"
+        val accountPassword = "abcd1234"
+
+        if (map.contains("expires_at")) {
+            mSpiceManager.execute(ValidateTokenSpiceRequest(accountName, accountPassword, map.get("request_token")!!), EventBusRequestListener.newInstance())
+        } else if (map.contains("session_id")) {
+            tvAccountName.setText(accountName)
+            Preference.getInstance(getActivity()).setSessionId(map.get("session_id")!!)
+        } else {
+            mSpiceManager.execute(GetNewSessionSpiceRequest(map.get("request_token")!!), EventBusRequestListener.newInstance())
+        }
     }
 }
 
