@@ -11,7 +11,7 @@ import com.taskworld.android.restfulandroidkotlin.network.request.GetTokenSpiceR
 import com.taskworld.android.restfulandroidkotlin.network.response.EventBusRequestListener
 import com.taskworld.android.restfulandroidkotlin.network.request.ValidateTokenSpiceRequest
 import com.taskworld.android.restfulandroidkotlin.network.request.GetNewSessionSpiceRequest
-import com.taskworld.android.restfulandroidkotlin.Preference
+import com.taskworld.android.restfulandroidkotlin.utils.Preference
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.Toolbar
 import com.taskworld.android.restfulandroidkotlin.fragments.BaseDrawerFragment

@@ -15,10 +15,12 @@ import android.widget.TextView
 import com.taskworld.android.restfulandroidkotlin.model.Cast
 import android.os.Bundle
 import com.squareup.picasso.Picasso
-import android.graphics.Color
 import android.support.v7.widget.Toolbar
 import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
 import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
+import com.taskworld.android.restfulandroidkotlin.utils.CircularTransform
+import android.util.Log
+import com.taskworld.android.restfulandroidkotlin.extensions.tag
 
 /**
  * Created by Kittinun Vantasin on 11/11/14.
@@ -29,11 +31,15 @@ class MovieDetailActivity : BaseSpiceActivity() {
     override val mContentLayoutResourceId: Int = R.layout.activity_movie_detail
 
     //widgets
+    //header
+    var ivMovieCover: ImageView by Delegates.notNull()
+
+    //toolbar
     val tbMovieDetail by Delegates.lazy { bindView<Toolbar>(R.id.tbMovieDetail) }
     val tvBarTitle by Delegates.lazy { bindView<TextView>(R.id.tvBarTitle) }
 
+    //list
     val lvMovieDetail by Delegates.lazy { bindView<ListView>(R.id.lvMovieDetail) }
-    var ivMovieCover: ImageView by Delegates.notNull()
 
     //adapter
     val mMovieCastAdapter by Delegates.lazy { MovieCastAdapter() }
@@ -88,22 +94,30 @@ class MovieDetailActivity : BaseSpiceActivity() {
     }
 
     fun createHeaderView(): View {
-        ivMovieCover = getLayoutInflater().inflate(R.layout.list_header_movie_detail, null) as ImageView
-        return ivMovieCover
+        val headerView = getLayoutInflater().inflate(R.layout.list_header_movie_detail, null)
+        ivMovieCover = headerView.bindView<ImageView>(R.id.ivMovieDetailCover)
+        return headerView
     }
 
     inner class MovieCastAdapter : ArrayAdapter<Cast>(this,
-            android.R.layout.simple_list_item_2, android.R.id.text1, mCasts) {
+            R.layout.list_item_movie_cast, R.id.tvMovieCastName, mCasts) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
             val view = super<ArrayAdapter>.getView(position, convertView, parent)
-            val tv1 = view.bindView<TextView>(android.R.id.text1)
-            val tv2 = view.bindView<TextView>(android.R.id.text2)
+            val tvCastName = view.bindView<TextView>(R.id.tvMovieCastName)
+            val tvCastCharacter = view.bindView<TextView>(R.id.tvMovieCastCharacter)
+            val ivCast = view.bindView<ImageView>(R.id.ivMovieCast)
+
             val cast = getItem(position)
-            tv1.setText(cast.getName())
-            tv1.setTextColor(Color.DKGRAY)
-            tv2.setText("as " + cast.getCharacter())
-            tv2.setTextColor(Color.DKGRAY)
+
+            Picasso.with(getContext()).load("https://image.tmdb.org/t/p/w150/" + cast.getProfilePath())
+                    .transform(CircularTransform())
+                    .placeholder(R.drawable.ic_launcher)
+                    .into(ivCast)
+
+            tvCastName.setText(cast.getName())
+            tvCastCharacter.setText("as " + cast.getCharacter())
+
             return view;
         }
     }

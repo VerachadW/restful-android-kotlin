@@ -15,7 +15,6 @@ import com.taskworld.android.restfulandroidkotlin.extensions.tag
 import android.widget.ImageButton
 import com.octo.android.robospice.SpiceManager
 import com.taskworld.android.restfulandroidkotlin.network.service.TheMovieAPISpiceService
-import com.taskworld.android.restfulandroidkotlin.Preference
 import com.taskworld.android.restfulandroidkotlin.network.request.ValidateTokenSpiceRequest
 import com.taskworld.android.restfulandroidkotlin.network.response.EventBusRequestListener
 import com.taskworld.android.restfulandroidkotlin.network.request.GetNewSessionSpiceRequest
@@ -111,7 +110,7 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
             mSpiceManager.execute(ValidateTokenSpiceRequest(accountName, accountPassword, map.get("request_token")!!), EventBusRequestListener.newInstance())
         } else if (map.contains("session_id")) {
             tvAccountName.setText(accountName)
-            Preference.getInstance(getActivity()).setSessionId(map.get("session_id")!!)
+            com.taskworld.android.restfulandroidkotlin.utils.Preference.getInstance(getActivity()).setSessionId(map.get("session_id")!!)
         } else {
             mSpiceManager.execute(GetNewSessionSpiceRequest(map.get("request_token")!!), EventBusRequestListener.newInstance())
         }
