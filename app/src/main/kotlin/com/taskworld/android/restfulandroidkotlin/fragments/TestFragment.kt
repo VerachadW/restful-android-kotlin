@@ -28,8 +28,5 @@ class TestFragment : BaseFragment() {
     }
 
     override fun setUpUI(view: View) {
-        if (mContents == null) {
-
-        }
     }
 }

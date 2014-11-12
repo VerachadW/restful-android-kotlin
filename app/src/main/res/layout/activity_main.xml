@@ -38,15 +38,4 @@
         android:layout_gravity="start"
         android:name="com.taskworld.android.restfulandroidkotlin.fragments.MainNavigationDrawerFragment"/>
 
-<<<<<<< HEAD
-    <fragment
-        android:id="@+id/fgRightNavigationDrawer"
-        android:layout_width="320dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:name="com.taskworld.android.restfulandroidkotlin.fragments.MovieCategoryDrawerFragment"/>
-
 </android.support.v4.widget.DrawerLayout>
-=======
-</android.support.v4.widget.DrawerLayout>
->>>>>>> add movie detail for more complete example

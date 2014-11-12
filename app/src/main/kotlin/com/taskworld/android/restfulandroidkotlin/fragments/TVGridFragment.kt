@@ -11,12 +11,13 @@ import android.view.ViewGroup
 import com.taskworld.android.restfulandroidkotlin.model.TV
 import android.widget.TextView
 import android.widget.ImageView
-import com.taskworld.android.restfulandroidkotlin.network.resource.client.ResourceClient
-import com.taskworld.android.restfulandroidkotlin.network.resource.router.ResourceRouterImpl
 import android.view.LayoutInflater
 import com.squareup.picasso.Picasso
 import android.support.v7.widget.GridLayoutManager
 import java.text.SimpleDateFormat
+import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
+import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
+import io.realm.Realm
 
 /**
  * Created by Kittinun Vantasin on 11/7/14.
@@ -62,6 +63,7 @@ class TVGridFragment : BaseSpiceFragment() {
 
         val client = ResourceClient.Builder()
                 .setRouter(ResourceRouterImpl.newInstance(mCategory))
+                .setRealm(Realm.getInstance(getActivity()))
                 .setEventBus(mBus)
                 .setSpiceManager(getServiceSpiceManager()).build()
 

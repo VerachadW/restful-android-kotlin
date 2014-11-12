@@ -33,7 +33,8 @@
                   android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         
         <activity android:name=".activities.MovieDetailActivity"
-                  android:theme="@style/AppTheme.AppCompat.Translucent" />
+                  android:theme="@style/AppTheme.AppCompat.Translucent"
+                  android:parentActivityName=".activities.MainActivity" />
 
     </application>
 

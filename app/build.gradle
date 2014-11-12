@@ -1,5 +1,3 @@
-import retrofit.http.HEAD
-
 buildscript {
     ext.kotlin_version = '0.9.66'
 

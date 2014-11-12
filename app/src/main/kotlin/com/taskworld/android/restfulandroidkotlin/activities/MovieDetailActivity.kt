@@ -7,18 +7,18 @@ import android.content.Intent
 import android.widget.ListView
 import com.taskworld.android.restfulandroidkotlin.extensions.bindView
 import android.widget.ArrayAdapter
-import com.taskworld.android.restfulandroidkotlin.network.resource.client.ResourceClient
 import com.taskworld.android.restfulandroidkotlin.model.Movie
 import android.view.View
 import android.widget.ImageView
 import android.view.ViewGroup
 import android.widget.TextView
 import com.taskworld.android.restfulandroidkotlin.model.Cast
-import com.taskworld.android.restfulandroidkotlin.network.resource.router.ResourceRouterImpl
 import android.os.Bundle
 import com.squareup.picasso.Picasso
 import android.graphics.Color
 import android.support.v7.widget.Toolbar
+import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
+import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 
 /**
  * Created by Kittinun Vantasin on 11/11/14.

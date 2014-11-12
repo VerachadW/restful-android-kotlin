@@ -11,8 +11,6 @@ import android.widget.ImageView
 import android.view.LayoutInflater
 import com.taskworld.android.restfulandroidkotlin.model.Movie
 import android.support.v7.widget.LinearLayoutManager
-import com.taskworld.android.restfulandroidkotlin.network.resource.client.ResourceClient
-import com.taskworld.android.restfulandroidkotlin.network.resource.router.ResourceRouterImpl
 import android.os.Bundle
 import com.squareup.picasso.Picasso
 import android.graphics.Rect
@@ -25,6 +23,9 @@ import com.taskworld.android.restfulandroidkotlin.events.OnToolbarTitleChangedEv
 import android.util.Log
 import com.taskworld.android.restfulandroidkotlin.extensions.tag
 import com.taskworld.android.restfulandroidkotlin.activities.MovieDetailActivity
+import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
+import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
+import io.realm.Realm
 
 /**
  * Created by Kittinun Vantasin on 11/6/14.
@@ -72,6 +73,7 @@ class MovieGridFragment : BaseSpiceFragment() {
 
         val client = ResourceClient.Builder()
                 .setRouter(ResourceRouterImpl.newInstance(mCategory))
+                .setRealm(Realm.getInstance(getActivity()))
                 .setEventBus(mBus)
                 .setSpiceManager(getServiceSpiceManager()).build()
 

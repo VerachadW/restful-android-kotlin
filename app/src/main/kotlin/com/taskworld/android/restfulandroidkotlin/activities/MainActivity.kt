@@ -48,11 +48,11 @@ class MainActivity : BaseSpiceActivity() {
 
     public fun onEvent(map: Map<String, String>) {
         if (map.contains("expires_at")) {
-            getServiceSpiceManager().execute(ValidateTokenSpiceRequest("twmobile", "abcd1234", map.get("request_token")!!), EventBusRequestListener())
+            getServiceSpiceManager().execute(ValidateTokenSpiceRequest("twmobile", "abcd1234", map.get("request_token")!!), EventBusRequestListener.newInstance())
         } else if (map.contains("session_id")) {
             Preference.getInstance(this).setSessionId(map.get("session_id")!!)
         } else {
-            getServiceSpiceManager().execute(GetNewSessionSpiceRequest(map.get("request_token")!!), EventBusRequestListener())
+            getServiceSpiceManager().execute(GetNewSessionSpiceRequest(map.get("request_token")!!), EventBusRequestListener.newInstance())
         }
     }
 

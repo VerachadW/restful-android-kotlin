@@ -8,12 +8,9 @@ import de.greenrobot.event.EventBus
 import com.taskworld.android.restfulandroidkotlin.network.response.EventBusRequestListener
 import com.taskworld.android.restfulandroidkotlin.extensions.toStartingLetterUppercase
 import com.octo.android.robospice.request.SpiceRequest
-import com.taskworld.android.restfulandroidkotlin.extensions.create
-import com.taskworld.android.restfulandroidkotlin.extensions.update
-import java.util.HashMap
 import io.realm.RealmResults
 import io.realm.RealmQuery
-import com.taskworld.android.restfulandroidkotlin.network.resource.router.ResourceRouterImpl
+import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 
 class ResourceClient(builder: ResourceClient.Builder) {
 
