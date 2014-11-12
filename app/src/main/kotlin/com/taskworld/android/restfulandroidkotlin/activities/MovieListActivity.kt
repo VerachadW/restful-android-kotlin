@@ -17,6 +17,7 @@ import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
 import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 import com.taskworld.android.restfulandroidkotlin.extensions.toast
 import io.realm.Realm
+import com.taskworld.android.restfulandroidkotlin.network.action.GetMovieFeedAction
 
 /**
  * Created by Kittinun Vantasin on 10/28/14.
@@ -56,6 +57,8 @@ class MovieListActivity : BaseSpiceActivity() {
                 .setRouter(ResourceRouterImpl.newInstance("now_playing"))
                 .setSpiceManager(getServiceSpiceManager()).build()
         client.findAll(javaClass<Movie>())
+
+//        mActionManager.execute(GetMovieFeedAction())
     }
 
     fun onEvent(items: Movie.ResultList) {

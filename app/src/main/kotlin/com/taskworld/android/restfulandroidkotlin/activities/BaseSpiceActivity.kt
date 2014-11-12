@@ -2,6 +2,7 @@ package com.taskworld.android.restfulandroidkotlin.activities
 
 import com.octo.android.robospice.SpiceManager
 import com.taskworld.android.restfulandroidkotlin.network.service.TheMovieAPISpiceService
+import com.taskworld.android.restfulandroidkotlin.network.TWActionManager
 
 /**
  * Created by Kittinun Vantasin on 10/24/14.
@@ -10,6 +11,7 @@ import com.taskworld.android.restfulandroidkotlin.network.service.TheMovieAPISpi
 abstract class BaseSpiceActivity : BaseActivity() {
 
     val mSpiceManager: SpiceManager = SpiceManager(javaClass<TheMovieAPISpiceService>())
+    val mActionManager: TWActionManager = TWActionManager(mSpiceManager)
 
     override fun onStart() {
         super<BaseActivity>.onStart()
