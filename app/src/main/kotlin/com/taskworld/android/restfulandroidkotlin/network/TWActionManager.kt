@@ -43,6 +43,10 @@ abstract class BaseAction {
     abstract val actionPathURL: String
 }
 
+abstract class AsynchronousAction() : BaseAction() {
+
+}
+
 open class BaseReaction() : BaseEvent(){
 
 }
