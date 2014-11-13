@@ -9,18 +9,22 @@ import com.taskworld.android.restfulandroidkotlin.extensions.bindView
 import com.taskworld.android.restfulandroidkotlin.model.Movie
 import android.view.View
 import android.widget.ImageView
-import android.view.ViewGroup
 import android.widget.TextView
 import com.taskworld.android.restfulandroidkotlin.model.Cast
 import com.taskworld.android.restfulandroidkotlin.adapter.ParallaxRecyclerAdapter
 import android.os.Bundle
 import com.squareup.picasso.Picasso
 import android.support.v7.widget.Toolbar
+import com.taskworld.android.restfulandroidkotlin.R
+import android.view.ViewGroup
+import android.view.LayoutInflater
+import com.taskworld.android.restfulandroidkotlin.utils.CircularTransform
+import android.support.v4.view.ViewPager
+import android.support.v4.view.PagerAdapter
+import com.taskworld.android.restfulandroidkotlin.model.Image
+import android.view.ViewGroup.LayoutParams
 import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
 import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
-import com.taskworld.android.restfulandroidkotlin.utils.CircularTransform
-import android.view.LayoutInflater
-import com.taskworld.android.restfulandroidkotlin.R
 
 /**
  * Created by Kittinun Vantasin on 11/11/14.
@@ -32,8 +36,8 @@ class MovieDetailActivity : BaseSpiceActivity() {
 
     //widgets
     //header
-    var ivMovieCover: ImageView by Delegates.notNull()
     var tvMovieOverview: TextView by Delegates.notNull()
+    var vpMovieCover: ViewPager by Delegates.notNull()
 
     //toolbar
     val tbMovieDetail by Delegates.lazy { bindView<Toolbar>(R.id.tbMovieDetail) }
@@ -44,13 +48,16 @@ class MovieDetailActivity : BaseSpiceActivity() {
 
     //adapter
     val mMovieCastAdapter by Delegates.lazy { ParallaxRecyclerAdapter(listOf<Cast>()) }
+    val mMovieCoverAdapter by Delegates.lazy { MovieCoverImageAdapter() }
 
     //data
+    var mMovieId = 0
     var mCasts by Delegates.observable(listOf<Cast>(), { meta, oldCasts, newCasts ->
         mMovieCastAdapter.setData(newCasts)
     })
-
-    var mMovieId = 0
+    var mCoverImages by Delegates.observable(listOf<Image>(), { meta, oldCoverImages, newCoverImages ->
+        mMovieCoverAdapter.data = newCoverImages
+    })
 
     class object {
         val ARG_MOVIE_ID = "movie_id"
@@ -69,34 +76,7 @@ class MovieDetailActivity : BaseSpiceActivity() {
     override fun setUp() {
         setSupportActionBar(tbMovieDetail)
 
-        mMovieCastAdapter.implementRecyclerAdapterMethods(object : ParallaxRecyclerAdapter.RecyclerAdapterMethods {
-
-            var mContext: Context by Delegates.notNull()
-
-            override fun onCreateViewHolder(container: ViewGroup?, viewType: Int): RecyclerView.ViewHolder? {
-                mContext = container!!.getContext()
-                val view = LayoutInflater.from(mContext).inflate(R.layout.recycle_view_item_movie_cast, container, false)
-                return MovieCastViewHolder(view)
-            }
-
-            override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-                val cast = mCasts[position]
-
-                val holder = viewHolder as MovieCastViewHolder
-
-                Picasso.with(mContext).load("https://image.tmdb.org/t/p/w150/" + cast.getProfilePath())
-                        .transform(CircularTransform())
-                        .placeholder(R.drawable.ic_launcher)
-                        .into(holder.ivCast)
-
-                holder.tvCastName.setText(cast.getName())
-                holder.tvCastCharacter.setText("as " + cast.getCharacter())
-            }
-
-            override fun getItemCount(): Int {
-                return mCasts.size
-            }
-        })
+        mMovieCastAdapter.implementRecyclerAdapterMethods(MoveCastParallaxRecyclerAdapter())
         mMovieCastAdapter.setParallaxHeader(createHeaderView(), rvMovieCast)
         mMovieCastAdapter.setOnParallaxScroll { percentage, offset, parallaxView ->
             val d = tbMovieDetail.getBackground()
@@ -116,11 +96,15 @@ class MovieDetailActivity : BaseSpiceActivity() {
                 .setRouter(ResourceRouterImpl.newInstance())
                 .setSpiceManager(getServiceSpiceManager()).build()
         client.find(javaClass<Movie>(), mMovieId.toString())
+
+        client = ResourceClient.Builder()
+                .setRouter(ResourceRouterImpl.newInstance(null, "images"))
+                .setSpiceManager(getServiceSpiceManager()).build()
+        client.find(javaClass<Movie>(), mMovieId.toString())
     }
 
     fun onEvent(movie: Movie) {
         tvBarTitle.setText(movie.getTitle())
-        Picasso.with(this).load("https://image.tmdb.org/t/p/w500/" + movie.getPosterPath()).into(ivMovieCover)
         tvMovieOverview.setText(movie.getOverview())
     }
 
@@ -128,10 +112,15 @@ class MovieDetailActivity : BaseSpiceActivity() {
         mCasts = casts.getCasts()
     }
 
+    fun onEvent(images: Image.PosterList) {
+        mCoverImages = images.getResults()
+    }
+
     fun createHeaderView(): View {
         val headerView = getLayoutInflater().inflate(R.layout.list_header_movie_detail, null)
-        ivMovieCover = headerView.bindView<ImageView>(R.id.ivMovieDetailCover)
         tvMovieOverview = headerView.bindView<TextView>(R.id.tvMovieOverview)
+        vpMovieCover = headerView.bindView<ViewPager>(R.id.vpMovieCover)
+        vpMovieCover.setAdapter(mMovieCoverAdapter)
         return headerView
     }
 
@@ -139,9 +128,71 @@ class MovieDetailActivity : BaseSpiceActivity() {
         return LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
+    inner class MovieCoverImageAdapter : PagerAdapter() {
+
+        var data: List<Image>
+            set (value) {
+                $data = value
+                notifyDataSetChanged()
+            }
+
+        {
+            $data = listOf<Image>()
+        }
+
+        override fun getCount(): Int {
+            return data.size
+        }
+
+        override fun instantiateItem(container: ViewGroup, position: Int): Any? {
+            val ivCover = ImageView(container.getContext())
+            ivCover.setAdjustViewBounds(true)
+            ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP)
+            Picasso.with(container.getContext()).load("https://image.tmdb.org/t/p/w500/" + mCoverImages[position].getFilePath()).into(ivCover)
+            container.addView(ivCover, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            return ivCover
+        }
+
+        override fun destroyItem(container: ViewGroup, position: Int, `object`: Any?) {
+            container.removeView(`object` as View)
+        }
+
+        override fun isViewFromObject(view: View?, `object`: Any?): Boolean {
+            return view == `object`
+        }
+    }
+
     inner class MovieCastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvCastName = itemView.bindView<TextView>(R.id.tvMovieCastName)
         val tvCastCharacter = itemView.bindView<TextView>(R.id.tvMovieCastCharacter)
         val ivCast = itemView.bindView<ImageView>(R.id.ivMovieCast)
+    }
+
+    inner class MoveCastParallaxRecyclerAdapter : ParallaxRecyclerAdapter.RecyclerAdapterMethods {
+
+        var mContext: Context by Delegates.notNull()
+
+        override fun onCreateViewHolder(container: ViewGroup?, i: Int): RecyclerView.ViewHolder? {
+            mContext = container!!.getContext()
+            val view = LayoutInflater.from(mContext).inflate(R.layout.recycle_view_item_movie_cast, container, false)
+            return MovieCastViewHolder(view)
+        }
+
+        override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder?, position: Int) {
+
+            val cast = mCasts[position]
+            val holder = viewHolder as MovieCastViewHolder
+            Picasso.with(mContext).load("https://image.tmdb.org/t/p/w150/" + cast.getProfilePath())
+                    .transform(CircularTransform())
+                    //.placeholder(R.drawable.ic_launcher)
+                    .into(holder.ivCast)
+            holder.tvCastName.setText(cast.getName())
+            holder.tvCastCharacter.setText("as " + cast.getCharacter())
+        }
+
+        override fun getItemCount(): Int {
+            return mCasts.size
+        }
+
     }
 }

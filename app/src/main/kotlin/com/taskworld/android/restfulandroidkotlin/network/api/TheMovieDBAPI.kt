@@ -8,6 +8,7 @@ import retrofit.http.Body
 import retrofit.http.EncodedPath
 import com.taskworld.android.restfulandroidkotlin.model.TV
 import com.taskworld.android.restfulandroidkotlin.model.Cast
+import com.taskworld.android.restfulandroidkotlin.model.Image
 
 /**
  * Created by Kittinun Vantasin on 10/24/14.
@@ -27,6 +28,9 @@ trait TheMovieDBAPI {
 
         GET("/{path}/credits")
         fun getCastList(EncodedPath("path") path: String): Cast.CastList
+
+        GET("/{path}/images")
+        fun getPosterImageList(EncodedPath("path") path: String): Image.PosterList
 
         POST("/{path}")
         fun post(EncodedPath("path") path: String, Body movie: Movie)
