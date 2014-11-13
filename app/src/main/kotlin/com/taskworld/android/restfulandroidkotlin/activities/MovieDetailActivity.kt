@@ -80,7 +80,7 @@ class MovieDetailActivity : BaseSpiceActivity() {
         mMovieCastAdapter.setParallaxHeader(createHeaderView(), rvMovieCast)
         mMovieCastAdapter.setOnParallaxScroll { percentage, offset, parallaxView ->
             val d = tbMovieDetail.getBackground()
-            d.setAlpha(Math.round(percentage * 255))
+            d.setAlpha(Math.round((percentage) * 255))
             tbMovieDetail.setBackground(d)
         }
 
@@ -130,27 +130,28 @@ class MovieDetailActivity : BaseSpiceActivity() {
 
     inner class MovieCoverImageAdapter : PagerAdapter() {
 
-        var data: List<Image>
+        var data = listOf<Image>()
             set (value) {
                 $data = value
                 notifyDataSetChanged()
             }
-
-        {
-            $data = listOf<Image>()
-        }
 
         override fun getCount(): Int {
             return data.size
         }
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any? {
-            val ivCover = ImageView(container.getContext())
-            ivCover.setAdjustViewBounds(true)
-            ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP)
-            Picasso.with(container.getContext()).load("https://image.tmdb.org/t/p/w500/" + mCoverImages[position].getFilePath()).into(ivCover)
-            container.addView(ivCover, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-            return ivCover
+            val viewPagerItem = LayoutInflater.from(container.getContext()).inflate(R.layout.view_pager_item_movie_cover, container, false)
+            val ivMovieCover = viewPagerItem.bindView<ImageView>(R.id.ivMovieCover)
+            val tvMovieCoverVoteCount = viewPagerItem.bindView<TextView>(R.id.tvMovieCoverVoteCount)
+
+            //bind views
+            val image = mCoverImages[position]
+            Picasso.with(container.getContext()).load("https://image.tmdb.org/t/p/w500/" + image.getFilePath()).into(ivMovieCover)
+            tvMovieCoverVoteCount.setText(image.getVoteCount().toString())
+
+            container.addView(viewPagerItem, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            return viewPagerItem
         }
 
         override fun destroyItem(container: ViewGroup, position: Int, `object`: Any?) {

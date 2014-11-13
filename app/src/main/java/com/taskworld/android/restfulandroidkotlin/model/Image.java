@@ -28,4 +28,8 @@ public class Image {
     public String getFilePath() {
         return filePath;
     }
+
+    public int getVoteCount() {
+        return voteCount;
+    }
 }
