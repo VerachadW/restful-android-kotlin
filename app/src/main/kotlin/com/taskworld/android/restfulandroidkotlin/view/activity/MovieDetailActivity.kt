@@ -38,8 +38,8 @@ class MovieDetailActivity : BaseSpiceActivity() {
 
     //widgets
     //header
-    var ivMovieCover: ImageView by Delegates.notNull()
     var tvMovieOverview: TextView by Delegates.notNull()
+    var vpMovieCover: ViewPager by Delegates.notNull()
 
     //toolbar
     val tbMovieDetail by Delegates.lazy { bindView<Toolbar>(R.id.tbMovieDetail) }
@@ -107,7 +107,6 @@ class MovieDetailActivity : BaseSpiceActivity() {
 
     fun onEvent(movie: Movie) {
         tvBarTitle.setText(movie.getTitle())
-        Picasso.with(this).load("https://image.tmdb.org/t/p/w500/" + movie.getPosterPath()).into(ivMovieCover)
         tvMovieOverview.setText(movie.getOverview())
     }
 
@@ -122,8 +121,8 @@ class MovieDetailActivity : BaseSpiceActivity() {
     fun createHeaderView(): View {
         val headerView = getLayoutInflater().inflate(R.layout.list_header_movie_detail, null)
         tvMovieOverview = headerView.bindView<TextView>(R.id.tvMovieOverview)
-        ivMovieCover = headerView.bindView<ImageView>(R.id.ivMovieDetailCover)
-        tvMovieOverview = headerView.bindView<TextView>(R.id.tvMovieOverview)
+        vpMovieCover = headerView.bindView<ViewPager>(R.id.vpMovieCover)
+        vpMovieCover.setAdapter(mMovieCoverAdapter)
         return headerView
     }
 
@@ -133,28 +132,27 @@ class MovieDetailActivity : BaseSpiceActivity() {
 
     inner class MovieCoverImageAdapter : PagerAdapter() {
 
-        var data = listOf<Image>()
+        var data: List<Image>
             set (value) {
                 $data = value
                 notifyDataSetChanged()
             }
+
+        {
+            $data = listOf<Image>()
+        }
 
         override fun getCount(): Int {
             return data.size
         }
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any? {
-            val viewPagerItem = LayoutInflater.from(container.getContext()).inflate(R.layout.view_pager_item_movie_cover, container, false)
-            val ivMovieCover = viewPagerItem.bindView<ImageView>(R.id.ivMovieCover)
-            val tvMovieCoverVoteCount = viewPagerItem.bindView<TextView>(R.id.tvMovieCoverVoteCount)
-
-            //bind views
-            val image = mCoverImages[position]
-            Picasso.with(container.getContext()).load("https://image.tmdb.org/t/p/w500/" + image.getFilePath()).into(ivMovieCover)
-            tvMovieCoverVoteCount.setText(image.getVoteCount().toString())
-
-            container.addView(viewPagerItem, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-            return viewPagerItem
+            val ivCover = ImageView(container.getContext())
+            ivCover.setAdjustViewBounds(true)
+            ivCover.setScaleType(ImageView.ScaleType.CENTER_CROP)
+            Picasso.with(container.getContext()).load("https://image.tmdb.org/t/p/w500/" + mCoverImages[position].getFilePath()).into(ivCover)
+            container.addView(ivCover, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            return ivCover
         }
 
         override fun destroyItem(container: ViewGroup, position: Int, `object`: Any?) {
