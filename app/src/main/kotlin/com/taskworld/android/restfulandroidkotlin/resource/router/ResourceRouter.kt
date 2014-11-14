@@ -9,6 +9,9 @@ import com.taskworld.android.restfulandroidkotlin.extensions.plus
 
 trait ResourceRouter {
 
+    val extraPathForList: String?
+    val extraPathForSingle: String?
+
     fun <T : RealmObject> getPathForAction(action: String, clazz: Class<T>): String? {
         return getPathForAction(action, clazz, null)
     }
@@ -26,19 +29,16 @@ trait ResourceRouter {
     fun <T : RealmObject> getPathForSingleOnResource(clazz: Class<T>, args: Map<String, Any>?): String
 }
 
-class ResourceRouterImpl private (val extraPath: String?) : ResourceRouter {
+class ResourceRouterImpl private (override val extraPathForList: String?, override val extraPathForSingle: String?) : ResourceRouter {
 
     class object {
-        fun newInstance() = ResourceRouterImpl(null)
-        fun newInstance(extraPath: String) = ResourceRouterImpl(extraPath)
+        fun newInstance() = ResourceRouterImpl(null, null)
+        fun newInstance(extraPath: String?) = ResourceRouterImpl(extraPath, null)
+        fun newInstance(extraPathForList: String?, extraPathForSingle: String?) = ResourceRouterImpl(extraPathForList, extraPathForSingle)
     }
 
     override fun <T : RealmObject> getPathForListOnResource(clazz: Class<T>, args: Map<String, Any>?): String {
-        val builder = StringBuilder(clazz.getSimpleName().toLowerCase())
-        if (extraPath != null) {
-            builder + "/" + extraPath
-        }
-        return builder.toString()
+        return clazz.getSimpleName().toLowerCase()
     }
 
     override fun <T : RealmObject> getPathForSingleOnResource(clazz: Class<T>, args: Map<String, Any>?): String {

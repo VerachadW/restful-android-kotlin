@@ -5,40 +5,38 @@ import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouter
 import io.realm.Realm
 import io.realm.RealmObject
 import de.greenrobot.event.EventBus
-import com.taskworld.android.restfulandroidkotlin.network.request.GetListMovieSpiceRequest
 import com.taskworld.android.restfulandroidkotlin.network.response.EventBusRequestListener
-import com.taskworld.android.restfulandroidkotlin.network.request.GetMovieSpiceRequest
 import com.taskworld.android.restfulandroidkotlin.extensions.toStartingLetterUppercase
 import com.octo.android.robospice.request.SpiceRequest
-import com.taskworld.android.restfulandroidkotlin.extensions.create
-import com.taskworld.android.restfulandroidkotlin.extensions.update
-import java.util.HashMap
 import io.realm.RealmResults
 import io.realm.RealmQuery
+import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 
 class ResourceClient(builder: ResourceClient.Builder) {
 
-    private var mSpiceManager: SpiceManager? = null
-    private var mResourceRouter: ResourceRouter? = null
-    private var mRealm: Realm? = null
+    private var mSpiceManager: SpiceManager?
+    private var mResourceRouter: ResourceRouter
+    private var mRealm: Realm?
+    private var mBus: EventBus
 
     //initialize
     {
         mSpiceManager = builder.manager
-        mResourceRouter = builder.router
+        mResourceRouter = builder.router ?: ResourceRouterImpl.newInstance()
         mRealm = builder.realm
+        mBus = builder.bus ?: EventBus.getDefault()
     }
 
     class object {
-
         private val REQUEST_PACKAGE = "com.taskworld.android.restfulandroidkotlin.network.request"
-        private val REQUEST_CLASS_PREFIX = "SpiceRequest"
+        private val REQUEST_CLASS_SUFFIX = "SpiceRequest"
 
         inner class Builder {
 
             var manager: SpiceManager? = null
             var router: ResourceRouter? = null
             var realm: Realm? = null
+            var bus: EventBus? = null
 
             fun setSpiceManager(manager: SpiceManager): Builder {
                 this.manager = manager
@@ -55,12 +53,16 @@ class ResourceClient(builder: ResourceClient.Builder) {
                 return this
             }
 
+            fun setEventBus(bus: EventBus): Builder {
+                this.bus = bus
+                return this
+            }
+
             fun build(): ResourceClient {
                 return ResourceClient(this)
             }
         }
     }
-
 
     fun <T : RealmObject> create(clazz: Class<T>, f: (it: T) -> Unit) {
         mRealm!!.beginTransaction()
@@ -123,18 +125,17 @@ class ResourceClient(builder: ResourceClient.Builder) {
 
         val httpVerb = "get"
         val action = "list"
-        val path = mResourceRouter!!.getPathForAction(action, clazz, args)
+        val path = mResourceRouter.getPathForAction(action, clazz, args)
 
         //network
         executeWithEventBusListener<T>(httpVerb, action, clazz.getSimpleName(), path!!)
     }
 
-
-    fun <T: RealmObject> find(clazz: Class<T>, id: String) {
+    fun <T : RealmObject> find(clazz: Class<T>, id: String) {
         find(clazz, id, null)
     }
 
-    fun <T: RealmObject> find(clazz: Class<T>, id: String, args: Map<String, String>?) {
+    fun <T : RealmObject> find(clazz: Class<T>, id: String, args: Map<String, String>?) {
         val httpVerb = "get"
         val action = ""
 
@@ -143,7 +144,7 @@ class ResourceClient(builder: ResourceClient.Builder) {
             newArgs.putAll(args)
         }
 
-        val path = mResourceRouter!!.getPathForAction(action, clazz, newArgs)
+        val path = mResourceRouter.getPathForAction(action, clazz, newArgs)
 
         //db call
         val result = mRealm?.where(clazz)?.equalTo("id", id)?.findFirst()
@@ -156,14 +157,21 @@ class ResourceClient(builder: ResourceClient.Builder) {
     }
 
     fun <T> executeWithEventBusListener(httpVerb: String, action: String, resourceName: String, requestPath: String) {
+        var extraPath = ""
+        when (action) {
+            "" -> extraPath = mResourceRouter.extraPathForSingle ?: ""
+            "list" -> extraPath = mResourceRouter.extraPathForList ?: ""
+        }
+
         val className = listOf(httpVerb.toStartingLetterUppercase(),
                 action.toStartingLetterUppercase(),
                 resourceName.toStartingLetterUppercase(),
-                REQUEST_CLASS_PREFIX).join("")
+                extraPath.replace("_", "").toStartingLetterUppercase(),
+                REQUEST_CLASS_SUFFIX).join("")
         val constructorOfClassName = Class.forName(REQUEST_PACKAGE + "." + className).getConstructor(javaClass<String>())
 
         [suppress("unchecked_cast")]
         val requestInstance = constructorOfClassName.newInstance(requestPath) as SpiceRequest<T>
-        mSpiceManager?.execute(requestInstance, EventBusRequestListener())
+        mSpiceManager?.execute(requestInstance, EventBusRequestListener.newInstance(mBus))
     }
 }

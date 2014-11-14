@@ -1,31 +1,38 @@
 package com.taskworld.android.restfulandroidkotlin.activities
 
-import android.support.v4.app.FragmentActivity
 import android.os.Bundle
 import android.content.Context
 import android.content.Intent
 import de.greenrobot.event.EventBus
 import com.taskworld.android.restfulandroidkotlin.events.BaseEvent
+import android.support.v7.app.ActionBarActivity
+import android.util.Log
+import com.taskworld.android.restfulandroidkotlin.extensions.tag
+import android.view.View
 
 /**
  * Created by Kittinun Vantasin on 10/17/14.
  */
 
-abstract class BaseActivity : FragmentActivity() {
+abstract class BaseActivity : ActionBarActivity() {
 
     abstract val mContentLayoutResourceId: Int
 
     //static instantiate
     class object {
-        public fun newInstance(context: Context): Intent {
+        public fun newIntent(context: Context): Intent {
             return Intent(context, javaClass<BaseActivity>())
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super<FragmentActivity>.onCreate(savedInstanceState)
+        super<ActionBarActivity>.onCreate(savedInstanceState)
 
-        setContentView(mContentLayoutResourceId)
+        if (mContentLayoutResourceId != 0) {
+            setContentView(mContentLayoutResourceId)
+        } else {
+            setContentView(createContentView())
+        }
 
         if (savedInstanceState != null) {
             handleSavedInstanceState(savedInstanceState)
@@ -37,16 +44,28 @@ abstract class BaseActivity : FragmentActivity() {
         }
 
         setUp()
+        Log.v(tag(), tag() + "::onCreate()")
+    }
+
+    open fun createContentView(): View {
+        throw UnsupportedOperationException("If mContentLayoutResourceId == 0, createContentView() must be implemented by subclass")
     }
 
     override fun onResume() {
-        super<FragmentActivity>.onResume()
+        super<ActionBarActivity>.onResume()
         EventBus.getDefault().register(this)
+        Log.v(tag(), tag() + "::onResume()")
     }
 
     override fun onPause() {
-        super<FragmentActivity>.onPause()
+        super<ActionBarActivity>.onPause()
         EventBus.getDefault().unregister(this)
+        Log.v(tag(), tag() + "::onPause()")
+    }
+
+    override fun onDestroy() {
+        Log.v(tag(), tag() + "::onDestory()")
+        super<ActionBarActivity>.onDestroy()
     }
 
     open fun handleSavedInstanceState(savedInstanceState: Bundle) {

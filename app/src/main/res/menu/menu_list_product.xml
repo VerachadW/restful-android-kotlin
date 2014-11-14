@@ -4,9 +4,9 @@
 
     <item android:id="@+id/miAddProduct"
           android:title="Add"
-          android:showAsAction="ifRoom" />
+          android:showAsAction="always" />
 
     <item android:id="@+id/miDeleteAll"
-          android:title="Delete ALL"
-          android:showAsAction="ifRoom" />
+          android:title="Delete All"
+          android:showAsAction="always" />
 </menu>

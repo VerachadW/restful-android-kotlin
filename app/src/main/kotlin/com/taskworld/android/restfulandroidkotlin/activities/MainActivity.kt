@@ -11,46 +11,50 @@ import com.taskworld.android.restfulandroidkotlin.network.request.GetTokenSpiceR
 import com.taskworld.android.restfulandroidkotlin.network.response.EventBusRequestListener
 import com.taskworld.android.restfulandroidkotlin.network.request.ValidateTokenSpiceRequest
 import com.taskworld.android.restfulandroidkotlin.network.request.GetNewSessionSpiceRequest
-import com.taskworld.android.restfulandroidkotlin.Preference
+import com.taskworld.android.restfulandroidkotlin.utils.Preference
+import android.support.v4.widget.DrawerLayout
+import android.support.v7.widget.Toolbar
+import com.taskworld.android.restfulandroidkotlin.fragments.BaseDrawerFragment
+import com.taskworld.android.restfulandroidkotlin.events.OnDrawerToggledEvent
+import com.taskworld.android.restfulandroidkotlin.fragments.BaseDrawerFragment.Direction
+import android.widget.TextView
+import com.taskworld.android.restfulandroidkotlin.events.OnToolbarTitleChangedEvent
+import com.taskworld.android.restfulandroidkotlin.fragments.MovieFragment
 
 class MainActivity : BaseSpiceActivity() {
 
     override val mContentLayoutResourceId = R.layout.activity_main
 
     //widgets
-    val btCheckProduct by Delegates.lazy { bindView<Button>(R.id.btCheck) }
-    val btCheckMovie by Delegates.lazy { bindView<Button>(R.id.btCheckMovie) }
-    val btLogin by Delegates.lazy { bindView<Button>(R.id.btLogin) }
+    val tvBarTitle by Delegates.lazy { bindView<TextView>(R.id.tvBarTitle) }
+
+    val fgLeftNavigationDrawer by Delegates.lazy {
+        getSupportFragmentManager().findFragmentById(R.id.fgLeftNavigationDrawer) as BaseDrawerFragment
+    }
+
+    val dlMain by Delegates.lazy { bindView<DrawerLayout>(R.id.dlMain) }
+    val tbMain by Delegates.lazy { bindView<Toolbar>(R.id.tbMain) }
 
     override fun setUp() {
-        btCheckProduct.setOnClickListener { view ->
-            startActivity(ProductListActivity.newInstance(this))
-        }
+        setSupportActionBar(tbMain)
+        fgLeftNavigationDrawer.setUpAsLeftDrawer(dlMain, tbMain)
 
-        btCheckMovie.setOnClickListener { view ->
-            startActivity(MovieListActivity.newInstance(this))
-        }
-
-        btLogin.setOnClickListener { view ->
-            getServiceSpiceManager().execute(GetTokenSpiceRequest(), EventBusRequestListener())
-        }
-
+        val popularCategory = "popular"
+        tvBarTitle.setText(popularCategory.toUpperCase())
+        val ft = getSupportFragmentManager().beginTransaction()
+        ft.replace(R.id.flContainer, MovieFragment.newInstance())
+        ft.commit()
     }
 
-    public fun onEvent(map: Map<String, String>) {
 
-        if (map.contains("expires_at")) {
-            getServiceSpiceManager().execute(ValidateTokenSpiceRequest("twmobile", "abcd1234", map.get("request_token")!!), EventBusRequestListener())
-        } else if (map.contains("session_id")) {
-            btCheckMovie.setEnabled(true)
-            Preference.getInstance(this).setSessionId(map.get("session_id")!!)
-        } else {
-            getServiceSpiceManager().execute(GetNewSessionSpiceRequest(map.get("request_token")!!), EventBusRequestListener())
+
+    fun onEvent(event: OnDrawerToggledEvent) {
+        when (event.direction) {
+            Direction.LEFT -> fgLeftNavigationDrawer.toggleDrawer()
         }
     }
 
-    public fun onEvent(results: Movie.ResultList) {
-        Log.i(tag(), results.getResults().size.toString())
+    fun onEvent(event: OnToolbarTitleChangedEvent) {
+        tvBarTitle.setText(event.title)
     }
-
 }

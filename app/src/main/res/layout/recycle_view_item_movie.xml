@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tool="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/ivMovieCover"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/tvMovieTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        tool:text="The Raid 2" />
+
+    <TextView
+        android:id="@+id/tvMoviePopularScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvMovieTitle"
+        android:layout_marginTop="20dp"
+        android:padding="15dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tool:text="45.2834734" />
+
+</RelativeLayout>

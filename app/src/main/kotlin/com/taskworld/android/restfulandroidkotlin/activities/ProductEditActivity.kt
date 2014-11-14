@@ -35,11 +35,11 @@ class ProductEditActivity : BaseActivity() {
     class object {
         val ARG_PRODUCT_NAME = "product_name"
 
-        public fun newInstance(context: Context): Intent {
+        public fun newIntent(context: Context): Intent {
             return Intent(context, javaClass<ProductEditActivity>())
         }
 
-        public fun newInstance(context: Context, productName: String): Intent {
+        public fun newIntent(context: Context, productName: String): Intent {
             var intent = Intent(context, javaClass<ProductEditActivity>())
             intent.putExtra(ARG_PRODUCT_NAME, productName)
             return intent

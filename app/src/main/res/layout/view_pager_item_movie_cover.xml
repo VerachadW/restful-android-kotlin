@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tool="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ivMovieCover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop" />
+    
+    <TextView
+        android:id="@+id/tvMovieCoverVoteCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:drawablePadding="6dp"
+        android:padding="10dp"
+        android:drawableLeft="@drawable/ic_favorite_white_24dp"
+        tool:text="17"
+        tool:drawableLeft="@drawable/ic_favorite_white_24dp" />
+
+</RelativeLayout>
