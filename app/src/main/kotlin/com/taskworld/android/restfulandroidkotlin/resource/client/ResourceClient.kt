@@ -163,15 +163,17 @@ class ResourceClient(builder: ResourceClient.Builder) {
             "list" -> extraPath = mResourceRouter.extraPathForList ?: ""
         }
 
-        val className = listOf(httpVerb.toStartingLetterUppercase(),
-                action.toStartingLetterUppercase(),
-                resourceName.toStartingLetterUppercase(),
-                extraPath.replace("_", "").toStartingLetterUppercase(),
-                REQUEST_CLASS_SUFFIX).join("")
-        val constructorOfClassName = Class.forName(REQUEST_PACKAGE + "." + className).getConstructor(javaClass<String>())
+        if (mSpiceManager != null) {
+            val className = listOf(httpVerb.toStartingLetterUppercase(),
+                    action.toStartingLetterUppercase(),
+                    resourceName.toStartingLetterUppercase(),
+                    extraPath.replace("_", "").toStartingLetterUppercase(),
+                    REQUEST_CLASS_SUFFIX).join("")
+            val constructorOfClassName = Class.forName(REQUEST_PACKAGE + "." + className).getConstructor(javaClass<String>())
 
-        [suppress("unchecked_cast")]
-        val requestInstance = constructorOfClassName.newInstance(requestPath) as SpiceRequest<T>
-        mSpiceManager?.execute(requestInstance, EventBusRequestListener.newInstance(mBus))
+            [suppress("unchecked_cast")]
+            val requestInstance = constructorOfClassName.newInstance(requestPath) as SpiceRequest<T>
+            mSpiceManager?.execute(requestInstance, EventBusRequestListener.newInstance(mBus))
+        }
     }
 }

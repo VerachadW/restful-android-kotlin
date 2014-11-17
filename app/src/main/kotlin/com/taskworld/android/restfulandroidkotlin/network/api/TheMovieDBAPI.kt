@@ -9,6 +9,8 @@ import retrofit.http.EncodedPath
 import com.taskworld.android.restfulandroidkotlin.model.TV
 import com.taskworld.android.restfulandroidkotlin.model.Cast
 import com.taskworld.android.restfulandroidkotlin.model.Image
+import com.taskworld.android.restfulandroidkotlin.model.PlayList
+import retrofit.http.DELETE
 
 /**
  * Created by Kittinun Vantasin on 10/24/14.
@@ -45,6 +47,23 @@ trait TheMovieDBAPI {
 
         GET("/authentication/session/new")
         fun getNewSession(Query("request_token") token: String): Map<String, String>
+    }
+
+    trait ListAPI {
+        GET("/{path}")
+        fun getPlayList(EncodedPath("path") path: String): PlayList
+
+        DELETE("/{path}")
+        fun delete(EncodedPath("path") path: String): Map<String, String>
+
+        POST("/{path}")
+        fun createPlayList(EncodedPath("path") path: String): Map<String, String>
+
+        POST("/{path}/add_item")
+        fun addMovie(EncodedPath("path") path: String): Map<String, String>
+
+        POST("/{path}/remove_item")
+        fun removeMovie(EncodedPath("path") path: String): Map<String, String>
     }
 
     trait TVAPI {
