@@ -7,6 +7,7 @@ import com.taskworld.android.restfulandroidkotlin.activities.interactor.SignInIn
 import de.greenrobot.event.EventBus
 import com.octo.android.robospice.persistence.exception.SpiceException
 import kotlin.properties.Delegates
+import retrofit.RetrofitError
 
 /**
  * Created by Kittinun Vantasin on 11/14/14.
@@ -54,9 +55,15 @@ class SignInPresenterImpl(val mAction: SignInUIAction, val mSpiceManager: SpiceM
         }
     }
 
-    fun onEvent(spiceExecption: SpiceException?) {
+    fun onEvent(spiceException: SpiceException?) {
         mAction.hideProgress()
-        mAction.setUnauthorizedError()
+
+        val error = spiceException?.getCause() as RetrofitError
+        if (error.getResponse().getStatus() == 401) {
+            mAction.setUnauthorizedError()
+        } else if (error.isNetworkError()) {
+            mAction.setNetworkError()
+        }
     }
 
 }

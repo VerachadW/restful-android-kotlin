@@ -8,5 +8,6 @@ trait SignInUIAction {
     fun showProgress()
     fun hideProgress()
     fun setUnauthorizedError()
+    fun setNetworkError()
     fun navigateToMain(sessionId: String)
 }

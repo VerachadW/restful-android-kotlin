@@ -70,6 +70,15 @@ class SignInActivity : BaseSpiceActivity(), SignInUIAction {
         tvMessage.setText("Invalid username and/or password")
     }
 
+    override fun setNetworkError() {
+        btSignIn.setVisibility(View.VISIBLE)
+        pgProgress.setVisibility(View.INVISIBLE)
+
+        tvMessage.setVisibility(View.VISIBLE)
+        tvMessage.setTextColor(Color.RED)
+        tvMessage.setText("Network error, please try again")
+    }
+
     override fun navigateToMain(sessionId: String) {
         Preference.with(this).sessionId = sessionId
         Preference.with(this).username = etUsername.getText().toString()
