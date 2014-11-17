@@ -8,4 +8,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="sign_in_into_movie_db">Sign into The Movie DB</string>
+    <string name="sign_in">Sign in</string>
+
 </resources>

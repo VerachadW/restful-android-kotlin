@@ -15,10 +15,8 @@ import com.taskworld.android.restfulandroidkotlin.extensions.tag
 import android.widget.ImageButton
 import com.octo.android.robospice.SpiceManager
 import com.taskworld.android.restfulandroidkotlin.network.service.TheMovieAPISpiceService
-import com.taskworld.android.restfulandroidkotlin.network.request.ValidateTokenSpiceRequest
-import com.taskworld.android.restfulandroidkotlin.network.response.EventBusRequestListener
-import com.taskworld.android.restfulandroidkotlin.network.request.GetNewSessionSpiceRequest
-import com.taskworld.android.restfulandroidkotlin.network.request.GetTokenSpiceRequest
+import com.taskworld.android.restfulandroidkotlin.extensions.toast
+import com.taskworld.android.restfulandroidkotlin.utils.Preference
 
 /**
  * Created by Kittinun Vantasin on 11/5/14.
@@ -92,28 +90,14 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
         Picasso.with(getActivity()).load("http://2.bp.blogspot.com/-6oNTuKj2y1I/VDW1uaZUu3I/AAAAAAAALDc/tJM0s5p1-5o/s1600/Untitled-1.jpg").into(ivAccountCover)
 
         tvAccountName = llNavigationHeader.bindView<TextView>(R.id.tvAccountName)
-        tvAccountName.setText("Tap at gear icon to login")
+        tvAccountName.setText(Preference.with(getActivity()).username ?: "N/A")
 
         val ibConfig = llNavigationHeader.bindView<ImageButton>(R.id.ibAccountConfig)
         ibConfig.setOnClickListener { view ->
-            mSpiceManager.execute(GetTokenSpiceRequest(), EventBusRequestListener.newInstance())
+            toast("configure")
         }
 
         return llNavigationHeader
-    }
-
-    public fun onEvent(map: Map<String, String>) {
-        val accountName = "twmobile"
-        val accountPassword = "abcd1234"
-
-        if (map.contains("expires_at")) {
-            mSpiceManager.execute(ValidateTokenSpiceRequest(accountName, accountPassword, map.get("request_token")!!), EventBusRequestListener.newInstance())
-        } else if (map.contains("session_id")) {
-            tvAccountName.setText(accountName)
-            com.taskworld.android.restfulandroidkotlin.utils.Preference.getInstance(getActivity()).setSessionId(map.get("session_id")!!)
-        } else {
-            mSpiceManager.execute(GetNewSessionSpiceRequest(map.get("request_token")!!), EventBusRequestListener.newInstance())
-        }
     }
 }
 
