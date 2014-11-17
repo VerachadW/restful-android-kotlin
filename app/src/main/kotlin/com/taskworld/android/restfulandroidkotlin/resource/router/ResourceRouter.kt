@@ -1,7 +1,7 @@
 package com.taskworld.android.restfulandroidkotlin.resource.router
 
 import io.realm.RealmObject
-import com.taskworld.android.restfulandroidkotlin.extensions.plus
+import com.taskworld.android.restfulandroidkotlin.extension.plus
 
 /**
  * Created by Kittinun Vantasin on 10/28/14.
