@@ -88,7 +88,13 @@ class PlayListFragment() : BaseSpiceFragment() {
     }
 
     fun onEvent(item: PlayList) {
-        toast("${item.getName()} has been saved to cloud")
+        mPlayListAdapter.addPlayList(item)
+    }
+
+    fun onEvent(map: Map<String, String>) {
+        if (map.contains("list_id")) {
+            toast("${map.get("list_id")}")
+        }
     }
 
     fun onEvent(items: RealmResults<PlayList>?) {
@@ -109,7 +115,7 @@ class PlayListFragment() : BaseSpiceFragment() {
         }
 
         public fun addPlayList(playList: PlayList) {
-            mItems.add(playList)
+            mItems.add(0, playList)
             notifyItemInserted(0)
         }
 
@@ -126,6 +132,7 @@ class PlayListFragment() : BaseSpiceFragment() {
             vh!!.tvName.setText(mItems[position].getName())
         }
 
+
         override fun getItemCount(): Int {
             return mItems.size
         }
@@ -139,6 +146,7 @@ class PlayListFragment() : BaseSpiceFragment() {
         val client = ResourceClient.Builder()
                 .setRouter(ResourceRouterImpl.newInstance())
                 .setEventBus(mBus)
+                .setSpiceManager(getServiceSpiceManager())
                 .setRealm(Realm.getInstance(getActivity())).build()
         val dialog = CreatePlayListDialogFragment(client)
         dialog.show(getFragmentManager(), dialog.getTag())
