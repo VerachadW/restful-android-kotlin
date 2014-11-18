@@ -18,13 +18,13 @@ import android.support.v7.widget.Toolbar
 import com.taskworld.android.restfulandroidkotlin.R
 import android.view.ViewGroup
 import android.view.LayoutInflater
-import com.taskworld.android.restfulandroidkotlin.util.CircularTransform
 import android.support.v4.view.ViewPager
 import android.support.v4.view.PagerAdapter
 import com.taskworld.android.restfulandroidkotlin.model.Image
 import android.view.ViewGroup.LayoutParams
 import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
 import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
+import com.taskworld.android.restfulandroidkotlin.util.CircularTransformation
 
 /**
  * Created by Kittinun Vantasin on 11/11/14.
@@ -184,7 +184,7 @@ class MovieDetailActivity : BaseSpiceActivity() {
             val cast = mCasts[position]
             val holder = viewHolder as MovieCastViewHolder
             Picasso.with(mContext).load("https://image.tmdb.org/t/p/w150/" + cast.getProfilePath())
-                    .transform(CircularTransform())
+                    .transform(CircularTransformation())
                     //.placeholder(R.drawable.ic_launcher)
                     .into(holder.ivCast)
             holder.tvCastName.setText(cast.getName())

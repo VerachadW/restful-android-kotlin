@@ -3,17 +3,17 @@ package com.taskworld.android.restfulandroidkotlin.util
 import com.squareup.picasso.Transformation
 import android.graphics.Bitmap
 import com.taskworld.android.restfulandroidkotlin.extension.tag
-import android.graphics.Paint
-import android.graphics.BitmapShader
-import android.graphics.Shader
-import android.graphics.Bitmap.Config
 import android.graphics.Canvas
+import android.graphics.Bitmap.Config
+import android.graphics.Shader
+import android.graphics.BitmapShader
+import android.graphics.Paint
 
 /**
- * Created by Kittinun Vantasin on 11/12/14.
+ * Created by Kittinun Vantasin on 11/18/14.
  */
 
-class CircularTransform : Transformation {
+class CircularTransformation : Transformation {
 
     override fun transform(source: Bitmap): Bitmap? {
         val paint = Paint()
@@ -35,5 +35,4 @@ class CircularTransform : Transformation {
     override fun key(): String? {
         return tag()
     }
-
 }
