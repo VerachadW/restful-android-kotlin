@@ -57,7 +57,7 @@ trait TheMovieDBAPI {
         fun delete(EncodedPath("path") path: String): Map<String, String>
 
         POST("/{path}")
-        fun createPlayList(EncodedPath("path") path: String): Map<String, String>
+        fun createPlayList(EncodedPath("path") path: String, Body playList: Map<String, String>): Map<String, String>
 
         POST("/{path}/add_item")
         fun addMovie(EncodedPath("path") path: String): Map<String, String>

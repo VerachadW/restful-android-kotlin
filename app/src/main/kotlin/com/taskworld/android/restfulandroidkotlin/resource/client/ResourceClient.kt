@@ -11,6 +11,9 @@ import com.octo.android.robospice.request.SpiceRequest
 import io.realm.RealmResults
 import io.realm.RealmQuery
 import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
+import com.taskworld.android.restfulandroidkotlin.model.PlayList
+import java.util.HashMap
+import com.squareup.okhttp.RequestBody
 
 class ResourceClient(builder: ResourceClient.Builder) {
 
@@ -19,12 +22,15 @@ class ResourceClient(builder: ResourceClient.Builder) {
     private var mRealm: Realm?
     private var mBus: EventBus
 
+    private var mResourceUrlMap: HashMap<String, String>
+
     //initialize
     {
         mSpiceManager = builder.manager
         mResourceRouter = builder.router ?: ResourceRouterImpl.newInstance()
         mRealm = builder.realm
         mBus = builder.bus ?: EventBus.getDefault()
+        mResourceUrlMap = hashMapOf("playlist" to "list")
     }
 
     class object {
@@ -69,9 +75,14 @@ class ResourceClient(builder: ResourceClient.Builder) {
         var entity: T = mRealm!!.createObject(clazz)
         f(entity)
         mRealm!!.commitTransaction()
-        EventBus.getDefault().post(entity)
+        mBus.post(entity)
 
         // TODO: Call Create API
+        val http = "post"
+        val action = "create"
+        val path: String? = mResourceRouter.getPathForAction(action, clazz)
+
+        // executeWithEventBusListener<T>(http, action, clazz.getSimpleName(), path!!, PlayList.RequestBody.generatePostBody(entity as PlayList))
     }
 
     fun <T : RealmObject> update(clazz: Class<T>, conditionMap: Map<String, String>, f: (it: RealmResults<T>) -> Unit) {
@@ -121,7 +132,7 @@ class ResourceClient(builder: ResourceClient.Builder) {
     fun <T: RealmObject> findAll(clazz: Class<T>, args: Map<String, String>?) {
         //db call
         val results = query(clazz, args)
-        EventBus.getDefault().post(results)
+        mBus.post(results)
 
         val httpVerb = "get"
         val action = "list"
@@ -157,6 +168,10 @@ class ResourceClient(builder: ResourceClient.Builder) {
     }
 
     fun <T> executeWithEventBusListener(httpVerb: String, action: String, resourceName: String, requestPath: String) {
+        executeWithEventBusListener<T>(httpVerb, action, resourceName, requestPath, null)
+    }
+
+    fun <T> executeWithEventBusListener(httpVerb: String, action: String, resourceName: String, requestPath: String, body: Map<String, String>?) {
         var extraPath = ""
         when (action) {
             "" -> extraPath = mResourceRouter.extraPathForSingle ?: ""
@@ -172,7 +187,12 @@ class ResourceClient(builder: ResourceClient.Builder) {
             val constructorOfClassName = Class.forName(REQUEST_PACKAGE + "." + className).getConstructor(javaClass<String>())
 
             [suppress("unchecked_cast")]
-            val requestInstance = constructorOfClassName.newInstance(requestPath) as SpiceRequest<T>
+            var requestInstance: SpiceRequest<T>
+            if (body != null) {
+                requestInstance = constructorOfClassName.newInstance(requestPath, body) as SpiceRequest<T>
+            } else {
+                requestInstance = constructorOfClassName.newInstance(requestPath) as SpiceRequest<T>
+            }
             mSpiceManager?.execute(requestInstance, EventBusRequestListener.newInstance(mBus))
         }
     }
