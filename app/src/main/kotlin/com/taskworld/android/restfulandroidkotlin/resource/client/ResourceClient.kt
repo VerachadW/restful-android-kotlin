@@ -82,7 +82,7 @@ class ResourceClient(builder: ResourceClient.Builder) {
         val action = "create"
         val path: String? = mResourceRouter.getPathForAction(action, clazz)
 
-        // executeWithEventBusListener<T>(http, action, clazz.getSimpleName(), path!!, PlayList.RequestBody.generatePostBody(entity as PlayList))
+        executeWithEventBusListener(http, action, clazz.getSimpleName(), path!!, entity, clazz)
     }
 
     fun <T : RealmObject> update(clazz: Class<T>, conditionMap: Map<String, String>, f: (it: RealmResults<T>) -> Unit) {
@@ -167,11 +167,11 @@ class ResourceClient(builder: ResourceClient.Builder) {
         executeWithEventBusListener<T>(httpVerb, action, clazz.getSimpleName(), path!!)
     }
 
-    fun <T> executeWithEventBusListener(httpVerb: String, action: String, resourceName: String, requestPath: String) {
-        executeWithEventBusListener<T>(httpVerb, action, resourceName, requestPath, null)
+    fun <T : RealmObject> executeWithEventBusListener(httpVerb: String, action: String, resourceName: String, requestPath: String) {
+        executeWithEventBusListener<T>(httpVerb, action, resourceName, requestPath, null, null)
     }
 
-    fun <T> executeWithEventBusListener(httpVerb: String, action: String, resourceName: String, requestPath: String, body: Map<String, String>?) {
+    fun <T : RealmObject> executeWithEventBusListener(httpVerb: String, action: String, resourceName: String, requestPath: String, entity: T?, clazz: Class<T>?) {
         var extraPath = ""
         when (action) {
             "" -> extraPath = mResourceRouter.extraPathForSingle ?: ""
@@ -184,13 +184,14 @@ class ResourceClient(builder: ResourceClient.Builder) {
                     resourceName.toStartingLetterUppercase(),
                     extraPath.replace("_", "").toStartingLetterUppercase(),
                     REQUEST_CLASS_SUFFIX).join("")
-            val constructorOfClassName = Class.forName(REQUEST_PACKAGE + "." + className).getConstructor(javaClass<String>())
 
             [suppress("unchecked_cast")]
             var requestInstance: SpiceRequest<T>
-            if (body != null) {
-                requestInstance = constructorOfClassName.newInstance(requestPath, body) as SpiceRequest<T>
+            if (entity != null) {
+                val constructorOfClassName = Class.forName(REQUEST_PACKAGE + "." + className).getConstructor(javaClass<String>(), clazz)
+                requestInstance = constructorOfClassName.newInstance(requestPath, entity) as SpiceRequest<T>
             } else {
+                val constructorOfClassName = Class.forName(REQUEST_PACKAGE + "." + className).getConstructor(javaClass<String>())
                 requestInstance = constructorOfClassName.newInstance(requestPath) as SpiceRequest<T>
             }
             mSpiceManager?.execute(requestInstance, EventBusRequestListener.newInstance(mBus))

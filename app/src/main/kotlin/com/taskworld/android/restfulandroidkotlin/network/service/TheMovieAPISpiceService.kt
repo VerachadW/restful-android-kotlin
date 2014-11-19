@@ -6,6 +6,7 @@ import com.taskworld.android.restfulandroidkotlin.network.api.TheMovieDBAPI
 import retrofit.converter.Converter
 import retrofit.converter.GsonConverter
 import com.google.gson.GsonBuilder
+import com.taskworld.android.restfulandroidkotlin.utils.Preference
 
 class TheMovieAPISpiceService : RetrofitGsonSpiceService() {
 
@@ -15,6 +16,8 @@ class TheMovieAPISpiceService : RetrofitGsonSpiceService() {
 
         val API_KEY = "api_key"
         val API_VALUE = "11a11c4dcdc3909ab42b09a5e531b74f"
+
+        val SESSION_KEY = "session_id"
     }
 
     override fun getServerUrl(): String? {
@@ -23,7 +26,13 @@ class TheMovieAPISpiceService : RetrofitGsonSpiceService() {
 
     override fun createRestAdapterBuilder(): RestAdapter.Builder? {
         var builder = super<RetrofitGsonSpiceService>.createRestAdapterBuilder()
-        builder.setRequestInterceptor { requestInterceptor -> requestInterceptor.addQueryParam(API_KEY, API_VALUE) }
+        builder.setRequestInterceptor { requestInterceptor ->
+            requestInterceptor.addQueryParam(API_KEY, API_VALUE)
+            val sessionId = Preference.getInstance(getApplicationContext()).getSessionId()
+            if (sessionId != null) {
+                requestInterceptor.addQueryParam(SESSION_KEY, Preference.getInstance(getApplicationContext()).getSessionId())
+            }
+        }
             .setLogLevel(RestAdapter.LogLevel.FULL)
         return builder
     }
