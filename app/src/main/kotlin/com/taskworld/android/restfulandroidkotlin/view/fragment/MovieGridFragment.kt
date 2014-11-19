@@ -159,18 +159,14 @@ class MovieGridFragment : BaseSpiceFragment() {
             return mItems.size
         }
 
-        inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             {
-                itemView.setOnClickListener { view -> onClick(view) }
+                itemView.setOnClickListener { view -> onItemClick(getPosition()) }
             }
 
             val tvMovieTitle by Delegates.lazy { itemView.bindView<TextView>(R.id.tvMovieTitle) }
             val tvMoviePopularScore by Delegates.lazy { itemView.bindView<TextView>(R.id.tvMoviePopularScore) }
             val ivMovieCover by Delegates.lazy { itemView.bindView<ImageView>(R.id.ivMovieCover) }
-
-            override fun onClick(view: View) {
-                onItemClick(getPosition())
-            }
         }
     }
 

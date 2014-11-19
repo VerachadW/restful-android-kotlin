@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat
 import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
 import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 import io.realm.Realm
+import com.taskworld.android.restfulandroidkotlin.extension.toast
 
 /**
  * Created by Kittinun Vantasin on 11/7/14.
@@ -87,6 +88,11 @@ class TVGridFragment : BaseSpiceFragment() {
         super<BaseSpiceFragment>.onDestroy()
     }
 
+    fun onItemClick(position: Int) {
+        val tv = mItems[position]
+        toast(tv.getName())
+    }
+
     inner class TVRecyclerViewAdapter : RecyclerView.Adapter<TVRecyclerViewAdapter.TVViewHolder>() {
 
         override fun onCreateViewHolder(container: ViewGroup?, position: Int): TVViewHolder? {
@@ -107,10 +113,13 @@ class TVGridFragment : BaseSpiceFragment() {
         }
 
         inner class TVViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            {
+                itemView.setOnClickListener { view -> onItemClick(getPosition()) }
+            }
+
             val tvTVTitle by Delegates.lazy { itemView.bindView<TextView>(R.id.tvTVTitle) }
             val tvTVFirstAirDate by Delegates.lazy { itemView.bindView<TextView>(R.id.tvTVFirstAirDate) }
             val ivTVCover by Delegates.lazy { itemView.bindView<ImageView>(R.id.ivTVCover) }
         }
     }
-
 }
