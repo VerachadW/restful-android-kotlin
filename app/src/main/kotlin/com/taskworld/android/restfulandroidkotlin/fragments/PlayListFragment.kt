@@ -26,6 +26,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import com.taskworld.android.restfulandroidkotlin.fragments.dialog.CreatePlayListDialogFragment
+import com.taskworld.android.restfulandroidkotlin.events.OnDataReceivedEvent
 
 /**
  * Created by VerachadW on 11/12/14.
@@ -87,19 +88,9 @@ class PlayListFragment() : BaseSpiceFragment() {
        return LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false)
     }
 
-    fun onEvent(item: PlayList) {
-        mPlayListAdapter.addPlayList(item)
-    }
-
-    fun onEvent(map: Map<String, String>) {
-        if (map.contains("list_id")) {
-            toast("${map.get("list_id")}")
-        }
-    }
-
-    fun onEvent(items: RealmResults<PlayList>?) {
-        if (items != null) {
-            mPlayListAdapter.addAll(ArrayList(items))
+    fun onEvent(event: OnDataReceivedEvent<Any>){
+        when (event.data) {
+            is PlayList -> mPlayListAdapter.addPlayList(event.data)
         }
     }
 

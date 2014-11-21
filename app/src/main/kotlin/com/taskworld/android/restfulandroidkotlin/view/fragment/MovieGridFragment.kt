@@ -26,6 +26,8 @@ import com.taskworld.android.restfulandroidkotlin.view.activity.MovieDetailActiv
 import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
 import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 import io.realm.Realm
+import com.taskworld.android.restfulandroidkotlin.events.OnDataReceivedEvent
+import com.taskworld.android.restfulandroidkotlin.extensions.toast
 
 /**
  * Created by Kittinun Vantasin on 11/6/14.
@@ -103,8 +105,8 @@ class MovieGridFragment : BaseSpiceFragment() {
         mCategory = args.getString(ARG_MOVIE_CATEGORY)
     }
 
-    fun onEvent(items: Movie.ResultList) {
-        mItems = items.getResults().toArrayList()
+    fun onEvent(event: OnDataReceivedEvent<Movie.ResultList>) {
+        mItems = event.data.getResults().toArrayList()
     }
 
     fun onEvent(event: OnMovieCategorySelectedEvent) {

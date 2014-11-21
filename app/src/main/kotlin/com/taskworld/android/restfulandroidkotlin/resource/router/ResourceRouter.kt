@@ -2,6 +2,7 @@ package com.taskworld.android.restfulandroidkotlin.resource.router
 
 import io.realm.RealmObject
 import com.taskworld.android.restfulandroidkotlin.extension.plus
+import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient.Action
 
 /**
  * Created by Kittinun Vantasin on 10/28/14.
@@ -13,15 +14,15 @@ trait ResourceRouter {
     val extraPathForSingle: String?
 
 
-    fun <T : RealmObject> getPathForAction(action: String, clazz: Class<T>): String? {
+    fun <T : RealmObject> getPathForAction(action: Action, clazz: Class<T>): String? {
         return getPathForAction(action, clazz, null)
     }
 
-    fun <T : RealmObject> getPathForAction(action: String, clazz: Class<T>, args: Map<String, Any>?): String? {
-        when {
-            action.equalsIgnoreCase("list") -> return getPathForListOnResource(clazz, args)
-            action.equalsIgnoreCase("create") -> return getPathForCreateResource(clazz, args)
-            action.isEmpty() -> getPathForSingleOnResource(clazz, args)
+    fun <T : RealmObject> getPathForAction(action: Action, clazz: Class<T>, args: Map<String, Any>?): String? {
+        when(action){
+            Action.GET_LIST -> return getPathForListOnResource(clazz, args)
+            Action.CREATE -> return getPathForCreateResource(clazz, args)
+            Action.GET -> getPathForSingleOnResource(clazz, args)
         }
         return null
     }
