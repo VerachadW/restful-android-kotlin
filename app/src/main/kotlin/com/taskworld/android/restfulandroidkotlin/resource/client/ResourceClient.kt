@@ -33,6 +33,23 @@ class ResourceClient(builder: ResourceClient.Builder) {
         mResourceUrlMap = hashMapOf("playlist" to "list")
     }
 
+    enum class Action {
+        NONE
+        CREATE
+        UPDATE
+        DELETE
+        GET
+        GET_LIST {
+            override fun toString(): String {
+                return "list"
+            }
+        }
+
+        override fun toString(): String {
+            return this.name().toLowerCase()
+        }
+    }
+
     class object {
         private val REQUEST_PACKAGE = "com.taskworld.android.restfulandroidkotlin.network.request"
         private val REQUEST_CLASS_SUFFIX = "SpiceRequest"
@@ -79,7 +96,7 @@ class ResourceClient(builder: ResourceClient.Builder) {
 
         // TODO: Call Create API
         val http = "post"
-        val action = "create"
+        val action = Action.CREATE
         val path: String? = mResourceRouter.getPathForAction(action, clazz)
 
         executeWithEventBusListener(http, action, clazz.getSimpleName(), path!!, entity, clazz)
@@ -92,7 +109,6 @@ class ResourceClient(builder: ResourceClient.Builder) {
         mRealm!!.commitTransaction()
 
         EventBus.getDefault().post(results)
-        // TODO: Send change set to Controller
 
         // TODO: Call Update API
     }
@@ -135,7 +151,7 @@ class ResourceClient(builder: ResourceClient.Builder) {
         mBus.post(results)
 
         val httpVerb = "get"
-        val action = "list"
+        val action = Action.GET_LIST
         val path = mResourceRouter.getPathForAction(action, clazz, args)
 
         //network
@@ -148,7 +164,7 @@ class ResourceClient(builder: ResourceClient.Builder) {
 
     fun <T : RealmObject> find(clazz: Class<T>, id: String, args: Map<String, String>?) {
         val httpVerb = "get"
-        val action = ""
+        val action = Action.GET
 
         var newArgs = hashMapOf("id" to id)
         if (args != null) {
@@ -167,20 +183,20 @@ class ResourceClient(builder: ResourceClient.Builder) {
         executeWithEventBusListener<T>(httpVerb, action, clazz.getSimpleName(), path!!)
     }
 
-    fun <T : RealmObject> executeWithEventBusListener(httpVerb: String, action: String, resourceName: String, requestPath: String) {
+    fun <T : RealmObject> executeWithEventBusListener(httpVerb: String, action: ResourceClient.Action, resourceName: String, requestPath: String) {
         executeWithEventBusListener<T>(httpVerb, action, resourceName, requestPath, null, null)
     }
 
-    fun <T : RealmObject> executeWithEventBusListener(httpVerb: String, action: String, resourceName: String, requestPath: String, entity: T?, clazz: Class<T>?) {
+    fun <T : RealmObject> executeWithEventBusListener(httpVerb: String, action: ResourceClient.Action, resourceName: String, requestPath: String, entity: T?, clazz: Class<T>?) {
         var extraPath = ""
         when (action) {
-            "" -> extraPath = mResourceRouter.extraPathForSingle ?: ""
-            "list" -> extraPath = mResourceRouter.extraPathForList ?: ""
+            Action.GET -> extraPath = mResourceRouter.extraPathForSingle ?: ""
+            Action.GET_LIST -> extraPath = mResourceRouter.extraPathForList ?: ""
         }
 
         if (mSpiceManager != null) {
             val className = listOf(httpVerb.toStartingLetterUppercase(),
-                    action.toStartingLetterUppercase(),
+                    action.toString().toStartingLetterUppercase(),
                     resourceName.toStartingLetterUppercase(),
                     extraPath.replace("_", "").toStartingLetterUppercase(),
                     REQUEST_CLASS_SUFFIX).join("")
@@ -194,7 +210,7 @@ class ResourceClient(builder: ResourceClient.Builder) {
                 val constructorOfClassName = Class.forName(REQUEST_PACKAGE + "." + className).getConstructor(javaClass<String>())
                 requestInstance = constructorOfClassName.newInstance(requestPath) as SpiceRequest<T>
             }
-            mSpiceManager?.execute(requestInstance, EventBusRequestListener.newInstance(mBus))
+            mSpiceManager?.execute(requestInstance, EventBusRequestListener.newInstance(action, mBus))
         }
     }
 }

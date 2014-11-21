@@ -19,7 +19,7 @@ import retrofit.http.DELETE
 trait TheMovieDBAPI {
 
     trait MovieAPI {
-        GET("/{path}")
+        GET("movie")
         fun get(EncodedPath("path") path: String): Movie
 
         GET("/{path}/now_playing")

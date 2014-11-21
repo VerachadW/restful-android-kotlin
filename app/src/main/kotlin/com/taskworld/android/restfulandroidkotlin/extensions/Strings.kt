@@ -28,3 +28,17 @@ fun String.toStartingLetterUppercase(): String {
 
     return builder.toString()
 }
+
+fun String.SnakeToCamel(): String {
+
+    if (this.isEmpty()) return this
+
+    val builder = StringBuilder()
+
+    for(token in this.split("_")) {
+        builder.append(token.toStartingLetterUppercase())
+    }
+
+    return builder.toString()
+
+}
