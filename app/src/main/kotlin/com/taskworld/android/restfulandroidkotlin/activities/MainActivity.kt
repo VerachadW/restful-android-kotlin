@@ -47,7 +47,6 @@ class MainActivity : BaseSpiceActivity() {
     }
 
 
-
     fun onEvent(event: OnDrawerToggledEvent) {
         when (event.direction) {
             Direction.LEFT -> fgLeftNavigationDrawer.toggleDrawer()

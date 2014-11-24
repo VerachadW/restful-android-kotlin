@@ -47,7 +47,7 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                listOf("Movies", "TVs")))
+                listOf("Movies", "TVs", "PlayLists")))
 
         lvDrawer.setItemChecked(1, true)
         lvDrawer.setOnItemClickListener { parent, view, position, id ->
@@ -55,6 +55,7 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
             when (position) {
                 1 -> ft.replace(R.id.flContainer, MovieFragment.newInstance())
                 2 -> ft.replace(R.id.flContainer, TVFragment.newInstance())
+                3 -> ft.replace(R.id.flContainer, PlayListFragment.newInstance())
             }
             ft.commit()
             selectItem(position)

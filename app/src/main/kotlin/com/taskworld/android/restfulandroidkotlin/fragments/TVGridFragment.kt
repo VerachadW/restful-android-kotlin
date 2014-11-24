@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat
 import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
 import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 import io.realm.Realm
+import com.taskworld.android.restfulandroidkotlin.events.OnDataReceivedEvent
 
 /**
  * Created by Kittinun Vantasin on 11/7/14.
@@ -74,8 +75,8 @@ class TVGridFragment : BaseSpiceFragment() {
         mCategory = args.getString(ARG_TV_CATEGORY)
     }
 
-    fun onEvent(items: TV.ResultList) {
-        mItems = items.getResults().toArrayList()
+    fun onEvent(event: OnDataReceivedEvent<TV.ResultList>) {
+        mItems = event.data.getResults().toArrayList()
     }
 
     fun createLayoutManager(): RecyclerView.LayoutManager {
