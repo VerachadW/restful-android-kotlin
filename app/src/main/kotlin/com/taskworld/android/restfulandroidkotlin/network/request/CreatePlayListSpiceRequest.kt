@@ -8,7 +8,7 @@ import com.taskworld.android.restfulandroidkotlin.model.PlayList
 /**
  * Created by VerachadW on 11/18/14.
  */
-class PostCreatePlayListSpiceRequest(val path: String, val entity: PlayList):
+class CreatePlayListSpiceRequest(val path: String, val entity: PlayList):
         RetrofitSpiceRequest<Map<String, String>, TheMovieDBAPI.ListAPI>(javaClass<Map<String, String>>(), javaClass<TheMovieDBAPI.ListAPI>()) {
 
     override fun loadDataFromNetwork(): Map<String, String>? {

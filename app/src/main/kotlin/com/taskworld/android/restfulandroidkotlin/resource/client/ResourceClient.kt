@@ -14,6 +14,7 @@ import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouter
 import com.taskworld.android.restfulandroidkotlin.model.PlayList
 import java.util.HashMap
 import com.squareup.okhttp.RequestBody
+import com.taskworld.android.restfulandroidkotlin.extensions.fromSnakeToCamel
 
 class ResourceClient(builder: ResourceClient.Builder) {
 
@@ -22,27 +23,48 @@ class ResourceClient(builder: ResourceClient.Builder) {
     private var mRealm: Realm?
     private var mBus: EventBus
 
-    private var mResourceUrlMap: HashMap<String, String>
-
     //initialize
     {
         mSpiceManager = builder.manager
         mResourceRouter = builder.router ?: ResourceRouterImpl.newInstance()
         mRealm = builder.realm
         mBus = builder.bus ?: EventBus.getDefault()
-        mResourceUrlMap = hashMapOf("playlist" to "list")
     }
 
     enum class Action {
         NONE
-        CREATE
-        UPDATE
-        DELETE
-        GET
+        CREATE {
+            override fun getVerb(): String {
+                return "post"
+            }
+        }
+        UPDATE {
+            override fun getVerb(): String {
+                return "put"
+            }
+        }
+        DELETE {
+            override fun getVerb(): String {
+                return "delete"
+            }
+        }
+        GET {
+            override fun getVerb(): String {
+                return "get"
+            }
+        }
         GET_LIST {
+            override fun getVerb(): String {
+                return "get_list"
+            }
+
             override fun toString(): String {
                 return "list"
             }
+        }
+
+        open fun getVerb(): String {
+            return ""
         }
 
         override fun toString(): String {
@@ -95,11 +117,10 @@ class ResourceClient(builder: ResourceClient.Builder) {
         mBus.post(entity)
 
         // TODO: Call Create API
-        val http = "post"
         val action = Action.CREATE
         val path: String? = mResourceRouter.getPathForAction(action, clazz)
 
-        executeWithEventBusListener(http, action, clazz.getSimpleName(), path!!, entity, clazz)
+        executeWithEventBusListener(action, clazz.getSimpleName(), path!!, entity, clazz)
     }
 
     fun <T : RealmObject> update(clazz: Class<T>, conditionMap: Map<String, String>, f: (it: RealmResults<T>) -> Unit) {
@@ -150,12 +171,11 @@ class ResourceClient(builder: ResourceClient.Builder) {
         val results = query(clazz, args)
         mBus.post(results)
 
-        val httpVerb = "get"
         val action = Action.GET_LIST
         val path = mResourceRouter.getPathForAction(action, clazz, args)
 
         //network
-        executeWithEventBusListener<T>(httpVerb, action, clazz.getSimpleName(), path!!)
+        executeWithEventBusListener<T>(action, clazz.getSimpleName(), path!!)
     }
 
     fun <T : RealmObject> find(clazz: Class<T>, id: String) {
@@ -163,7 +183,6 @@ class ResourceClient(builder: ResourceClient.Builder) {
     }
 
     fun <T : RealmObject> find(clazz: Class<T>, id: String, args: Map<String, String>?) {
-        val httpVerb = "get"
         val action = Action.GET
 
         var newArgs = hashMapOf("id" to id)
@@ -180,14 +199,14 @@ class ResourceClient(builder: ResourceClient.Builder) {
         }
 
         //network
-        executeWithEventBusListener<T>(httpVerb, action, clazz.getSimpleName(), path!!)
+        executeWithEventBusListener<T>(action, clazz.getSimpleName(), path!!)
     }
 
-    fun <T : RealmObject> executeWithEventBusListener(httpVerb: String, action: ResourceClient.Action, resourceName: String, requestPath: String) {
-        executeWithEventBusListener<T>(httpVerb, action, resourceName, requestPath, null, null)
+    fun <T : RealmObject> executeWithEventBusListener(action: ResourceClient.Action, resourceName: String, requestPath: String) {
+        executeWithEventBusListener<T>(action, resourceName, requestPath, null, null)
     }
 
-    fun <T : RealmObject> executeWithEventBusListener(httpVerb: String, action: ResourceClient.Action, resourceName: String, requestPath: String, entity: T?, clazz: Class<T>?) {
+    fun <T : RealmObject> executeWithEventBusListener(action: ResourceClient.Action, resourceName: String, requestPath: String, entity: T?, clazz: Class<T>?) {
         var extraPath = ""
         when (action) {
             Action.GET -> extraPath = mResourceRouter.extraPathForSingle ?: ""
@@ -195,8 +214,7 @@ class ResourceClient(builder: ResourceClient.Builder) {
         }
 
         if (mSpiceManager != null) {
-            val className = listOf(httpVerb.toStartingLetterUppercase(),
-                    action.toString().toStartingLetterUppercase(),
+            val className = listOf(action.getVerb().fromSnakeToCamel(),
                     resourceName.toStartingLetterUppercase(),
                     extraPath.replace("_", "").toStartingLetterUppercase(),
                     REQUEST_CLASS_SUFFIX).join("")
