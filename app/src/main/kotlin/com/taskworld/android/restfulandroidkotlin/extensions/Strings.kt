@@ -29,7 +29,7 @@ fun String.toStartingLetterUppercase(): String {
     return builder.toString()
 }
 
-fun String.SnakeToCamel(): String {
+fun String.fromSnakeToCamel(): String {
 
     if (this.isEmpty()) return this
 

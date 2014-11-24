@@ -19,12 +19,12 @@ trait ResourceRouter {
     }
 
     fun <T : RealmObject> getPathForAction(action: Action, clazz: Class<T>, args: Map<String, Any>?): String? {
-        when(action){
-            Action.GET_LIST -> return getPathForListOnResource(clazz, args)
-            Action.CREATE -> return getPathForCreateResource(clazz, args)
+        return when(action){
+            Action.GET_LIST -> getPathForListOnResource(clazz, args)
+            Action.CREATE -> getPathForCreateResource(clazz, args)
             Action.GET -> getPathForSingleOnResource(clazz, args)
+            else -> null
         }
-        return null
     }
 
     fun <T : RealmObject> getPathForListOnResource(clazz: Class<T>, args: Map<String, Any>?): String
