@@ -28,6 +28,10 @@ import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouter
 import io.realm.Realm
 import com.taskworld.android.restfulandroidkotlin.events.OnDataReceivedEvent
 import com.taskworld.android.restfulandroidkotlin.extensions.toast
+import com.taskworld.android.restfulandroidkotlin.network2.RestfulResourceClient
+import com.taskworld.android.restfulandroidkotlin.network2.request.GetMoviesLocalRequest
+import com.taskworld.android.restfulandroidkotlin.network2.OnMovieLoadedEvent
+import com.taskworld.android.restfulandroidkotlin.extensions.log
 
 /**
  * Created by Kittinun Vantasin on 11/6/14.
@@ -73,13 +77,8 @@ class MovieGridFragment : BaseSpiceFragment() {
         //set adapter
         rvMovie.setAdapter(mMovieAdapter)
 
-        val client = ResourceClient.Builder()
-                .setRouter(ResourceRouterImpl.newInstance(mCategory))
-                .setRealm(Realm.getInstance(getActivity()))
-                .setEventBus(mBus)
-                .setSpiceManager(getServiceSpiceManager()).build()
-
-        client.findAll(javaClass<Movie>())
+        val restClient = RestfulResourceClient.newInstance(getServiceSpiceManager(), getLocalSpiceManager(), mBus)
+        restClient.execute(GetMoviesLocalRequest(100, Realm.getInstance(getActivity()), mCategory))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -105,9 +104,11 @@ class MovieGridFragment : BaseSpiceFragment() {
         mCategory = args.getString(ARG_MOVIE_CATEGORY)
     }
 
-    fun onEvent(event: OnDataReceivedEvent<Movie.ResultList>) {
-        mItems = event.data.getResults().toArrayList()
+    fun onEvent(event: OnMovieLoadedEvent) {
+        mItems = event.result.getResults().toArrayList()
+        log("MovieResults-> Id: ${event.requestId} Source: ${event.source.toString()} Action: ${event.action.toString()}")
     }
+
 
     fun onEvent(event: OnMovieCategorySelectedEvent) {
         mCategory = event.category
