@@ -14,6 +14,8 @@
 
         <service android:name=".network.service.TheMovieAPISpiceService"
                  android:exported="false" />
+        <service android:name=".network2.service.RealmSpiceService"
+            android:exported="false" />
 
         <activity
             android:name=".activities.MainActivity" >

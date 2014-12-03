@@ -7,6 +7,7 @@ import retrofit.converter.Converter
 import retrofit.converter.GsonConverter
 import com.google.gson.GsonBuilder
 import com.taskworld.android.restfulandroidkotlin.utils.Preference
+import com.taskworld.android.restfulandroidkotlin.network2.api.MovieDBApi
 
 class TheMovieAPISpiceService : RetrofitGsonSpiceService() {
 
@@ -39,7 +40,7 @@ class TheMovieAPISpiceService : RetrofitGsonSpiceService() {
 
     override fun onCreate() {
         super<RetrofitGsonSpiceService>.onCreate()
-        addRetrofitInterface(javaClass<TheMovieDBAPI>())
+        addRetrofitInterface(javaClass<MovieDBApi>())
     }
 
     override fun createConverter(): Converter? {

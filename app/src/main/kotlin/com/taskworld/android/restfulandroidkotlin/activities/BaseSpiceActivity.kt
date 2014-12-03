@@ -2,6 +2,7 @@ package com.taskworld.android.restfulandroidkotlin.activities
 
 import com.octo.android.robospice.SpiceManager
 import com.taskworld.android.restfulandroidkotlin.network.service.TheMovieAPISpiceService
+import com.taskworld.android.restfulandroidkotlin.network2.service.RealmSpiceService
 
 /**
  * Created by Kittinun Vantasin on 10/24/14.
@@ -9,20 +10,27 @@ import com.taskworld.android.restfulandroidkotlin.network.service.TheMovieAPISpi
 
 abstract class BaseSpiceActivity : BaseActivity() {
 
-    val mSpiceManager: SpiceManager = SpiceManager(javaClass<TheMovieAPISpiceService>())
+    val mNetworkSpiceManager: SpiceManager = SpiceManager(javaClass<TheMovieAPISpiceService>())
+    val mLocalSpiceManager: SpiceManager = SpiceManager(javaClass<RealmSpiceService>())
 
     override fun onStart() {
         super<BaseActivity>.onStart()
-        mSpiceManager.start(this)
+        mNetworkSpiceManager.start(this)
+        mLocalSpiceManager.start(this)
     }
 
     override fun onStop() {
         super<BaseActivity>.onStop()
-        mSpiceManager.shouldStop()
+        mNetworkSpiceManager.shouldStop()
+        mLocalSpiceManager.shouldStop()
     }
 
     fun getServiceSpiceManager(): SpiceManager {
-        return mSpiceManager
+        return mNetworkSpiceManager
+    }
+
+    fun getLocalSpiceManager(): SpiceManager {
+        return mLocalSpiceManager
     }
 
 }

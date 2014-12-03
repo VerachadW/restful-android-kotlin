@@ -2,6 +2,7 @@ package com.taskworld.android.restfulandroidkotlin.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.RealmObject;
@@ -61,6 +62,10 @@ public class Movie extends RealmObject {
 
     public static class ResultList {
         private List<Movie> results;
+
+        public void setResults(List<Movie> list) {
+            results = new ArrayList<Movie>(list);
+        }
 
         public List<Movie> getResults() {
             return results;
