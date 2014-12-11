@@ -20,7 +20,6 @@ class EventBusRequestListener<T> private (val bus: EventBus) : RequestListener<T
         }
     }
 
-
     override fun onRequestFailure(spiceException: SpiceException?) {
         bus.post(spiceException)
     }

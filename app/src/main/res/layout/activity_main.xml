@@ -36,6 +36,6 @@
         android:layout_width="320dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:name="com.taskworld.android.restfulandroidkotlin.fragments.MainNavigationDrawerFragment"/>
+        android:name="com.taskworld.android.restfulandroidkotlin.view.fragment.MainNavigationDrawerFragment"/>
 
 </android.support.v4.widget.DrawerLayout>

@@ -6,7 +6,7 @@ import io.realm.Realm
 import io.realm.RealmObject
 import de.greenrobot.event.EventBus
 import com.taskworld.android.restfulandroidkotlin.network.response.EventBusRequestListener
-import com.taskworld.android.restfulandroidkotlin.extensions.toStartingLetterUppercase
+import com.taskworld.android.restfulandroidkotlin.extension.toStartingLetterUppercase
 import com.octo.android.robospice.request.SpiceRequest
 import io.realm.RealmResults
 import io.realm.RealmQuery

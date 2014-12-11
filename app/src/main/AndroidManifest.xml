@@ -15,26 +15,27 @@
         <service android:name=".network.service.TheMovieAPISpiceService"
                  android:exported="false" />
 
-        <activity
-            android:name=".activities.MainActivity" >
+        <activity android:name=".view.activity.SignInActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.ProductListActivity"
+        <activity android:name=".view.activity.MainActivity" />
+
+        <activity android:name=".view.activity.ProductListActivity"
                   android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
 
-        <activity android:name=".activities.ProductEditActivity"
+        <activity android:name=".view.activity.ProductEditActivity"
                   android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
 
-        <activity android:name=".activities.MovieListActivity"
+        <activity android:name=".view.activity.MovieListActivity"
                   android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         
-        <activity android:name=".activities.MovieDetailActivity"
+        <activity android:name=".view.activity.MovieDetailActivity"
                   android:theme="@style/AppTheme.AppCompat.Translucent"
-                  android:parentActivityName=".activities.MainActivity" />
+                  android:parentActivityName=".view.activity.MainActivity" />
 
     </application>
 
