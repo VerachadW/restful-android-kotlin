@@ -50,30 +50,36 @@ class RestfulResourceClient private (val mNetworkSpiceManager: SpiceManager, val
 
 
     fun <RESULT, API> execute(request: RealmSpiceRequest<RESULT, API>) {
-        mLocalSpiceManager.execute(request, DatabaseRequestListener(request.networkRequest, request.event))
+        mLocalSpiceManager.execute(request, DatabaseRequestListener(request))
     }
 
     fun <RESULT, API> execute(request: NetworkSpiceRequest<RESULT, API>) {
         mNetworkSpiceManager.execute(request, NetworkRequestListener(request.event))
     }
 
-    inner class DatabaseRequestListener<RESULT, API>(val networkRequest: RetrofitSpiceRequest<RESULT, API>, val event: OnDataReceivedEvent<RESULT>): RequestListener<RESULT> {
+    inner class DatabaseRequestListener<RESULT, API>(val request: RealmSpiceRequest<RESULT, API>): RequestListener<RESULT> {
+
         override fun onRequestFailure(spiceException: SpiceException?) {
             spiceException!!.printStackTrace()
         }
 
         override fun onRequestSuccess(result: RESULT) {
-            event.source = DataSource.DATABASE
-            event.result = result
-            mBus.post(event)
+            request.event.source = DataSource.DATABASE
+            request.event.result = result
+            mBus.post(request.event)
 
+            val listener = NetworkRequestListener(request.event)
+            listener.f = request.saveResultBlock
 
-            mNetworkSpiceManager.execute(networkRequest, NetworkRequestListener(event))
+            mNetworkSpiceManager.execute(request.networkRequest, listener)
         }
 
     }
 
     inner class NetworkRequestListener<RESULT>(val event: OnDataReceivedEvent<RESULT>): RequestListener<RESULT> {
+
+        var f: (RESULT) -> Unit = {}
+
         override fun onRequestFailure(spiceException: SpiceException?) {
 
             spiceException!!.printStackTrace()
@@ -82,12 +88,12 @@ class RestfulResourceClient private (val mNetworkSpiceManager: SpiceManager, val
         override fun onRequestSuccess(result: RESULT) {
 
             if (event.action == ActionType.GET) {
-                // TODO: save data to database before notify UI
-            } else {
-                event.source = DataSource.NETWORK
-                event.result = result
-                mBus.post(event)
+                f(result)
             }
+
+            event.source = DataSource.NETWORK
+            event.result = result
+            mBus.post(event)
 
         }
 

@@ -11,4 +11,7 @@ abstract class NetworkSpiceRequest<RESULT, API>(resultClass: Class<RESULT>, apiC
 
     var event: OnDataReceivedEvent<RESULT> by Delegates.notNull()
 
+    open fun saveResult(result: RESULT) {
+
+    }
 }

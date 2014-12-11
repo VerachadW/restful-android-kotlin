@@ -39,3 +39,16 @@ fun <T: RealmObject> Realm.delete(clazz: Class<T>, key: String, value: String) {
 }
 
 data class UpdateResult<T: RealmObject>(val result: T, val changeMap: Map<String, String>)
+
+
+fun <T: RealmObject> Realm.createOrUpdate(clazz: Class<T>, keyValue: Pair<String, Int>, createBlock: (clazz: Class<T>) -> Unit, updateBlock: (clazz: Class<T>, it: T) -> Unit) {
+    beginTransaction()
+    var realmObject = where(clazz).equalTo(keyValue.first, keyValue.second).findFirst()
+
+    if (realmObject != null) {
+        updateBlock(clazz, realmObject)
+    } else {
+        createBlock(clazz)
+    }
+    commitTransaction()
+}
