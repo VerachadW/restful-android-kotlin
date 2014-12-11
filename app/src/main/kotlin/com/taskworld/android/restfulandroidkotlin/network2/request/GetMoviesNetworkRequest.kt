@@ -16,4 +16,5 @@ class GetMoviesNetworkRequest(val category: String) :
         return getService().getMovies(category)
     }
 
+
 }

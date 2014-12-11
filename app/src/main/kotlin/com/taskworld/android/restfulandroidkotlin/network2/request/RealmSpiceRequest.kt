@@ -11,5 +11,7 @@ import kotlin.properties.Delegates
 abstract class RealmSpiceRequest<RESULT, API>(val requestId: Long, clazz: Class<RESULT>, val networkRequest: RetrofitSpiceRequest<RESULT, API>): SpiceRequest<RESULT>(clazz) {
 
     var event: OnDataReceivedEvent<RESULT> by Delegates.notNull()
+    var saveResultBlock: (result: RESULT) -> Unit = { }
+
 
 }
