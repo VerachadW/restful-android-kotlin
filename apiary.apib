@@ -1,46 +1,73 @@
 FORMAT: 1A
 
 # TW Mobile (Draft)
-Notes API is a *short texts saving* service similar to its physical paper presence on your table.
+The draft version of Taskworld API for mobile devices.
 
-# Group Notes
-Notes related resources of the **Notes API**
+# Group Task
 
-## Notes Collection [/notes]
-### List all Notes [GET]
-+ Response 200 (application/json)
+## /tasks {?category,task_list_id,tags}
+### GET 
 
-        [{
-          "id": 1, "title": "Jogging in park"
-        }, {
-          "id": 2, "title": "Pick-up posters from post-office"
-        }]
-
-### Create a Note [POST]
-+ Request (application/json)
-
-        { "title": "Buy cheese and bread for breakfast." }
-
-+ Response 201 (application/json)
-
-        { "id": 3, "title": "Buy cheese and bread for breakfast." }
-
-## Note [/notes/{id}]
-A single Note object with all its details
 
 + Parameters
-    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
+    + category (optional, string, `todo`) ... Filter with task category
+    + task_list_id (optional, string) ... Filter with task list
+    + tags (optional, string, `food, dessert, local`) ... Filter with tag, can be an array of tags
 
-### Retrieve a Note [GET]
 + Response 200 (application/json)
 
-    + Header
+        {
+            "tasks": [
+                {
+                    "_id": "545f9d6c965b22a7068203de",
+                    "title": "Aaaa",
+                    "category": "@none",
+                    "__v": 0,
+                    "desc": "",
+                    "comments": [
+                        {
+                            "id": "b1pDDj-EL",
+                            "userId": "5458ae5f2b75ccb083b1bdb9",
+                            "created": "2014-11-09T16:59:40.373Z",
+                            "updated": "2014-11-09T16:59:40.373Z",
+                            "content": "111"
+                        },
+                        {
+                            "content": "2222",
+                            "updated": "2014-11-09T17:00:52.356Z",
+                            "created": "2014-11-09T16:59:41.306Z",
+                            "userId": "5458ae5f2b75ccb083b1bdb9",
+                            "id": "bJU_woW4L"
+                        },
+                        {
+                            "id": "-yoZ5i-NL",
+                            "userId": "5458ae5f2b75ccb083b1bdb9",
+                            "created": "2014-11-09T17:00:47.404Z",
+                            "updated": "2014-11-09T17:00:47.404Z",
+                            "content": "ssss"
+                        }
+                    ],
+                    "tags": [],
+                    "updated": "2014-11-10T07:33:18.743Z",
+                    "created": "2014-11-09T16:59:24.917Z",
+                    "assigned": [],
+                    "owners": [
+                        "5458ae5f2b75ccb083b1bdb9"
+                    ],
+                    "projectId": "@none",
+                    "listId": "545f9d69965b22a7068203dd",
+                    "md": {
+                        "perms": {
+                            "canRead": true,
+                            "canWrite": true,
+                            "isAssignor": false,
+                            "isAssignee": false,
+                            "isOwner": true,
+                            "isAssignedToMe": false,
+                            "isAssigned": false
+                        }
+                    }
+                }
+            ]
+        }
 
-            X-My-Header: The Value
-
-    + Body
-
-            { "id": 2, "title": "Pick-up posters from post-office" }
-
-### Remove a Note [DELETE]
-+ Response 204
