@@ -5,8 +5,8 @@ The draft version of Taskworld API for mobile devices.
 
 # Group Task
 
-## /tasks {?category,task_list_id,tags}
-### GET 
+## /tasks {?category,task_list_id,tags}jj
+### GET
 
 
 + Parameters
@@ -67,7 +67,116 @@ The draft version of Taskworld API for mobile devices.
                             "isAssigned": false
                         }
                     }
-                }
+                },
+                {
+                    "_id": "a45f9d6c965b762a7068103dd",
+                    "title": "Bbbb",
+                    "category": "@none",
+                    "__v": 0,
+                    "desc": "",
+                    "comments": [
+                        {
+                            "id": "b1pDDj-EL",
+                            "userId": "5458ae5f2b75ccb083b1bdb9",
+                            "created": "2014-12-09T16:59:40.373Z",
+                            "updated": "2014-14-09T16:59:40.373Z",
+                            "content": "111"
+                        },
+                        {
+                            "content": "2222",
+                            "updated": "2014-11-09T17:00:52.356Z",
+                            "created": "2014-11-09T16:59:41.306Z",
+                            "userId": "5458ae5f2b75ccb083b1bdb9",
+                            "id": "bJU_woW4L"
+                        },
+                        {
+                            "id": "-yoZ5i-NL",
+                            "userId": "5458ae5f2b75ccb083b1bdb9",
+                            "created": "2014-10-09T17:00:47.404Z",
+                            "updated": "2014-10-09T17:00:47.404Z",
+                            "content": "ssss"
+                        }
+                    ],
+                    "tags": [],
+                    "updated": "2013-11-10T07:33:18.743Z",
+                    "created": "2013-11-09T16:59:24.917Z",
+                    "assigned": [],
+                    "owners": [
+                        "5458ae5f2b75ccb083b1bdb9"
+                    ],
+                    "projectId": "@none",
+                    "listId": "545f9d69965b22a7068203dd",
+                    "md": {
+                        "perms": {
+                            "canRead": true,
+                            "canWrite": true,
+                            "isAssignor": false,
+                            "isAssignee": false,
+                            "isOwner": true,
+                            "isAssignedToMe": false,
+                            "isAssigned": false
+                        }
+                    }
+                }    
             ]
         }
 
+## /task/{id}
+### GET
+
+
++ Parameters
+    + id (string) ... task Id
+
++ Response 200 (application/json)
+        
+        {
+            "_id": "545f9d6c965b22a7068203de",
+            "title": "Aaaa",
+            "category": "@none",
+            "__v": 0,
+            "desc": "",
+            "comments": [
+                {
+                    "id": "b1pDDj-EL",
+                    "userId": "5458ae5f2b75ccb083b1bdb9",
+                    "created": "2014-11-09T16:59:40.373Z",
+                    "updated": "2014-11-09T16:59:40.373Z",
+                    "content": "111"
+                },
+                {
+                    "content": "2222",
+                    "updated": "2014-11-09T17:00:52.356Z",
+                    "created": "2014-11-09T16:59:41.306Z",
+                    "userId": "5458ae5f2b75ccb083b1bdb9",
+                    "id": "bJU_woW4L"
+                },
+                {
+                    "id": "-yoZ5i-NL",
+                    "userId": "5458ae5f2b75ccb083b1bdb9",
+                    "created": "2014-11-09T17:00:47.404Z",
+                    "updated": "2014-11-09T17:00:47.404Z",
+                    "content": "ssss"
+                }
+            ],
+            "tags": [],
+            "updated": "2014-11-10T07:33:18.743Z",
+            "created": "2014-11-09T16:59:24.917Z",
+            "assigned": [],
+            "owners": [
+                "5458ae5f2b75ccb083b1bdb9"
+            ],
+            "projectId": "@none",
+            "listId": "545f9d69965b22a7068203dd",
+            "md": {
+                "perms": {
+                    "canRead": true,
+                    "canWrite": true,
+                    "isAssignor": false,
+                    "isAssignee": false,
+                    "isOwner": true,
+                    "isAssignedToMe": false,
+                    "isAssigned": false
+                }
+            }
+        }
