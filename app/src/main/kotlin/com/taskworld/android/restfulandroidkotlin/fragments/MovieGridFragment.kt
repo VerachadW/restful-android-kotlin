@@ -32,6 +32,7 @@ import com.taskworld.android.restfulandroidkotlin.network2.RestfulResourceClient
 import com.taskworld.android.restfulandroidkotlin.network2.request.GetMoviesLocalRequest
 import com.taskworld.android.restfulandroidkotlin.network2.OnMovieLoadedEvent
 import com.taskworld.android.restfulandroidkotlin.extensions.log
+import com.taskworld.android.restfulandroidkotlin.network2.request.GetMoviesRequest
 
 /**
  * Created by Kittinun Vantasin on 11/6/14.
@@ -77,8 +78,9 @@ class MovieGridFragment : BaseSpiceFragment() {
         //set adapter
         rvMovie.setAdapter(mMovieAdapter)
 
+        val request = GetMoviesRequest(Realm.getInstance(getActivity()), mCategory)
         val restClient = RestfulResourceClient.newInstance(getServiceSpiceManager(), getLocalSpiceManager(), mBus)
-        restClient.execute(GetMoviesLocalRequest(100, Realm.getInstance(getActivity()), mCategory))
+        restClient.execute(request)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

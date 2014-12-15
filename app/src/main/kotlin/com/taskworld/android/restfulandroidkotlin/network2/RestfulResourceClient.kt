@@ -9,6 +9,7 @@ import com.octo.android.robospice.request.listener.RequestListener
 import com.octo.android.robospice.persistence.exception.SpiceException
 import com.taskworld.android.restfulandroidkotlin.network2.request.RealmSpiceRequest
 import com.taskworld.android.restfulandroidkotlin.network2.request.NetworkSpiceRequest
+import com.taskworld.android.restfulandroidkotlin.network2.request.BaseRequest
 
 /**
  * Created by VerachadW on 11/26/14.
@@ -48,16 +49,17 @@ class RestfulResourceClient private (val mNetworkSpiceManager: SpiceManager, val
         }
     }
 
+    fun <RESULT, API> execute(request: BaseRequest<RESULT, API>) {
+        if (request.localRequest != null) {
+            mLocalSpiceManager.execute(request.localRequest, DatabaseRequestListener(request))
+        } else {
+            val listener = NetworkRequestListener(request.event)
+            mNetworkSpiceManager.execute(request.networkRequest, listener)
+        }
 
-    fun <RESULT, API> execute(request: RealmSpiceRequest<RESULT, API>) {
-        mLocalSpiceManager.execute(request, DatabaseRequestListener(request))
     }
 
-    fun <RESULT, API> execute(request: NetworkSpiceRequest<RESULT, API>) {
-        mNetworkSpiceManager.execute(request, NetworkRequestListener(request.event))
-    }
-
-    inner class DatabaseRequestListener<RESULT, API>(val request: RealmSpiceRequest<RESULT, API>): RequestListener<RESULT> {
+    inner class DatabaseRequestListener<RESULT, API>(val request: BaseRequest<RESULT, API>): RequestListener<RESULT> {
 
         override fun onRequestFailure(spiceException: SpiceException?) {
             spiceException!!.printStackTrace()
@@ -73,7 +75,6 @@ class RestfulResourceClient private (val mNetworkSpiceManager: SpiceManager, val
 
             mNetworkSpiceManager.execute(request.networkRequest, listener)
         }
-
     }
 
     inner class NetworkRequestListener<RESULT>(val event: OnDataReceivedEvent<RESULT>): RequestListener<RESULT> {
