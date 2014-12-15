@@ -1,26 +1,19 @@
 package com.taskworld.android.restfulandroidkotlin.network2.request
 
-import com.octo.android.robospice.request.SpiceRequest
-import com.taskworld.android.restfulandroidkotlin.model.Movie
 import io.realm.Realm
-import com.taskworld.android.restfulandroidkotlin.network2.action.MovieActionExecutor
-import com.taskworld.android.restfulandroidkotlin.network2.OnDataReceivedEvent
-import com.taskworld.android.restfulandroidkotlin.network2.OnMovieLoadedEvent
+import com.taskworld.android.restfulandroidkotlin.model.Movie
 import com.taskworld.android.restfulandroidkotlin.network2.api.MovieDBApi
-import com.octo.android.robospice.request.retrofit.RetrofitSpiceRequest
-import com.taskworld.android.restfulandroidkotlin.network.request.GetMoviesNetworkRequest
-import io.realm.RealmResults
+import com.taskworld.android.restfulandroidkotlin.network2.OnMovieLoadedEvent
 import com.taskworld.android.restfulandroidkotlin.extensions.createOrUpdate
+import com.taskworld.android.restfulandroidkotlin.network2.action.MovieActionExecutor
+
 
 /**
- * Created by VerachadW on 12/1/14.
+ * Created by Johnny Dew on 12/12/2014 AD.
  */
-class GetMoviesLocalRequest(id:Long, val realm: Realm, val category: String)
-    : RealmSpiceRequest<Movie.ResultList, MovieDBApi.MovieApi>(id, javaClass<Movie.ResultList>(), GetMoviesNetworkRequest(category)) {
-
+class GetMoviesRequest(val realm: Realm, val category: String): BaseRequest<Movie.ResultList, MovieDBApi.MovieApi>() {
 
     {
-        event = OnMovieLoadedEvent(requestId)
         saveResultBlock = { result ->
             for(data in result.getResults()) {
                 realm.createOrUpdate(javaClass<Movie>(), Pair("id", data.getId()), { clazz ->
@@ -39,10 +32,29 @@ class GetMoviesLocalRequest(id:Long, val realm: Realm, val category: String)
         }
     }
 
-    val executor: MovieActionExecutor = MovieActionExecutor(realm, javaClass<Movie>())
+    override val event = OnMovieLoadedEvent(requestId)
+    override val localRequest = GetMoviesLocalRequest(realm, category)
+    override val networkRequest = GetMoviesNetworkRequest(category)
+}
+
+
+class GetMoviesLocalRequest(val realm: Realm, val category: String)
+: BaseLocalRequest<Movie.ResultList, MovieDBApi.MovieApi>(javaClass<Movie.ResultList>()) {
 
     override fun loadDataFromNetwork(): Movie.ResultList? {
+        val executor = MovieActionExecutor(realm, javaClass<Movie>())
         return executor.getMovies(category)
     }
+
+}
+
+
+class GetMoviesNetworkRequest(val category: String) :
+        BaseNetworkRequest<Movie.ResultList, MovieDBApi.MovieApi>(javaClass<Movie.ResultList>(), javaClass<MovieDBApi.MovieApi>()) {
+
+    override fun loadDataFromNetwork(): Movie.ResultList {
+        return getService().getMovies(category)
+    }
+
 
 }
