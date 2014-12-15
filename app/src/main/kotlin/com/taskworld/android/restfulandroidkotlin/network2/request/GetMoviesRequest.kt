@@ -11,7 +11,7 @@ import com.taskworld.android.restfulandroidkotlin.network2.action.MovieActionExe
 /**
  * Created by Johnny Dew on 12/12/2014 AD.
  */
-class GetMoviesRequest(val realm: Realm, val category: String): BaseRequest<Movie.ResultList, MovieDBApi.MovieApi>() {
+class GetMoviesRequest(val realm: Realm, val category: String): BaseRestRequest<Movie.ResultList, MovieDBApi.MovieApi>() {
 
     {
         saveResultBlock = { result ->

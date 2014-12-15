@@ -12,7 +12,7 @@ import com.taskworld.android.restfulandroidkotlin.network2.api.MovieDBApi
  * Created by Johnny Dew on 12/12/2014 AD.
  */
 
-abstract class BaseRequest<RESULT, API> {
+abstract class BaseRestRequest<RESULT, API> {
     abstract val localRequest: BaseLocalRequest<RESULT, API>?
     abstract val networkRequest: BaseNetworkRequest<RESULT, API>
     abstract val event: OnDataReceivedEvent<RESULT>
