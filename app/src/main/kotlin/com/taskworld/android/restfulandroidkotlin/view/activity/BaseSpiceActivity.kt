@@ -2,7 +2,7 @@ package com.taskworld.android.restfulandroidkotlin.view.activity
 
 import com.octo.android.robospice.SpiceManager
 import com.taskworld.android.restfulandroidkotlin.network.service.TheMovieAPISpiceService
-import com.taskworld.android.restfulandroidkotlin.network2.service.RealmSpiceService
+import com.taskworld.android.restfulandroidkotlin.network.service.RealmSpiceService
 
 /**
  * Created by Kittinun Vantasin on 10/24/14.

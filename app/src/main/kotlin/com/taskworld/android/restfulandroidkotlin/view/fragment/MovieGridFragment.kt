@@ -26,13 +26,10 @@ import com.taskworld.android.restfulandroidkotlin.view.activity.MovieDetailActiv
 import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
 import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 import io.realm.Realm
-import com.taskworld.android.restfulandroidkotlin.events.OnDataReceivedEvent
-import com.taskworld.android.restfulandroidkotlin.extensions.toast
-import com.taskworld.android.restfulandroidkotlin.network2.RestfulResourceClient
-import com.taskworld.android.restfulandroidkotlin.network2.request.GetMoviesLocalRequest
-import com.taskworld.android.restfulandroidkotlin.network2.OnMovieLoadedEvent
-import com.taskworld.android.restfulandroidkotlin.extensions.log
-import com.taskworld.android.restfulandroidkotlin.network2.request.GetMoviesRequest
+import com.taskworld.android.restfulandroidkotlin.network.RestfulResourceClient
+import com.taskworld.android.restfulandroidkotlin.network.request.GetMoviesLocalRequest
+import com.taskworld.android.restfulandroidkotlin.network.OnMovieLoadedEvent
+import com.taskworld.android.restfulandroidkotlin.network.request.GetMoviesRequest
 
 /**
  * Created by Kittinun Vantasin on 11/6/14.

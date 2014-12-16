@@ -9,9 +9,7 @@ import com.taskworld.android.restfulandroidkotlin.fragments.PlayListFragment.Pla
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.widget.TextView
-import com.taskworld.android.restfulandroidkotlin.model.PlayList
-import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
-import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
+import com.taskworld.android.restfulandroidkotlin.model.FavoriteList
 import io.realm.Realm
 import java.util.ArrayList
 import de.greenrobot.event.EventBus
@@ -26,7 +24,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import com.taskworld.android.restfulandroidkotlin.fragments.dialog.CreatePlayListDialogFragment
-import com.taskworld.android.restfulandroidkotlin.events.OnDataReceivedEvent
 
 /**
  * Created by VerachadW on 11/12/14.
@@ -63,13 +60,6 @@ class PlayListFragment() : BaseSpiceFragment() {
         rvFavorite.setLayoutManager(createLayoutManager())
         rvFavorite.setAdapter(mPlayListAdapter)
 
-        val client = ResourceClient.Builder()
-                                .setRouter(ResourceRouterImpl.newInstance())
-                                .setEventBus(mBus)
-                                .setRealm(Realm.getInstance(getActivity())).build()
-
-        client.findAll(javaClass<PlayList>())
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -88,15 +78,9 @@ class PlayListFragment() : BaseSpiceFragment() {
        return LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false)
     }
 
-    fun onEvent(event: OnDataReceivedEvent<Any>){
-        when (event.data) {
-            is PlayList -> mPlayListAdapter.addPlayList(event.data)
-        }
-    }
-
     inner class PlayListRecyclerViewAdapter : RecyclerView.Adapter<PlayListViewHolder>() {
 
-        private var mItems by Delegates.observable(arrayListOf<PlayList>(), {meta, oldItems, newItems ->
+        private var mItems by Delegates.observable(arrayListOf<FavoriteList>(), {meta, oldItems, newItems ->
             notifyDataSetChanged()
         })
 
@@ -105,12 +89,12 @@ class PlayListFragment() : BaseSpiceFragment() {
             notifyItemRemoved(position)
         }
 
-        public fun addPlayList(playList: PlayList) {
+        public fun addPlayList(playList: FavoriteList) {
             mItems.add(0, playList)
             notifyItemInserted(0)
         }
 
-        public fun addAll(items: ArrayList<PlayList>) {
+        public fun addAll(items: ArrayList<FavoriteList>) {
             mItems = items
         }
 
@@ -134,13 +118,6 @@ class PlayListFragment() : BaseSpiceFragment() {
     }
 
     fun openCreatePlayListDialog() {
-        val client = ResourceClient.Builder()
-                .setRouter(ResourceRouterImpl.newInstance())
-                .setEventBus(mBus)
-                .setSpiceManager(getServiceSpiceManager())
-                .setRealm(Realm.getInstance(getActivity())).build()
-        val dialog = CreatePlayListDialogFragment(client)
-        dialog.show(getFragmentManager(), dialog.getTag())
     }
 
 }

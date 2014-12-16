@@ -1,4 +1,4 @@
-package com.taskworld.android.restfulandroidkotlin.network2
+package com.taskworld.android.restfulandroidkotlin.network
 
 import com.taskworld.android.restfulandroidkotlin.model.Movie
 

@@ -2,12 +2,11 @@ package com.taskworld.android.restfulandroidkotlin.network.service
 
 import com.octo.android.robospice.retrofit.RetrofitGsonSpiceService
 import retrofit.RestAdapter
-import com.taskworld.android.restfulandroidkotlin.network.api.TheMovieDBAPI
 import retrofit.converter.Converter
 import retrofit.converter.GsonConverter
 import com.google.gson.GsonBuilder
 import com.taskworld.android.restfulandroidkotlin.utils.Preference
-import com.taskworld.android.restfulandroidkotlin.network2.api.MovieDBApi
+import com.taskworld.android.restfulandroidkotlin.network.api.MovieDBApi
 
 class TheMovieAPISpiceService : RetrofitGsonSpiceService() {
 

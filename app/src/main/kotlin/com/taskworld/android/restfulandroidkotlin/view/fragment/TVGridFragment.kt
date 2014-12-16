@@ -15,11 +15,11 @@ import android.view.LayoutInflater
 import com.squareup.picasso.Picasso
 import android.support.v7.widget.GridLayoutManager
 import java.text.SimpleDateFormat
-import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
-import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 import io.realm.Realm
 import com.taskworld.android.restfulandroidkotlin.extension.toast
-import com.taskworld.android.restfulandroidkotlin.events.OnDataReceivedEvent
+import com.taskworld.android.restfulandroidkotlin.network.RestfulResourceClient
+import com.taskworld.android.restfulandroidkotlin.network.request.GetTVRequest
+import com.taskworld.android.restfulandroidkotlin.network.OnTVLoadedEvent
 
 /**
  * Created by Kittinun Vantasin on 11/7/14.
@@ -63,21 +63,17 @@ class TVGridFragment : BaseSpiceFragment() {
         //set adapter
         rvTV.setAdapter(mTVAdapter)
 
-        val client = ResourceClient.Builder()
-                .setRouter(ResourceRouterImpl.newInstance(mCategory))
-                .setRealm(Realm.getInstance(getActivity()))
-                .setEventBus(mBus)
-                .setSpiceManager(getServiceSpiceManager()).build()
+        val restClient = RestfulResourceClient.newInstance(getServiceSpiceManager(), getLocalSpiceManager(), mBus)
 
-        client.findAll(javaClass<TV>())
+        restClient.execute(GetTVRequest(Realm.getInstance(getActivity()), mCategory))
     }
 
     override fun handleArguments(args: Bundle) {
         mCategory = args.getString(ARG_TV_CATEGORY)
     }
 
-    fun onEvent(event: OnDataReceivedEvent<TV.ResultList>) {
-        mItems = event.data.getResults().toArrayList()
+    fun onEvent(event: OnTVLoadedEvent) {
+        mItems = event.result.getResults().toArrayList()
     }
 
     fun createLayoutManager(): RecyclerView.LayoutManager {

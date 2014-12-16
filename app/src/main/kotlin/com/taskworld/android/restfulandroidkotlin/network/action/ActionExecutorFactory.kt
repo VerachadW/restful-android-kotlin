@@ -1,4 +1,4 @@
-package com.taskworld.android.restfulandroidkotlin.network2.action
+package com.taskworld.android.restfulandroidkotlin.network.action
 
 import io.realm.RealmObject
 import io.realm.Realm

@@ -1,14 +1,24 @@
-package com.taskworld.android.restfulandroidkotlin.network2.api
+package com.taskworld.android.restfulandroidkotlin.network.api
 
 import retrofit.http.GET
 import retrofit.http.Query
 import com.taskworld.android.restfulandroidkotlin.model.Movie
 import retrofit.http.Path
+import com.taskworld.android.restfulandroidkotlin.model.TV
+import retrofit.http.POST
+import com.taskworld.android.restfulandroidkotlin.model.FavoriteList
 
 /**
  * Created by VerachadW on 11/26/14.
  */
 trait MovieDBApi {
+
+    trait AccountApi {
+        GET("/account")
+        fun getAccountInfo()
+        GET("/account/{id}/lists")
+        fun getFavoriteLists()
+    }
 
     trait Authentication {
         GET("/authentication/token/new")
@@ -27,5 +37,15 @@ trait MovieDBApi {
 
         GET("/movie/{id}")
         fun getMovie(Query("id") id: Long): Movie
+    }
+
+    trait TVApi {
+        GET("/tv/{category}")
+        fun getTVs(Path("category")category: String): TV.ResultList
+    }
+
+    trait FavoriteListApi {
+        POST("/list")
+        fun createFavoriteList(name: String, description: String): FavoriteList
     }
 }

@@ -7,12 +7,11 @@ import java.util.Map;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
 
 /**
  * Created by VerachadW on 11/14/14.
  */
-public class PlayList extends RealmObject {
+public class FavoriteList extends RealmObject {
 
     private String id;
     private String name;
@@ -63,7 +62,7 @@ public class PlayList extends RealmObject {
     }
 
     public static class RequestBody{
-        public static Map<String, String> generatePostBody(PlayList list) {
+        public static Map<String, String> generatePostBody(FavoriteList list) {
             HashMap<String, String> body = new HashMap<String, String>();
             body.put("name", list.name);
             body.put("description", list.description);

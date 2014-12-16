@@ -16,7 +16,6 @@ import android.widget.TextView
 import android.app.Activity
 import com.taskworld.android.restfulandroidkotlin.extension.tag
 import android.util.Log
-import com.taskworld.android.restfulandroidkotlin.extension.deleteAll
 import com.taskworld.android.restfulandroidkotlin.model.Product
 
 /**
@@ -68,7 +67,7 @@ class ProductListActivity : BaseActivity() {
             R.id.miAddProduct -> navigateToProductEditActivity()
             R.id.miDeleteAll -> {
                 val r = Realm.getInstance(this)
-                r.deleteAll(javaClass<Product>())
+//                r.deleteAll(javaClass<Product>())
                 fetchProducts()
             }
         }

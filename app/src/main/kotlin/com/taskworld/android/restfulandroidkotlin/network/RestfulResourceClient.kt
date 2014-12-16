@@ -1,4 +1,4 @@
-package com.taskworld.android.restfulandroidkotlin.network2
+package com.taskworld.android.restfulandroidkotlin.network
 
 import de.greenrobot.event.EventBus
 import kotlin.properties.Delegates
@@ -7,9 +7,7 @@ import com.octo.android.robospice.request.SpiceRequest
 import com.octo.android.robospice.SpiceManager
 import com.octo.android.robospice.request.listener.RequestListener
 import com.octo.android.robospice.persistence.exception.SpiceException
-import com.taskworld.android.restfulandroidkotlin.network2.request.RealmSpiceRequest
-import com.taskworld.android.restfulandroidkotlin.network2.request.NetworkSpiceRequest
-import com.taskworld.android.restfulandroidkotlin.network2.request.BaseRestRequest
+import com.taskworld.android.restfulandroidkotlin.network.request.BaseRestRequest
 
 /**
  * Created by VerachadW on 11/26/14.

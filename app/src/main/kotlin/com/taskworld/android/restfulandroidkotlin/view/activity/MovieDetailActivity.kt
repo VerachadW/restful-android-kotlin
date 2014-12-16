@@ -22,8 +22,6 @@ import android.support.v4.view.ViewPager
 import android.support.v4.view.PagerAdapter
 import com.taskworld.android.restfulandroidkotlin.model.Image
 import android.view.ViewGroup.LayoutParams
-import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
-import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 import com.taskworld.android.restfulandroidkotlin.util.CircularTransformation
 import android.view.LayoutInflater
 import com.taskworld.android.restfulandroidkotlin.R
@@ -89,20 +87,20 @@ class MovieDetailActivity : BaseSpiceActivity() {
         rvMovieCast.setLayoutManager(createLayoutManager())
         rvMovieCast.setAdapter(mMovieCastAdapter)
 
-        var client = ResourceClient.Builder()
-                .setRouter(ResourceRouterImpl.newInstance(null, "credits"))
-                .setSpiceManager(getServiceSpiceManager()).build()
-        client.find(javaClass<Movie>(), mMovieId.toString())
-
-        client = ResourceClient.Builder()
-                .setRouter(ResourceRouterImpl.newInstance())
-                .setSpiceManager(getServiceSpiceManager()).build()
-        client.find(javaClass<Movie>(), mMovieId.toString())
-
-        client = ResourceClient.Builder()
-                .setRouter(ResourceRouterImpl.newInstance(null, "images"))
-                .setSpiceManager(getServiceSpiceManager()).build()
-        client.find(javaClass<Movie>(), mMovieId.toString())
+//        var client = ResourceClient.Builder()
+//                .setRouter(ResourceRouterImpl.newInstance(null, "credits"))
+//                .setSpiceManager(getServiceSpiceManager()).build()
+//        client.find(javaClass<Movie>(), mMovieId.toString())
+//
+//        client = ResourceClient.Builder()
+//                .setRouter(ResourceRouterImpl.newInstance())
+//                .setSpiceManager(getServiceSpiceManager()).build()
+//        client.find(javaClass<Movie>(), mMovieId.toString())
+//
+//        client = ResourceClient.Builder()
+//                .setRouter(ResourceRouterImpl.newInstance(null, "images"))
+//                .setSpiceManager(getServiceSpiceManager()).build()
+//        client.find(javaClass<Movie>(), mMovieId.toString())
     }
 
     fun onEvent(movie: Movie) {

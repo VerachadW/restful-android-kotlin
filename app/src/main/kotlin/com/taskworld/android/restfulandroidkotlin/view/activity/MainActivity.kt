@@ -3,6 +3,9 @@ package com.taskworld.android.restfulandroidkotlin.view.activity
 import com.taskworld.android.restfulandroidkotlin.R
 import kotlin.properties.Delegates
 import com.taskworld.android.restfulandroidkotlin.extension.bindView
+import android.widget.Button
+import com.taskworld.android.restfulandroidkotlin.model.Movie
+import android.util.Log
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.Toolbar
 import com.taskworld.android.restfulandroidkotlin.view.fragment.BaseDrawerFragment

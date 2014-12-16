@@ -1,4 +1,4 @@
-package com.taskworld.android.restfulandroidkotlin.network2.service
+package com.taskworld.android.restfulandroidkotlin.network.service
 
 import com.octo.android.robospice.SpiceService
 import android.app.Application

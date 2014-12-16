@@ -1,8 +1,8 @@
-package com.taskworld.android.restfulandroidkotlin.network2.action
+package com.taskworld.android.restfulandroidkotlin.network.action
 
 import io.realm.Realm
 import com.taskworld.android.restfulandroidkotlin.model.Movie
-import com.taskworld.android.restfulandroidkotlin.network2.api.MovieDBApi
+import com.taskworld.android.restfulandroidkotlin.network.api.MovieDBApi
 import io.realm.RealmResults
 
 class MovieActionExecutor(val realm: Realm, val movieClass: Class<Movie>): MovieDBApi.MovieApi {

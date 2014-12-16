@@ -17,6 +17,13 @@ import com.octo.android.robospice.SpiceManager
 import com.taskworld.android.restfulandroidkotlin.network.service.TheMovieAPISpiceService
 import com.taskworld.android.restfulandroidkotlin.extension.toast
 import com.taskworld.android.restfulandroidkotlin.util.Preference
+import com.taskworld.android.restfulandroidkotlin.network.RestfulResourceClient
+import com.taskworld.android.restfulandroidkotlin.network.request.GetTokenRequest
+import com.taskworld.android.restfulandroidkotlin.network.OnDataReceivedEvent
+import com.taskworld.android.restfulandroidkotlin.network.request.OnAuthenSuccessEvent
+import de.greenrobot.event.EventBus
+import com.taskworld.android.restfulandroidkotlin.network.request.ValidateTokenRequest
+import com.taskworld.android.restfulandroidkotlin.network.request.GetNewSessionRequest
 
 /**
  * Created by Kittinun Vantasin on 11/5/14.
@@ -26,14 +33,14 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
 
     override val mContentLayoutResourceId: Int = R.layout.fragment_main_navigation_drawer
 
-    val mSpiceManager: SpiceManager = SpiceManager(javaClass<TheMovieAPISpiceService>())
-
     //widgets
     val lvDrawer by Delegates.lazy { getRootView().bindView<ListView>(R.id.lvMainNavigation) }
     var tvAccountName: TextView by Delegates.notNull()
 
     //data
     var mCurrentSelectedPosition = 0
+
+    val mRestClient = RestfulResourceClient.newInstance(getServiceSpiceManager(), getLocalSpiceManager(), EventBus.getDefault())
 
     override fun setUp() {
     }
@@ -58,16 +65,6 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
             ft.commit()
             selectItem(position)
         }
-    }
-
-    override fun onStart() {
-        super<BaseDrawerFragment>.onStart()
-        mSpiceManager.start(getActivity())
-    }
-
-    override fun onStop() {
-        super<BaseDrawerFragment>.onStop()
-        mSpiceManager.shouldStop()
     }
 
     fun selectItem(position: Int) {
@@ -95,10 +92,24 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
 
         val ibConfig = llNavigationHeader.bindView<ImageButton>(R.id.ibAccountConfig)
         ibConfig.setOnClickListener { view ->
-            toast("configure")
+            mRestClient.execute(GetTokenRequest())
         }
 
         return llNavigationHeader
+    }
+
+    public fun onEvent(event: OnAuthenSuccessEvent) {
+        val accountName = "twmobile"
+        val accountPassword = "abcd1234"
+
+        if (event.result.contains("expires_at")) {
+            mRestClient.execute(ValidateTokenRequest(accountName, accountPassword, event.result.get("request_token")!!))
+        } else if (event.result.contains("session_id")) {
+            tvAccountName.setText(accountName)
+            com.taskworld.android.restfulandroidkotlin.utils.Preference.getInstance(getActivity()).setSessionId(event.result.get("session_id")!!)
+        } else {
+            mRestClient.execute(GetNewSessionRequest(event.result.get("request_token")!!))
+        }
     }
 }
 

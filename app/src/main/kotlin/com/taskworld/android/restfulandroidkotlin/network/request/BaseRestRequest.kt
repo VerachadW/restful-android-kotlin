@@ -1,11 +1,11 @@
-package com.taskworld.android.restfulandroidkotlin.network2.request
+package com.taskworld.android.restfulandroidkotlin.network.request
 
 import com.octo.android.robospice.request.SpiceRequest
-import com.taskworld.android.restfulandroidkotlin.network2.OnDataReceivedEvent
+import com.taskworld.android.restfulandroidkotlin.network.OnDataReceivedEvent
 import kotlin.properties.Delegates
 import com.octo.android.robospice.request.retrofit.RetrofitSpiceRequest
 import com.taskworld.android.restfulandroidkotlin.model.Movie
-import com.taskworld.android.restfulandroidkotlin.network2.api.MovieDBApi
+import com.taskworld.android.restfulandroidkotlin.network.api.MovieDBApi
 
 
 /**

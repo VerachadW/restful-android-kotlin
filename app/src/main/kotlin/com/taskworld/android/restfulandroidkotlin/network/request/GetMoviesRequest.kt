@@ -1,11 +1,11 @@
-package com.taskworld.android.restfulandroidkotlin.network2.request
+package com.taskworld.android.restfulandroidkotlin.network.request
 
 import io.realm.Realm
 import com.taskworld.android.restfulandroidkotlin.model.Movie
-import com.taskworld.android.restfulandroidkotlin.network2.api.MovieDBApi
-import com.taskworld.android.restfulandroidkotlin.network2.OnMovieLoadedEvent
+import com.taskworld.android.restfulandroidkotlin.network.api.MovieDBApi
+import com.taskworld.android.restfulandroidkotlin.network.OnMovieLoadedEvent
 import com.taskworld.android.restfulandroidkotlin.extensions.createOrUpdate
-import com.taskworld.android.restfulandroidkotlin.network2.action.MovieActionExecutor
+import com.taskworld.android.restfulandroidkotlin.network.action.MovieActionExecutor
 
 
 /**

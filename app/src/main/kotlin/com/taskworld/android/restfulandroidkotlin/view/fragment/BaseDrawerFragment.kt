@@ -13,7 +13,7 @@ import android.support.v4.view.GravityCompat
  * Created by Kittinun Vantasin on 11/5/14.
  */
 
-abstract class BaseDrawerFragment : BaseFragment() {
+abstract class BaseDrawerFragment : BaseSpiceFragment() {
 
     enum class Direction {
         LEFT
@@ -77,7 +77,7 @@ abstract class BaseDrawerFragment : BaseFragment() {
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
-        super<BaseFragment>.onConfigurationChanged(newConfig)
+        super<BaseSpiceFragment>.onConfigurationChanged(newConfig)
 
         mDrawerToggle?.onConfigurationChanged(newConfig)
     }
@@ -87,7 +87,7 @@ abstract class BaseDrawerFragment : BaseFragment() {
             return true;
         }
 
-        return super<BaseFragment>.onOptionsItemSelected(item)
+        return super<BaseSpiceFragment>.onOptionsItemSelected(item)
     }
 
     fun closeDrawer() {

@@ -1,9 +1,9 @@
-package com.taskworld.android.restfulandroidkotlin.network2
+package com.taskworld.android.restfulandroidkotlin.network
 
 import com.taskworld.android.restfulandroidkotlin.events.BaseEvent
-import com.taskworld.android.restfulandroidkotlin.network2.RestfulResourceClient.DataSource
+import com.taskworld.android.restfulandroidkotlin.network.RestfulResourceClient.DataSource
 import kotlin.properties.Delegates
-import com.taskworld.android.restfulandroidkotlin.network2.RestfulResourceClient.ActionType
+import com.taskworld.android.restfulandroidkotlin.network.RestfulResourceClient.ActionType
 import kotlin.properties.ReadWriteProperty
 import com.taskworld.android.restfulandroidkotlin.model.Movie
 
