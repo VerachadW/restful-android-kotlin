@@ -7,6 +7,9 @@ import retrofit.http.Path
 import com.taskworld.android.restfulandroidkotlin.model.TV
 import retrofit.http.POST
 import com.taskworld.android.restfulandroidkotlin.model.FavoriteList
+import java.util.ArrayList
+import kotlin.properties.Delegates
+import com.google.gson.annotations.SerializedName
 
 /**
  * Created by VerachadW on 11/26/14.
@@ -33,7 +36,9 @@ trait MovieDBApi {
 
     trait MovieApi {
         GET("/movie/{category}")
-        fun getMovies(Path("category")category: String): Movie.ResultList
+        fun getMovies(Path("category")category: String): GetMoviesResponse
+
+        data class GetMoviesResponse(SerializedName("results") val movies: ArrayList<Movie>)
 
         GET("/movie/{id}")
         fun getMovie(Query("id") id: Long): Movie

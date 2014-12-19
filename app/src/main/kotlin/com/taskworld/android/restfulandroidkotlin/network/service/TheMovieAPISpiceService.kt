@@ -30,7 +30,7 @@ class TheMovieAPISpiceService : RetrofitGsonSpiceService() {
             requestInterceptor.addQueryParam(API_KEY, API_VALUE)
             val sessionId = Preference.with(getApplicationContext()).sessionId
             if (sessionId != null) {
-                requestInterceptor.addQueryParam(SESSION_KEY, Preference.with(getApplicationContext()).sessionId)
+                requestInterceptor.addQueryParam(SESSION_KEY, sessionId)
             }
         }
             .setLogLevel(RestAdapter.LogLevel.FULL)

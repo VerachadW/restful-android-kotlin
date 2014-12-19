@@ -11,11 +11,11 @@ import com.taskworld.android.restfulandroidkotlin.extension.createOrUpdate
 /**
  * Created by Johnny Dew on 12/12/2014 AD.
  */
-class GetMoviesRequest(val realm: Realm, val category: String): BaseRestRequest<Movie.ResultList, MovieDBApi.MovieApi>() {
+class GetMoviesRequest(val realm: Realm, val category: String): BaseRestRequest<MovieDBApi.MovieApi.GetMoviesResponse, MovieDBApi.MovieApi>() {
 
     {
         saveResultBlock = { result ->
-            for(data in result.getResults()) {
+            for(data in result.movies) {
                 realm.createOrUpdate(javaClass<Movie>(), Pair("id", data.getId()), { clazz ->
                     val realmObject = realm.createObject(clazz)
                     realmObject.setTitle(data.getTitle())
@@ -39,20 +39,19 @@ class GetMoviesRequest(val realm: Realm, val category: String): BaseRestRequest<
 
 
 class GetMoviesLocalRequest(val realm: Realm, val category: String)
-: BaseLocalRequest<Movie.ResultList, MovieDBApi.MovieApi>(javaClass<Movie.ResultList>()) {
+: BaseLocalRequest<MovieDBApi.MovieApi.GetMoviesResponse, MovieDBApi.MovieApi>(javaClass<MovieDBApi.MovieApi.GetMoviesResponse>()) {
 
-    override fun loadDataFromNetwork(): Movie.ResultList? {
+    override fun loadDataFromNetwork(): MovieDBApi.MovieApi.GetMoviesResponse? {
         val executor = MovieActionExecutor(realm, javaClass<Movie>())
         return executor.getMovies(category)
     }
 
 }
 
-
 class GetMoviesNetworkRequest(val category: String) :
-        BaseNetworkRequest<Movie.ResultList, MovieDBApi.MovieApi>(javaClass<Movie.ResultList>(), javaClass<MovieDBApi.MovieApi>()) {
+        BaseNetworkRequest<MovieDBApi.MovieApi.GetMoviesResponse, MovieDBApi.MovieApi>(javaClass<MovieDBApi.MovieApi.GetMoviesResponse>(), javaClass<MovieDBApi.MovieApi>()) {
 
-    override fun loadDataFromNetwork(): Movie.ResultList {
+    override fun loadDataFromNetwork(): MovieDBApi.MovieApi.GetMoviesResponse{
         return getService().getMovies(category)
     }
 

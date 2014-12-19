@@ -103,7 +103,7 @@ class MovieGridFragment : BaseSpiceFragment() {
     }
 
     fun onEvent(event: OnMovieLoadedEvent) {
-        mItems = event.result.getResults().toArrayList()
+        mItems = event.result.movies
         log("MovieResults-> Id: ${event.requestId} Source: ${event.source.toString()} Action: ${event.action.toString()}")
     }
 

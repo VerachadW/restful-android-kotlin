@@ -4,14 +4,14 @@ import io.realm.Realm
 import com.taskworld.android.restfulandroidkotlin.model.Movie
 import com.taskworld.android.restfulandroidkotlin.network.api.MovieDBApi
 import io.realm.RealmResults
+import java.util.ArrayList
 
 class MovieActionExecutor(val realm: Realm, val movieClass: Class<Movie>): MovieDBApi.MovieApi {
 
-    override fun getMovies(category: String): Movie.ResultList {
+    override fun getMovies(category: String): MovieDBApi.MovieApi.GetMoviesResponse {
         val result = realm.where(movieClass).findAll()
-        val list: Movie.ResultList = Movie.ResultList()
-        list.setResults(result)
-        return list
+        val list = ArrayList(result)
+        return MovieDBApi.MovieApi.GetMoviesResponse(list)
     }
 
     override fun getMovie(id: Long): Movie {
