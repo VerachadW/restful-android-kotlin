@@ -23,9 +23,12 @@ import com.taskworld.android.restfulandroidkotlin.event.OnToolbarTitleChangedEve
 import android.util.Log
 import com.taskworld.android.restfulandroidkotlin.extension.tag
 import com.taskworld.android.restfulandroidkotlin.view.activity.MovieDetailActivity
-import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
-import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 import io.realm.Realm
+import com.taskworld.android.restfulandroidkotlin.network.RestfulResourceClient
+import com.taskworld.android.restfulandroidkotlin.network.request.GetMoviesLocalRequest
+import com.taskworld.android.restfulandroidkotlin.network.OnMovieLoadedEvent
+import com.taskworld.android.restfulandroidkotlin.network.request.GetMoviesRequest
+import com.taskworld.android.restfulandroidkotlin.extension.log
 
 /**
  * Created by Kittinun Vantasin on 11/6/14.
@@ -71,13 +74,9 @@ class MovieGridFragment : BaseSpiceFragment() {
         //set adapter
         rvMovie.setAdapter(mMovieAdapter)
 
-        val client = ResourceClient.Builder()
-                .setRouter(ResourceRouterImpl.newInstance(mCategory))
-                .setRealm(Realm.getInstance(getActivity()))
-                .setEventBus(mBus)
-                .setSpiceManager(getServiceSpiceManager()).build()
-
-        client.findAll(javaClass<Movie>())
+        val request = GetMoviesRequest(Realm.getInstance(getActivity()), mCategory)
+        val restClient = RestfulResourceClient.newInstance(getServiceSpiceManager(), getLocalSpiceManager(), mBus)
+        restClient.execute(request)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -103,9 +102,11 @@ class MovieGridFragment : BaseSpiceFragment() {
         mCategory = args.getString(ARG_MOVIE_CATEGORY)
     }
 
-    fun onEvent(items: Movie.ResultList) {
-        mItems = items.getResults().toArrayList()
+    fun onEvent(event: OnMovieLoadedEvent) {
+        mItems = event.result.movies
+        log("MovieResults-> Id: ${event.requestId} Source: ${event.source.toString()} Action: ${event.action.toString()}")
     }
+
 
     fun onEvent(event: OnMovieCategorySelectedEvent) {
         mCategory = event.category

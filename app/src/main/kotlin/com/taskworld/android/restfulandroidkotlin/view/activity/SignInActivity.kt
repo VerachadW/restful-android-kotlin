@@ -13,6 +13,7 @@ import de.greenrobot.event.EventBus
 import android.widget.TextView
 import android.graphics.Color
 import com.taskworld.android.restfulandroidkotlin.util.Preference
+import com.taskworld.android.restfulandroidkotlin.network.RestfulResourceClient
 
 /**
  * Created by Kittinun Vantasin on 11/14/14.
@@ -31,7 +32,7 @@ class SignInActivity : BaseSpiceActivity(), SignInUIAction {
     val tvMessage by Delegates.lazy { bindView<TextView>(R.id.tvMessage) }
 
     //presenter
-    val mPresenter by Delegates.lazy { SignInPresenterImpl(this, getServiceSpiceManager(), EventBus.getDefault()) }
+    val mPresenter by Delegates.lazy { SignInPresenterImpl(this, RestfulResourceClient.newInstance(getServiceSpiceManager(), getLocalSpiceManager()), EventBus.getDefault()) }
 
     override fun setUp() {
         btSignIn.setOnClickListener { view ->
