@@ -46,8 +46,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     //android support lib
-    compile 'com.android.support:appcompat-v7:21.+'
-    compile 'com.android.support:recyclerview-v7:21.+'
+    compile ('com.android.support:appcompat-v7:+'){force = true}
+    compile ('com.android.support:recyclerview-v7:+'){force = true}
 
     //kotlin support
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

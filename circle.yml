@@ -1,0 +1,13 @@
+machine:
+    environment:
+        ANDROID_HOME: ~/android
+dependencies:
+    cache_directories:
+        - ~/.android
+        - ~/android
+    override:
+        - bash install-sdk.sh
+test:
+    override:
+        - chmod +x gradlew
+        - ./gradlew clean assemble
