@@ -8,6 +8,9 @@ import de.greenrobot.event.EventBus
 import com.octo.android.robospice.persistence.exception.SpiceException
 import kotlin.properties.Delegates
 import retrofit.RetrofitError
+import com.taskworld.android.restfulandroidkotlin.network.RestfulResourceClient
+import com.taskworld.android.restfulandroidkotlin.network.request.OnAuthenSuccessEvent
+import kotlin.dom.eventType
 
 /**
  * Created by Kittinun Vantasin on 11/14/14.
@@ -17,7 +20,7 @@ trait SignInPresenter : Presenter {
     fun logInWithCredentials(username: String, password: String)
 }
 
-class SignInPresenterImpl(val mAction: SignInUIAction, val mSpiceManager: SpiceManager, val mBus: EventBus) : SignInPresenter {
+class SignInPresenterImpl(val mAction: SignInUIAction, val mClient: RestfulResourceClient, val mBus: EventBus) : SignInPresenter {
 
     var mUsername: String by Delegates.notNull()
     var mPassword: String by Delegates.notNull()
@@ -25,7 +28,7 @@ class SignInPresenterImpl(val mAction: SignInUIAction, val mSpiceManager: SpiceM
     var mInteractor: SignInInteractor
 
     {
-        mInteractor = SignInInteractorImpl(mSpiceManager, mBus)
+        mInteractor = SignInInteractorImpl(mClient)
     }
 
     override fun onResume() {
@@ -51,26 +54,27 @@ class SignInPresenterImpl(val mAction: SignInUIAction, val mSpiceManager: SpiceM
         mInteractor.validateCredentials(mUsername, mPassword, requestToken)
     }
 
-    fun onEvent(map: Map<String, String>) {
-        val requestToken = map["request_token"]
-        if (map.contains("expires_at")) {
-            validateCredentials(requestToken!!)
-        } else if (map.contains("session_id")) {
-            mAction.hideProgress()
-            mAction.navigateToMain(map["session_id"]!!)
+    fun onEvent(event: OnAuthenSuccessEvent) {
+        if (!event.isFailed()) {
+            val requestToken = event.result["request_token"]
+            if (event.result.contains("expires_at")) {
+                validateCredentials(requestToken!!)
+            } else if (event.result.contains("session_id")) {
+                mAction.hideProgress()
+                mAction.navigateToMain(event.result["session_id"]!!)
+            } else {
+                requestNewSession(requestToken!!)
+            }
         } else {
-            requestNewSession(requestToken!!)
-        }
-    }
+            mAction.hideProgress()
 
-    fun onEvent(spiceException: SpiceException?) {
-        mAction.hideProgress()
+            val error = event.error!!.getCause() as RetrofitError
+            if (error.getResponse().getStatus() == 401) {
+                mAction.setUnauthorizedError()
+            } else if (error.isNetworkError()) {
+                mAction.setNetworkError()
+            }
 
-        val error = spiceException?.getCause() as RetrofitError
-        if (error.getResponse().getStatus() == 401) {
-            mAction.setUnauthorizedError()
-        } else if (error.isNetworkError()) {
-            mAction.setNetworkError()
         }
     }
 

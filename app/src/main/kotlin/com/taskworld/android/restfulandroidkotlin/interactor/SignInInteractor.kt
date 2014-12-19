@@ -1,11 +1,11 @@
 package com.taskworld.android.restfulandroidkotlin.interactor
 
 import com.octo.android.robospice.SpiceManager
-import com.taskworld.android.restfulandroidkotlin.network.request.GetTokenSpiceRequest
-import com.taskworld.android.restfulandroidkotlin.network.response.EventBusRequestListener
-import com.taskworld.android.restfulandroidkotlin.network.request.ValidateTokenSpiceRequest
-import com.taskworld.android.restfulandroidkotlin.network.request.GetNewSessionSpiceRequest
 import de.greenrobot.event.EventBus
+import com.taskworld.android.restfulandroidkotlin.network.RestfulResourceClient
+import com.taskworld.android.restfulandroidkotlin.network.request.GetTokenRequest
+import com.taskworld.android.restfulandroidkotlin.network.request.GetNewSessionRequest
+import com.taskworld.android.restfulandroidkotlin.network.request.ValidateTokenRequest
 
 /**
  * Created by Kittinun Vantasin on 11/14/14.
@@ -17,17 +17,17 @@ trait SignInInteractor {
     fun validateCredentials(username: String, password: String, requestToken: String)
 }
 
-class SignInInteractorImpl(val mSpiceManager: SpiceManager, val mBus: EventBus) : SignInInteractor {
+class SignInInteractorImpl(val mClient: RestfulResourceClient) : SignInInteractor {
     override fun requestNewToken() {
-        mSpiceManager.execute(GetTokenSpiceRequest(), EventBusRequestListener.newInstance(mBus))
+        mClient.execute(GetTokenRequest())
     }
 
     override fun requestNewSession(requestToken: String) {
-        mSpiceManager.execute(GetNewSessionSpiceRequest(requestToken), EventBusRequestListener.newInstance(mBus))
+        mClient.execute(GetNewSessionRequest(requestToken))
     }
 
     override fun validateCredentials(username: String, password: String, requestToken: String) {
-        mSpiceManager.execute(ValidateTokenSpiceRequest(username, password, requestToken), EventBusRequestListener.newInstance(mBus))
+        mClient.execute(ValidateTokenRequest(username, password, requestToken))
     }
 
 }

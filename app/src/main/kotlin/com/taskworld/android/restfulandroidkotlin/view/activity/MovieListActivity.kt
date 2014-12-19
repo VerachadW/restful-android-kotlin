@@ -13,8 +13,6 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
-import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 import com.taskworld.android.restfulandroidkotlin.extension.toast
 import io.realm.Realm
 
@@ -51,21 +49,21 @@ class MovieListActivity : BaseSpiceActivity() {
     override fun setUp() {
         mItems.clear()
         lvMovie.setAdapter(mMovieAdapter)
-        val client = ResourceClient.Builder()
-                .setRealm(mRealm)
-                .setRouter(ResourceRouterImpl.newInstance("now_playing"))
-                .setSpiceManager(getServiceSpiceManager()).build()
-        client.findAll(javaClass<Movie>())
+//        val client = ResourceClient.Builder()
+//                .setRealm(mRealm)
+//                .setRouter(ResourceRouterImpl.newInstance("now_playing"))
+//                .setSpiceManager(getServiceSpiceManager()).build()
+//        client.findAll(javaClass<Movie>())
     }
 
     fun onEvent(items: Movie.ResultList) {
         mItems = items.getResults().toArrayList()
 
-        val client = ResourceClient.Builder()
-                .setRealm(mRealm)
-                .setRouter(ResourceRouterImpl.newInstance())
-                .setSpiceManager(getServiceSpiceManager()).build()
-        client.find(javaClass<Movie>(), "180299")
+//        val client = ResourceClient.Builder()
+//                .setRealm(mRealm)
+//                .setRouter(ResourceRouterImpl.newInstance())
+//                .setSpiceManager(getServiceSpiceManager()).build()
+//        client.find(javaClass<Movie>(), "180299")
     }
 
     fun onEvent(item: Movie) {

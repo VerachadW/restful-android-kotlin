@@ -4,7 +4,6 @@ import com.taskworld.android.restfulandroidkotlin.R
 import android.view.View
 import android.support.v7.widget.RecyclerView
 import kotlin.properties.Delegates
-import com.taskworld.android.restfulandroidkotlin.extensions.bindView
 import com.taskworld.android.restfulandroidkotlin.fragments.PlayListFragment.PlayListRecyclerViewAdapter.PlayListViewHolder
 import android.view.ViewGroup
 import android.view.LayoutInflater
@@ -13,17 +12,18 @@ import com.taskworld.android.restfulandroidkotlin.model.FavoriteList
 import io.realm.Realm
 import java.util.ArrayList
 import de.greenrobot.event.EventBus
-import com.taskworld.android.restfulandroidkotlin.extensions.toast
 import io.realm.RealmResults
 
 import com.taskworld.android.restfulandroidkotlin.R
 import android.support.v7.widget.LinearLayoutManager
-import com.taskworld.android.restfulandroidkotlin.events.OnToolbarTitleChangedEvent
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import com.taskworld.android.restfulandroidkotlin.fragments.dialog.CreatePlayListDialogFragment
+import com.taskworld.android.restfulandroidkotlin.view.fragment.BaseSpiceFragment
+import com.taskworld.android.restfulandroidkotlin.extension.bindView
+import com.taskworld.android.restfulandroidkotlin.event.OnToolbarTitleChangedEvent
 
 /**
  * Created by VerachadW on 11/12/14.

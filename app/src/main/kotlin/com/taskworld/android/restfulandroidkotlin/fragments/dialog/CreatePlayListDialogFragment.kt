@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.view.View
 import android.widget.TextView
 import android.widget.EditText
-import com.taskworld.android.restfulandroidkotlin.extensions.bindView
 import com.taskworld.android.restfulandroidkotlin.network.RestfulResourceClient
 
 /**

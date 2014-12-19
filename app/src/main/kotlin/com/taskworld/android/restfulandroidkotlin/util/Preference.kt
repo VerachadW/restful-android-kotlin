@@ -27,6 +27,10 @@ object Preference {
 
             if (mSharedPreferences == null) throw NullPointerException("Preference.with() must be called before acessing properties")
 
+            if (!mSharedPreferences!!.contains(desc.name)) {
+                return null
+            }
+
             [suppress("unchecked_cast")]
             when (value) {
                 is String -> value = mSharedPreferences!!.getString(desc.name, null) as T

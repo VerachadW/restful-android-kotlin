@@ -5,7 +5,6 @@ import com.taskworld.android.restfulandroidkotlin.network.api.MovieDBApi
 import com.taskworld.android.restfulandroidkotlin.network.OnDataReceivedEvent
 import com.taskworld.android.restfulandroidkotlin.network.OnTVLoadedEvent
 import io.realm.Realm
-import com.taskworld.android.restfulandroidkotlin.extensions.createOrUpdate
 
 /**
  * Created by VerachadW on 12/16/14.

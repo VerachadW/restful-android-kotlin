@@ -24,6 +24,7 @@ import com.taskworld.android.restfulandroidkotlin.network.request.OnAuthenSucces
 import de.greenrobot.event.EventBus
 import com.taskworld.android.restfulandroidkotlin.network.request.ValidateTokenRequest
 import com.taskworld.android.restfulandroidkotlin.network.request.GetNewSessionRequest
+import com.taskworld.android.restfulandroidkotlin.fragments.PlayListFragment
 
 /**
  * Created by Kittinun Vantasin on 11/5/14.
@@ -106,7 +107,7 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
             mRestClient.execute(ValidateTokenRequest(accountName, accountPassword, event.result.get("request_token")!!))
         } else if (event.result.contains("session_id")) {
             tvAccountName.setText(accountName)
-            com.taskworld.android.restfulandroidkotlin.utils.Preference.getInstance(getActivity()).setSessionId(event.result.get("session_id")!!)
+            Preference.with(getActivity()).sessionId = event.result.get("session_id")!!
         } else {
             mRestClient.execute(GetNewSessionRequest(event.result.get("request_token")!!))
         }

@@ -60,7 +60,10 @@ class RestfulResourceClient private (val mNetworkSpiceManager: SpiceManager, val
     inner class DatabaseRequestListener<RESULT, API>(val request: BaseRestRequest<RESULT, API>): RequestListener<RESULT> {
 
         override fun onRequestFailure(spiceException: SpiceException?) {
-            spiceException!!.printStackTrace()
+            request.event.source = DataSource.DATABASE
+            request.event.error = spiceException
+            mBus.post(request.event)
+
         }
 
         override fun onRequestSuccess(result: RESULT) {
@@ -80,8 +83,9 @@ class RestfulResourceClient private (val mNetworkSpiceManager: SpiceManager, val
         var f: (RESULT) -> Unit = {}
 
         override fun onRequestFailure(spiceException: SpiceException?) {
-
-            spiceException!!.printStackTrace()
+            event.source = DataSource.NETWORK
+            event.error = spiceException
+            mBus.post(event)
         }
 
         override fun onRequestSuccess(result: RESULT) {

@@ -4,8 +4,8 @@ import io.realm.Realm
 import com.taskworld.android.restfulandroidkotlin.model.Movie
 import com.taskworld.android.restfulandroidkotlin.network.api.MovieDBApi
 import com.taskworld.android.restfulandroidkotlin.network.OnMovieLoadedEvent
-import com.taskworld.android.restfulandroidkotlin.extensions.createOrUpdate
 import com.taskworld.android.restfulandroidkotlin.network.action.MovieActionExecutor
+import com.taskworld.android.restfulandroidkotlin.extension.createOrUpdate
 
 
 /**

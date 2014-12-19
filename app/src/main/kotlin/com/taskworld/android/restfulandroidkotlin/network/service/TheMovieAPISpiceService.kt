@@ -5,8 +5,8 @@ import retrofit.RestAdapter
 import retrofit.converter.Converter
 import retrofit.converter.GsonConverter
 import com.google.gson.GsonBuilder
-import com.taskworld.android.restfulandroidkotlin.utils.Preference
 import com.taskworld.android.restfulandroidkotlin.network.api.MovieDBApi
+import com.taskworld.android.restfulandroidkotlin.util.Preference
 
 class TheMovieAPISpiceService : RetrofitGsonSpiceService() {
 
@@ -28,9 +28,9 @@ class TheMovieAPISpiceService : RetrofitGsonSpiceService() {
         var builder = super<RetrofitGsonSpiceService>.createRestAdapterBuilder()
         builder.setRequestInterceptor { requestInterceptor ->
             requestInterceptor.addQueryParam(API_KEY, API_VALUE)
-            val sessionId = Preference.getInstance(getApplicationContext()).getSessionId()
+            val sessionId = Preference.with(getApplicationContext()).sessionId
             if (sessionId != null) {
-                requestInterceptor.addQueryParam(SESSION_KEY, Preference.getInstance(getApplicationContext()).getSessionId())
+                requestInterceptor.addQueryParam(SESSION_KEY, Preference.with(getApplicationContext()).sessionId)
             }
         }
             .setLogLevel(RestAdapter.LogLevel.FULL)
