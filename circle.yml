@@ -1,10 +1,10 @@
 machine:
     environment:
-        ANDROID_HOME: ~/android
+        ANDROID_HOME: /usr/local/android-sdk-linux
 dependencies:
     cache_directories:
         - ~/.android
-        - ~/android
+        - /usr/local/android-sdk-linux
     override:
         - bash install-sdk.sh
 test:

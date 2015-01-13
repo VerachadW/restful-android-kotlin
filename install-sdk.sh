@@ -3,10 +3,9 @@
 # Fix the CircleCI path
 export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$PATH"
 
-DEPS="$ANDROID_HOME/installed"
+DEPS="$ANDROID_HOME/installed-dependencies"
 
 if [ ! -e $DEPS ]; then
-    cp -r /usr/local/android-sdk-linux $ANDROID_HOME &&
     #Install SDK Components
     echo y | android update sdk -u -a -t tools &&
     echo y | android update sdk -u -a -t platform-tools &&
