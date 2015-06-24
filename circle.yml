@@ -1,13 +1,6 @@
-machine:
-    environment:
-        ANDROID_HOME: /usr/local/android-sdk-linux
 dependencies:
-    cache_directories:
-        - ~/.android
-        - /usr/local/android-sdk-linux
-    override:
-        - bash install-sdk.sh
+    pre:
+        - echo y | android update sdk --no-ui --all --filter sys-img-armeabi-v7a-addon-google_apis-google-21,addon-google_apis-google-21
 test:
     override:
-        - chmod +x gradlew
         - ./gradlew clean assemble
