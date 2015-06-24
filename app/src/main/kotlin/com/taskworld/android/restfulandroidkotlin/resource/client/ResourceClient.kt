@@ -20,47 +20,48 @@ class ResourceClient(builder: ResourceClient.Builder) {
     private var mBus: EventBus
 
     //initialize
-    {
+    init {
         mSpiceManager = builder.manager
         mResourceRouter = builder.router ?: ResourceRouterImpl.newInstance()
         mRealm = builder.realm
         mBus = builder.bus ?: EventBus.getDefault()
     }
 
-    class object {
+    companion object {
         private val REQUEST_PACKAGE = "com.taskworld.android.restfulandroidkotlin.network.request"
         private val REQUEST_CLASS_SUFFIX = "SpiceRequest"
 
-        inner class Builder {
+    }
 
-            var manager: SpiceManager? = null
-            var router: ResourceRouter? = null
-            var realm: Realm? = null
-            var bus: EventBus? = null
+    class Builder {
 
-            fun setSpiceManager(manager: SpiceManager): Builder {
-                this.manager = manager
-                return this
-            }
+        var manager: SpiceManager? = null
+        var router: ResourceRouter? = null
+        var realm: Realm? = null
+        var bus: EventBus? = null
 
-            fun setRouter(router: ResourceRouter): Builder {
-                this.router = router
-                return this
-            }
+        fun setSpiceManager(manager: SpiceManager): Builder {
+            this.manager = manager
+            return this
+        }
 
-            fun setRealm(realm: Realm): Builder {
-                this.realm = realm
-                return this
-            }
+        fun setRouter(router: ResourceRouter): Builder {
+            this.router = router
+            return this
+        }
 
-            fun setEventBus(bus: EventBus): Builder {
-                this.bus = bus
-                return this
-            }
+        fun setRealm(realm: Realm): Builder {
+            this.realm = realm
+            return this
+        }
 
-            fun build(): ResourceClient {
-                return ResourceClient(this)
-            }
+        fun setEventBus(bus: EventBus): Builder {
+            this.bus = bus
+            return this
+        }
+
+        fun build(): ResourceClient {
+            return ResourceClient(this)
         }
     }
 

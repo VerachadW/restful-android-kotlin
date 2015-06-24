@@ -28,7 +28,7 @@ class MainActivity : BaseSpiceActivity() {
     val dlMain by Delegates.lazy { bindView<DrawerLayout>(R.id.dlMain) }
     val tbMain by Delegates.lazy { bindView<Toolbar>(R.id.tbMain) }
 
-    class object {
+    companion object {
         fun newIntent(context: Context): Intent {
            return Intent(context, javaClass<MainActivity>())
         }

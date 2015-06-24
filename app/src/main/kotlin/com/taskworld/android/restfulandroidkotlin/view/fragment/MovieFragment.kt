@@ -25,7 +25,7 @@ class MovieFragment : BaseFragment() {
     //data
     val mMovieCategories = listOf("now_playing", "top_rated")
 
-    class object {
+    companion object {
         fun newInstance(): MovieFragment {
             return MovieFragment()
         }

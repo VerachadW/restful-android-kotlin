@@ -41,7 +41,7 @@ class TVGridFragment : BaseSpiceFragment() {
     var mCategory = ""
     val mBus = EventBus()
 
-    class object {
+    companion object {
         val ARG_TV_CATEGORY = "tv_category"
 
         fun newInstance(category: String): TVGridFragment {
@@ -109,11 +109,11 @@ class TVGridFragment : BaseSpiceFragment() {
         }
 
         override fun getItemCount(): Int {
-            return mItems.size
+            return mItems.size()
         }
 
         inner class TVViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            {
+            init {
                 itemView.setOnClickListener { view -> onItemClick(getPosition()) }
             }
 

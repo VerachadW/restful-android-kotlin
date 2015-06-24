@@ -31,7 +31,7 @@ class ProductEditActivity : BaseActivity() {
     var mProductName: String? = null
     var mProduct: Product? = null
 
-    class object {
+    companion object {
         val ARG_PRODUCT_NAME = "product_name"
 
         public fun newIntent(context: Context): Intent {

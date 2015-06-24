@@ -41,7 +41,7 @@ class ProductListActivity : BaseActivity() {
         mProductAdapter.notifyDataSetChanged()
     })
 
-    class object {
+    companion object {
         public fun newInstance(context: Context): Intent {
             return Intent(context, javaClass<ProductListActivity>())
         }
@@ -50,7 +50,7 @@ class ProductListActivity : BaseActivity() {
     override fun setUp() {
         mItems.clear()
         lvProduct.setAdapter(mProductAdapter)
-        lvProduct.setOnItemClickListener { (adapterView, view, position, id) ->
+        lvProduct.setOnItemClickListener { adapterView, view, position, id ->
             val selectedProduct = mProductAdapter.getItem(position)
             startActivityForResult(ProductEditActivity.newIntent(this, selectedProduct.getName()), 999)
         }

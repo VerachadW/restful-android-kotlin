@@ -48,7 +48,7 @@ class MovieGridFragment : BaseSpiceFragment() {
     var mCategory = ""
     val mBus = EventBus()
 
-    class object {
+    companion object {
         val ARG_MOVIE_CATEGORY = "movie_category"
 
         fun newInstance(action: String): MovieGridFragment {
@@ -160,8 +160,8 @@ class MovieGridFragment : BaseSpiceFragment() {
         }
 
         inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            {
-                itemView.setOnClickListener { view -> onItemClick(getPosition()) }
+            init {
+                itemView.setOnClickListener { view -> onItemClick(getAdapterPosition()) }
             }
 
             val tvMovieTitle by Delegates.lazy { itemView.bindView<TextView>(R.id.tvMovieTitle) }

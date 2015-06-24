@@ -13,7 +13,7 @@ import retrofit.RetrofitError
  * Created by Kittinun Vantasin on 11/14/14.
  */
 
-trait SignInPresenter : Presenter {
+interface SignInPresenter : Presenter {
     fun logInWithCredentials(username: String, password: String)
 }
 
@@ -24,7 +24,7 @@ class SignInPresenterImpl(val mAction: SignInUIAction, val mSpiceManager: SpiceM
 
     var mInteractor: SignInInteractor
 
-    {
+    init {
         mInteractor = SignInInteractorImpl(mSpiceManager, mBus)
     }
 

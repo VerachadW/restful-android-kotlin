@@ -25,7 +25,7 @@ class TVFragment : BaseFragment() {
     //data
     val mTVCategories = listOf("airing_today", "popular")
 
-    class object {
+    companion object {
         fun newInstance(): TVFragment {
            return TVFragment()
         }

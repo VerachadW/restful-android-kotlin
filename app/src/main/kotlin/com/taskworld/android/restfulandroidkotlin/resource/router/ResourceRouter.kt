@@ -7,7 +7,7 @@ import com.taskworld.android.restfulandroidkotlin.extension.plus
  * Created by Kittinun Vantasin on 10/28/14.
  */
 
-trait ResourceRouter {
+interface ResourceRouter {
 
     val extraPathForList: String?
     val extraPathForSingle: String?
@@ -17,7 +17,7 @@ trait ResourceRouter {
     }
 
     fun <T : RealmObject> getPathForAction(action: String, clazz: Class<T>, args: Map<String, Any>?): String? {
-        if (action.equalsIgnoreCase("list")) {
+        if (action.equals("list")) {
             return getPathForListOnResource(clazz, args)
         } else if (action.isEmpty()) {
             return getPathForSingleOnResource(clazz, args)
@@ -31,7 +31,7 @@ trait ResourceRouter {
 
 class ResourceRouterImpl private (override val extraPathForList: String?, override val extraPathForSingle: String?) : ResourceRouter {
 
-    class object {
+    companion object {
         fun newInstance() = ResourceRouterImpl(null, null)
         fun newInstance(extraPath: String?) = ResourceRouterImpl(extraPath, null)
         fun newInstance(extraPathForList: String?, extraPathForSingle: String?) = ResourceRouterImpl(extraPathForList, extraPathForSingle)

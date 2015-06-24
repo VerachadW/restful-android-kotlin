@@ -59,7 +59,7 @@ class MovieDetailActivity : BaseSpiceActivity() {
         mMovieCoverAdapter.data = newCoverImages
     })
 
-    class object {
+    companion object {
         val ARG_MOVIE_ID = "movie_id"
 
         public fun newIntent(context: Context, id: Int): Intent {

@@ -9,7 +9,7 @@ import com.google.gson.GsonBuilder
 
 class TheMovieAPISpiceService : RetrofitGsonSpiceService() {
 
-    class object {
+    companion object {
 
         val BASE_URL = "http://api.themoviedb.org/3"
 

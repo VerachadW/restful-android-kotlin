@@ -20,7 +20,7 @@ object Preference {
         return this
     }
 
-    inner class PreferenceDelegate<T>() : ReadWriteProperty<Any?, T> {
+    class PreferenceDelegate<T>() : ReadWriteProperty<Any?, T> {
         private var value: T = null
 
         override fun get(thisRef: Any?, desc: PropertyMetadata): T {
