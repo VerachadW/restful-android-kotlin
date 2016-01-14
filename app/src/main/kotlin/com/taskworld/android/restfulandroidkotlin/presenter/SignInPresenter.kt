@@ -66,7 +66,7 @@ class SignInPresenterImpl(val mAction: SignInUIAction, val mSpiceManager: SpiceM
     fun onEvent(spiceException: SpiceException?) {
         mAction.hideProgress()
 
-        val error = spiceException?.getCause() as RetrofitError
+        val error = spiceException?.cause as RetrofitError
         if (error.getResponse().getStatus() == 401) {
             mAction.setUnauthorizedError()
         } else if (error.isNetworkError()) {

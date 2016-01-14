@@ -19,7 +19,7 @@ abstract class BaseActivity : AppCompatActivity() {
     //static instantiate
     companion object {
         public fun newIntent(context: Context): Intent {
-            return Intent(context, javaClass<BaseActivity>())
+            return Intent(context, BaseActivity::class.java)
         }
     }
 
