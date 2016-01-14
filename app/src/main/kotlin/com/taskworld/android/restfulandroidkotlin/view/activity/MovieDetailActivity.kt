@@ -47,9 +47,6 @@ class MovieDetailActivity : BaseSpiceActivity() {
     var mCasts by Delegates.observable(listOf<Cast>(), { meta, oldCasts, newCasts ->
         mMovieCastAdapter.setData(newCasts)
     })
-    var mCoverImages by Delegates.observable(listOf<Image>(), { meta, oldCoverImages, newCoverImages ->
-        mMovieCoverAdapter.data = newCoverImages
-    })
 
     companion object {
         val ARG_MOVIE_ID = "movie_id"
@@ -105,7 +102,8 @@ class MovieDetailActivity : BaseSpiceActivity() {
     }
 
     fun onEvent(images: Image.PosterList) {
-        mCoverImages = images.results
+        images.results.forEach { mMovieCoverAdapter.data.add(it) }
+        vpMovieCover.adapter = mMovieCoverAdapter
     }
 
     fun createHeaderView(): View {
@@ -122,9 +120,8 @@ class MovieDetailActivity : BaseSpiceActivity() {
 
     inner class MovieCoverImageAdapter : PagerAdapter() {
 
-        var data = listOf<Image>()
+        var data: MutableList<Image> = arrayListOf()
             set (value) {
-                data = value
                 notifyDataSetChanged()
             }
 
@@ -138,7 +135,7 @@ class MovieDetailActivity : BaseSpiceActivity() {
             val tvMovieCoverVoteCount = viewPagerItem.bindView<TextView>(R.id.tvMovieCoverVoteCount)
 
             //bind views
-            val image = mCoverImages[position]
+            val image = data.get(position)
             Picasso.with(container.context).load("https://image.tmdb.org/t/p/w500/" + image.filePath).into(ivMovieCover)
             tvMovieCoverVoteCount.text = image.voteCount.toString()
 

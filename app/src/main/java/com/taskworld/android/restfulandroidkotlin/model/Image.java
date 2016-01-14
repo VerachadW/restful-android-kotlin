@@ -32,4 +32,12 @@ public class Image {
     public int getVoteCount() {
         return voteCount;
     }
+
+    public void setVoteCount(int voteCount) {
+        this.voteCount = voteCount;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 }
