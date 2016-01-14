@@ -12,7 +12,6 @@ import com.taskworld.android.restfulandroidkotlin.extension.bindView
 import com.taskworld.android.restfulandroidkotlin.extension.toast
 import com.taskworld.android.restfulandroidkotlin.network.service.TheMovieAPISpiceService
 import com.taskworld.android.restfulandroidkotlin.util.Preference
-import kotlinx.android.synthetic.main.fragment_main_navigation_drawer.*
 import kotlin.properties.Delegates
 
 /**
@@ -31,13 +30,15 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
     //data
     var mCurrentSelectedPosition = 0
 
+    var mView: View by Delegates.notNull()
+
     override fun setUp() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater!!.inflate(R.layout.fragment_main_navigation_drawer, container, false)
+        mView = inflater!!.inflate(R.layout.fragment_main_navigation_drawer, container, false)
 
-        var lvMainNavigation = view.findViewById(R.id.lvMainNavigation) as ListView
+        var lvMainNavigation = mView.findViewById(R.id.lvMainNavigation) as ListView
         lvMainNavigation.addHeaderView(createHeaderView())
 
         lvMainNavigation.adapter = ArrayAdapter(activity, android.R.layout.simple_list_item_activated_1, android.R.id.text1, listOf("Movies", "TVs"))
@@ -50,10 +51,10 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
                 2 -> ft.replace(R.id.flContainer, TVFragment.newInstance())
             }
             ft.commit()
-            selectItem(position)
+            selectItem(lvMainNavigation, position)
         }
 
-        return view
+        return mView
     }
 
     override fun onStart() {
@@ -66,9 +67,9 @@ class MainNavigationDrawerFragment : BaseDrawerFragment() {
         mSpiceManager.shouldStop()
     }
 
-    fun selectItem(position: Int) {
+    fun selectItem(listView: ListView, position: Int) {
         mCurrentSelectedPosition = position
-        lvMainNavigation.setItemChecked(position, true)
+        listView.setItemChecked(position, true)
         closeDrawer()
     }
 
