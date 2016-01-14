@@ -9,10 +9,10 @@ import com.taskworld.android.restfulandroidkotlin.network.api.TheMovieDBAPI
  */
 
 class GetListTVAiringtodaySpiceRequest(val path: String) :
-        RetrofitSpiceRequest<TV.ResultList, TheMovieDBAPI.TVAPI>(javaClass<TV.ResultList>(), javaClass<TheMovieDBAPI.TVAPI>()) {
+        RetrofitSpiceRequest<TV.ResultList, TheMovieDBAPI.TVAPI>(TV.ResultList::class.java, TheMovieDBAPI.TVAPI::class.java) {
 
     override fun loadDataFromNetwork(): TV.ResultList? {
-        return getService().getAiringTodayList(path)
+        return service.getAiringTodayList(path)
     }
 
 }

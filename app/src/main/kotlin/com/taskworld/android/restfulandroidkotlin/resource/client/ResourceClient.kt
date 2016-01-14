@@ -1,16 +1,16 @@
 package com.taskworld.android.restfulandroidkotlin.resource.client
 
 import com.octo.android.robospice.SpiceManager
+import com.octo.android.robospice.request.SpiceRequest
+import com.taskworld.android.restfulandroidkotlin.extension.toStartingLetterUppercase
+import com.taskworld.android.restfulandroidkotlin.network.response.EventBusRequestListener
 import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouter
+import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
+import de.greenrobot.event.EventBus
 import io.realm.Realm
 import io.realm.RealmObject
-import de.greenrobot.event.EventBus
-import com.taskworld.android.restfulandroidkotlin.network.response.EventBusRequestListener
-import com.taskworld.android.restfulandroidkotlin.extension.toStartingLetterUppercase
-import com.octo.android.robospice.request.SpiceRequest
-import io.realm.RealmResults
 import io.realm.RealmQuery
-import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
+import io.realm.RealmResults
 
 class ResourceClient(builder: ResourceClient.Builder) {
 
@@ -20,47 +20,47 @@ class ResourceClient(builder: ResourceClient.Builder) {
     private var mBus: EventBus
 
     //initialize
-    {
+    init {
         mSpiceManager = builder.manager
         mResourceRouter = builder.router ?: ResourceRouterImpl.newInstance()
         mRealm = builder.realm
         mBus = builder.bus ?: EventBus.getDefault()
     }
 
-    class object {
+    companion object {
         private val REQUEST_PACKAGE = "com.taskworld.android.restfulandroidkotlin.network.request"
         private val REQUEST_CLASS_SUFFIX = "SpiceRequest"
+    }
 
-        inner class Builder {
+    class Builder {
 
-            var manager: SpiceManager? = null
-            var router: ResourceRouter? = null
-            var realm: Realm? = null
-            var bus: EventBus? = null
+        var manager: SpiceManager? = null
+        var router: ResourceRouter? = null
+        var realm: Realm? = null
+        var bus: EventBus? = null
 
-            fun setSpiceManager(manager: SpiceManager): Builder {
-                this.manager = manager
-                return this
-            }
+        fun setSpiceManager(manager: SpiceManager): Builder {
+            this.manager = manager
+            return this
+        }
 
-            fun setRouter(router: ResourceRouter): Builder {
-                this.router = router
-                return this
-            }
+        fun setRouter(router: ResourceRouter): Builder {
+            this.router = router
+            return this
+        }
 
-            fun setRealm(realm: Realm): Builder {
-                this.realm = realm
-                return this
-            }
+        fun setRealm(realm: Realm): Builder {
+            this.realm = realm
+            return this
+        }
 
-            fun setEventBus(bus: EventBus): Builder {
-                this.bus = bus
-                return this
-            }
+        fun setEventBus(bus: EventBus): Builder {
+            this.bus = bus
+            return this
+        }
 
-            fun build(): ResourceClient {
-                return ResourceClient(this)
-            }
+        fun build(): ResourceClient {
+            return ResourceClient(this)
         }
     }
 
@@ -86,7 +86,7 @@ class ResourceClient(builder: ResourceClient.Builder) {
         // TODO: Call Update API
     }
 
-    fun <T: RealmObject> delete(clazz: Class<T>, conditionMap: Map<String, String>?) {
+    fun <T : RealmObject> delete(clazz: Class<T>, conditionMap: Map<String, String>?) {
         mRealm!!.beginTransaction()
         var results = query(clazz, conditionMap)
 
@@ -100,7 +100,7 @@ class ResourceClient(builder: ResourceClient.Builder) {
         // TODO: Call Delete API
     }
 
-    private fun <T : RealmObject> query(clazz: Class<T>, conditionMap: Map<String, String>?): RealmResults<T>{
+    private fun <T : RealmObject> query(clazz: Class<T>, conditionMap: Map<String, String>?): RealmResults<T> {
         var query: RealmQuery<T> = mRealm!!.where(clazz)
         if (conditionMap != null) {
             for ((key, value) in conditionMap) {
@@ -114,11 +114,11 @@ class ResourceClient(builder: ResourceClient.Builder) {
         return results
     }
 
-    fun <T: RealmObject> findAll(clazz: Class<T>) {
+    fun <T : RealmObject> findAll(clazz: Class<T>) {
         findAll(clazz, null)
     }
 
-    fun <T: RealmObject> findAll(clazz: Class<T>, args: Map<String, String>?) {
+    fun <T : RealmObject> findAll(clazz: Class<T>, args: Map<String, String>?) {
         //db call
         val results = query(clazz, args)
         EventBus.getDefault().post(results)
@@ -163,14 +163,12 @@ class ResourceClient(builder: ResourceClient.Builder) {
             "list" -> extraPath = mResourceRouter.extraPathForList ?: ""
         }
 
-        val className = listOf(httpVerb.toStartingLetterUppercase(),
-                action.toStartingLetterUppercase(),
-                resourceName.toStartingLetterUppercase(),
-                extraPath.replace("_", "").toStartingLetterUppercase(),
-                REQUEST_CLASS_SUFFIX).join("")
-        val constructorOfClassName = Class.forName(REQUEST_PACKAGE + "." + className).getConstructor(javaClass<String>())
+        val className = httpVerb.toStartingLetterUppercase() +
+                action.toStartingLetterUppercase() +
+                resourceName.toStartingLetterUppercase() +
+                extraPath.replace("_", "").toStartingLetterUppercase() + REQUEST_CLASS_SUFFIX
+        val constructorOfClassName = Class.forName(REQUEST_PACKAGE + "." + className).getConstructor(String::class.java)
 
-        [suppress("unchecked_cast")]
         val requestInstance = constructorOfClassName.newInstance(requestPath) as SpiceRequest<T>
         mSpiceManager?.execute(requestInstance, EventBusRequestListener.newInstance(mBus))
     }

@@ -32,7 +32,7 @@
 
         <activity android:name=".view.activity.MovieListActivity"
                   android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
-        
+
         <activity android:name=".view.activity.MovieDetailActivity"
                   android:theme="@style/AppTheme.AppCompat.Translucent"
                   android:parentActivityName=".view.activity.MainActivity" />

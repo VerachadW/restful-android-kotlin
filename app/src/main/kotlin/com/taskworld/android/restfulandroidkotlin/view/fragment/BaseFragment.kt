@@ -1,15 +1,13 @@
 package com.taskworld.android.restfulandroidkotlin.view.fragment
 
-import android.support.v4.app.Fragment
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.taskworld.android.restfulandroidkotlin.event.BaseEvent
 import de.greenrobot.event.EventBus
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.view.View
 import kotlin.properties.Delegates
-import android.util.Log
-import com.taskworld.android.restfulandroidkotlin.extension.tag
 
 /**
  * Created by Kittinun Vantasin on 11/5/14.
@@ -37,30 +35,25 @@ abstract class BaseFragment : Fragment() {
         }
 
         setUp()
-        Log.v(tag(), tag() + "::onCreate()")
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         vRoot = inflater!!.inflate(mContentLayoutResourceId, container, false)
         setUpUI(vRoot)
-        Log.v(tag(), tag() + "::onCreateView()")
         return vRoot
     }
 
     override fun onResume() {
         super<Fragment>.onResume()
         EventBus.getDefault().register(this)
-        Log.v(tag(), tag() + "::onResume()")
     }
 
     override fun onPause() {
         super<Fragment>.onPause()
         EventBus.getDefault().unregister(this)
-        Log.v(tag(), tag() + "::onPause()")
     }
 
     override fun onDestroy() {
-        Log.v(tag(), tag() + "::onDestory()")
         super<Fragment>.onDestroy()
     }
 

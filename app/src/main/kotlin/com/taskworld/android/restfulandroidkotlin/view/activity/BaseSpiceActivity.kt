@@ -9,7 +9,7 @@ import com.taskworld.android.restfulandroidkotlin.network.service.TheMovieAPISpi
 
 abstract class BaseSpiceActivity : BaseActivity() {
 
-    val mSpiceManager: SpiceManager = SpiceManager(javaClass<TheMovieAPISpiceService>())
+    val mSpiceManager: SpiceManager = SpiceManager(TheMovieAPISpiceService::class.java)
 
     override fun onStart() {
         super<BaseActivity>.onStart()

@@ -9,10 +9,10 @@ import com.taskworld.android.restfulandroidkotlin.network.api.TheMovieDBAPI
  */
 
 class GetMovieImagesSpiceRequest(val path: String) :
-        RetrofitSpiceRequest<Image.PosterList, TheMovieDBAPI.MovieAPI>(javaClass<Image.PosterList>(), javaClass<TheMovieDBAPI.MovieAPI>()) {
+        RetrofitSpiceRequest<Image.PosterList, TheMovieDBAPI.MovieAPI>(Image.PosterList::class.java, TheMovieDBAPI.MovieAPI::class.java) {
 
     override fun loadDataFromNetwork(): Image.PosterList? {
-        return getService().getPosterImageList(path)
+        return service.getPosterImageList(path)
     }
 
 }

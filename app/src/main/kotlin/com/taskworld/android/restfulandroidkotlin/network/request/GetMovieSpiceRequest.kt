@@ -1,18 +1,18 @@
 package com.taskworld.android.restfulandroidkotlin.network.request
 
-import com.taskworld.android.restfulandroidkotlin.network.api.TheMovieDBAPI
-import com.taskworld.android.restfulandroidkotlin.model.Movie
 import com.octo.android.robospice.request.retrofit.RetrofitSpiceRequest
+import com.taskworld.android.restfulandroidkotlin.model.Movie
+import com.taskworld.android.restfulandroidkotlin.network.api.TheMovieDBAPI
 
 /**
  * Created by Kittinun Vantasin on 10/29/14.
  */
 
 class GetMovieSpiceRequest(val path: String) :
-        RetrofitSpiceRequest<Movie, TheMovieDBAPI.MovieAPI>(javaClass<Movie>(), javaClass<TheMovieDBAPI.MovieAPI>()) {
+        RetrofitSpiceRequest<Movie, TheMovieDBAPI.MovieAPI>(Movie::class.java, TheMovieDBAPI.MovieAPI::class.java) {
 
     override fun loadDataFromNetwork(): Movie? {
-        return getService().get(path)
+        return service.get(path)
     }
 
 }

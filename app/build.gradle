@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '0.9.66'
+    ext.kotlin_version = '1.0.0-beta-4584'
 
     repositories {
         mavenCentral()
@@ -7,6 +7,7 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
     }
 }
 
@@ -14,13 +15,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "com.taskworld.android.restfulandroidkotlin"
         minSdkVersion 16
-        targetSdkVersion 21
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -31,7 +32,7 @@ android {
 
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -40,14 +41,19 @@ android {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
     }
+
+    lintOptions {
+      abortOnError false
+      checkReleaseBuilds false
+    } 
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     //android support lib
-    compile 'com.android.support:appcompat-v7:21.+'
-    compile 'com.android.support:recyclerview-v7:21.+'
+    compile ('com.android.support:appcompat-v7:+'){force = true}
+    compile ('com.android.support:recyclerview-v7:+'){force = true}
 
     //kotlin support
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

@@ -4,7 +4,7 @@ package com.taskworld.android.restfulandroidkotlin.action
  * Created by Kittinun Vantasin on 11/14/14.
  */
 
-trait SignInUIAction {
+interface SignInUIAction {
     fun showProgress()
     fun hideProgress()
     fun setUnauthorizedError()

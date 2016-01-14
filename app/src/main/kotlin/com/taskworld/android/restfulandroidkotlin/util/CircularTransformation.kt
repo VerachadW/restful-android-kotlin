@@ -1,13 +1,8 @@
 package com.taskworld.android.restfulandroidkotlin.util
 
-import com.squareup.picasso.Transformation
-import android.graphics.Bitmap
-import com.taskworld.android.restfulandroidkotlin.extension.tag
-import android.graphics.Canvas
+import android.graphics.*
 import android.graphics.Bitmap.Config
-import android.graphics.Shader
-import android.graphics.BitmapShader
-import android.graphics.Paint
+import com.squareup.picasso.Transformation
 
 /**
  * Created by Kittinun Vantasin on 11/18/14.
@@ -33,6 +28,6 @@ class CircularTransformation : Transformation {
     }
 
     override fun key(): String? {
-        return tag()
+        return ""
     }
 }

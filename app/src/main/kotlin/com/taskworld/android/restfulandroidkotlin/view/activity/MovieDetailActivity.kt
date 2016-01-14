@@ -1,30 +1,30 @@
 package com.taskworld.android.restfulandroidkotlin.view.activity
 
-import kotlin.properties.Delegates
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.LinearLayoutManager
 import android.content.Context
 import android.content.Intent
-import com.taskworld.android.restfulandroidkotlin.extension.bindView
-import com.taskworld.android.restfulandroidkotlin.model.Movie
+import android.os.Bundle
+import android.support.v4.view.PagerAdapter
+import android.support.v4.view.ViewPager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams
 import android.widget.ImageView
 import android.widget.TextView
-import com.taskworld.android.restfulandroidkotlin.model.Cast
-import com.taskworld.android.restfulandroidkotlin.adapter.ParallaxRecyclerAdapter
-import android.os.Bundle
 import com.squareup.picasso.Picasso
-import android.support.v7.widget.Toolbar
 import com.taskworld.android.restfulandroidkotlin.R
-import android.view.ViewGroup
-import android.view.LayoutInflater
-import android.support.v4.view.ViewPager
-import android.support.v4.view.PagerAdapter
+import com.taskworld.android.restfulandroidkotlin.adapter.ParallaxRecyclerAdapter
+import com.taskworld.android.restfulandroidkotlin.extension.bindView
+import com.taskworld.android.restfulandroidkotlin.model.Cast
 import com.taskworld.android.restfulandroidkotlin.model.Image
-import android.view.ViewGroup.LayoutParams
+import com.taskworld.android.restfulandroidkotlin.model.Movie
 import com.taskworld.android.restfulandroidkotlin.resource.client.ResourceClient
 import com.taskworld.android.restfulandroidkotlin.resource.router.ResourceRouterImpl
 import com.taskworld.android.restfulandroidkotlin.util.CircularTransformation
+import kotlinx.android.synthetic.main.activity_movie_detail.*
+import kotlin.properties.Delegates
 
 /**
  * Created by Kittinun Vantasin on 11/11/14.
@@ -34,21 +34,13 @@ class MovieDetailActivity : BaseSpiceActivity() {
 
     override val mContentLayoutResourceId: Int = R.layout.activity_movie_detail
 
-    //widgets
     //header
     var tvMovieOverview: TextView by Delegates.notNull()
     var vpMovieCover: ViewPager by Delegates.notNull()
 
-    //toolbar
-    val tbMovieDetail by Delegates.lazy { bindView<Toolbar>(R.id.tbMovieDetail) }
-    val tvBarTitle by Delegates.lazy { bindView<TextView>(R.id.tvBarTitle) }
-
-    //list
-    val rvMovieCast by Delegates.lazy { bindView<RecyclerView>(R.id.rvMovieCast) }
-
     //adapter
-    val mMovieCastAdapter by Delegates.lazy { ParallaxRecyclerAdapter(listOf<Cast>()) }
-    val mMovieCoverAdapter by Delegates.lazy { MovieCoverImageAdapter() }
+    val mMovieCastAdapter = ParallaxRecyclerAdapter(listOf<Cast>())
+    val mMovieCoverAdapter = MovieCoverImageAdapter()
 
     //data
     var mMovieId = 0
@@ -59,11 +51,11 @@ class MovieDetailActivity : BaseSpiceActivity() {
         mMovieCoverAdapter.data = newCoverImages
     })
 
-    class object {
+    companion object {
         val ARG_MOVIE_ID = "movie_id"
 
         public fun newIntent(context: Context, id: Int): Intent {
-            val intent = Intent(context, javaClass<MovieDetailActivity>())
+            val intent = Intent(context, MovieDetailActivity::class.java)
             intent.putExtra(ARG_MOVIE_ID, id)
             return intent
         }
@@ -79,48 +71,48 @@ class MovieDetailActivity : BaseSpiceActivity() {
         mMovieCastAdapter.implementRecyclerAdapterMethods(MoveCastParallaxRecyclerAdapter())
         mMovieCastAdapter.setParallaxHeader(createHeaderView(), rvMovieCast)
         mMovieCastAdapter.setOnParallaxScroll { percentage, offset, parallaxView ->
-            val d = tbMovieDetail.getBackground()
-            d.setAlpha(Math.round((percentage) * 255))
-            tbMovieDetail.setBackground(d)
+            val d = tbMovieDetail.background
+            d.alpha = Math.round((percentage) * 255)
+            tbMovieDetail.background = d
         }
 
-        rvMovieCast.setLayoutManager(createLayoutManager())
-        rvMovieCast.setAdapter(mMovieCastAdapter)
+        rvMovieCast.layoutManager = createLayoutManager()
+        rvMovieCast.adapter = mMovieCastAdapter
 
         var client = ResourceClient.Builder()
                 .setRouter(ResourceRouterImpl.newInstance(null, "credits"))
                 .setSpiceManager(getServiceSpiceManager()).build()
-        client.find(javaClass<Movie>(), mMovieId.toString())
+        client.find(Movie::class.java, mMovieId.toString())
 
         client = ResourceClient.Builder()
                 .setRouter(ResourceRouterImpl.newInstance())
                 .setSpiceManager(getServiceSpiceManager()).build()
-        client.find(javaClass<Movie>(), mMovieId.toString())
+        client.find(Movie::class.java, mMovieId.toString())
 
         client = ResourceClient.Builder()
                 .setRouter(ResourceRouterImpl.newInstance(null, "images"))
                 .setSpiceManager(getServiceSpiceManager()).build()
-        client.find(javaClass<Movie>(), mMovieId.toString())
+        client.find(Movie::class.java, mMovieId.toString())
     }
 
     fun onEvent(movie: Movie) {
-        tvBarTitle.setText(movie.getTitle())
-        tvMovieOverview.setText(movie.getOverview())
+        tvBarTitle.text = movie.title
+        tvMovieOverview.text = movie.overview
     }
 
     fun onEvent(casts: Cast.CastList) {
-        mCasts = casts.getCasts()
+        mCasts = casts.casts
     }
 
     fun onEvent(images: Image.PosterList) {
-        mCoverImages = images.getResults()
+        mCoverImages = images.results
     }
 
     fun createHeaderView(): View {
-        val headerView = getLayoutInflater().inflate(R.layout.list_header_movie_detail, null)
+        val headerView = layoutInflater.inflate(R.layout.list_header_movie_detail, null)
         tvMovieOverview = headerView.bindView<TextView>(R.id.tvMovieOverview)
         vpMovieCover = headerView.bindView<ViewPager>(R.id.vpMovieCover)
-        vpMovieCover.setAdapter(mMovieCoverAdapter)
+        vpMovieCover.adapter = mMovieCoverAdapter
         return headerView
     }
 
@@ -132,7 +124,7 @@ class MovieDetailActivity : BaseSpiceActivity() {
 
         var data = listOf<Image>()
             set (value) {
-                $data = value
+                data = value
                 notifyDataSetChanged()
             }
 
@@ -141,14 +133,14 @@ class MovieDetailActivity : BaseSpiceActivity() {
         }
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any? {
-            val viewPagerItem = LayoutInflater.from(container.getContext()).inflate(R.layout.view_pager_item_movie_cover, container, false)
+            val viewPagerItem = LayoutInflater.from(container.context).inflate(R.layout.view_pager_item_movie_cover, container, false)
             val ivMovieCover = viewPagerItem.bindView<ImageView>(R.id.ivMovieCover)
             val tvMovieCoverVoteCount = viewPagerItem.bindView<TextView>(R.id.tvMovieCoverVoteCount)
 
             //bind views
             val image = mCoverImages[position]
-            Picasso.with(container.getContext()).load("https://image.tmdb.org/t/p/w500/" + image.getFilePath()).into(ivMovieCover)
-            tvMovieCoverVoteCount.setText(image.getVoteCount().toString())
+            Picasso.with(container.context).load("https://image.tmdb.org/t/p/w500/" + image.filePath).into(ivMovieCover)
+            tvMovieCoverVoteCount.text = image.voteCount.toString()
 
             container.addView(viewPagerItem, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             return viewPagerItem
@@ -174,7 +166,7 @@ class MovieDetailActivity : BaseSpiceActivity() {
         var mContext: Context by Delegates.notNull()
 
         override fun onCreateViewHolder(container: ViewGroup?, i: Int): RecyclerView.ViewHolder? {
-            mContext = container!!.getContext()
+            mContext = container!!.context
             val view = LayoutInflater.from(mContext).inflate(R.layout.recycle_view_item_movie_cast, container, false)
             return MovieCastViewHolder(view)
         }
@@ -183,12 +175,12 @@ class MovieDetailActivity : BaseSpiceActivity() {
 
             val cast = mCasts[position]
             val holder = viewHolder as MovieCastViewHolder
-            Picasso.with(mContext).load("https://image.tmdb.org/t/p/w150/" + cast.getProfilePath())
+            Picasso.with(mContext).load("https://image.tmdb.org/t/p/w150/" + cast.profilePath)
                     .transform(CircularTransformation())
                     //.placeholder(R.drawable.ic_launcher)
                     .into(holder.ivCast)
-            holder.tvCastName.setText(cast.getName())
-            holder.tvCastCharacter.setText("as " + cast.getCharacter())
+            holder.tvCastName.text = cast.name
+            holder.tvCastCharacter.text = "as " + cast.character
         }
 
         override fun getItemCount(): Int {

@@ -1,0 +1,6 @@
+dependencies:
+    pre:
+        - echo y | android update sdk --no-ui --all --filter sys-img-armeabi-v7a-addon-google_apis-google-21,addon-google_apis-google-21
+test:
+    override:
+        - ./gradlew clean assemble -PdisablePreDex

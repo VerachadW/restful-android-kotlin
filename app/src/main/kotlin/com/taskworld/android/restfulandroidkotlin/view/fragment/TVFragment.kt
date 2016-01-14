@@ -1,33 +1,28 @@
 package com.taskworld.android.restfulandroidkotlin.view.fragment
 
-import com.taskworld.android.restfulandroidkotlin.R
-import kotlin.properties.Delegates
-import com.taskworld.android.restfulandroidkotlin.extension.bindView
-import android.support.v4.view.ViewPager
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.app.FragmentManager
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.ViewPager
 import android.view.View
-import de.greenrobot.event.EventBus
+import com.taskworld.android.restfulandroidkotlin.R
 import com.taskworld.android.restfulandroidkotlin.event.OnToolbarTitleChangedEvent
+import com.taskworld.android.restfulandroidkotlin.extension.bindView
+import de.greenrobot.event.EventBus
 
 /**
  * Created by Kittinun Vantasin on 11/7/14.
  */
-
 class TVFragment : BaseFragment() {
 
     override val mContentLayoutResourceId: Int = R.layout.fragment_tv
 
-    //widgets
-    val vpTV by Delegates.lazy { getRootView().bindView<ViewPager>(R.id.vpTV) }
-
     //data
     val mTVCategories = listOf("airing_today", "popular")
 
-    class object {
+    companion object {
         fun newInstance(): TVFragment {
-           return TVFragment()
+            return TVFragment()
         }
     }
 
@@ -35,9 +30,10 @@ class TVFragment : BaseFragment() {
     }
 
     override fun setUpUI(view: View) {
-        val pagerAdapter = TVViewPagerAdapter(getChildFragmentManager())
-        vpTV.setAdapter(pagerAdapter)
-        vpTV.setOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+        val pagerAdapter = TVViewPagerAdapter(childFragmentManager)
+        val vpTV = getRootView().bindView<ViewPager>(R.id.vpTV)
+        vpTV.adapter = pagerAdapter
+        vpTV.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 EventBus.getDefault().post(OnToolbarTitleChangedEvent(pagerAdapter.getPageTitle(position).toString()))
             }

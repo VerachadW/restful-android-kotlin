@@ -4,7 +4,7 @@
 
     <item android:id="@+id/miSearch"
           android:title="Search"
-          app:showAsAction="always" />
+          app:showAsAction="ifRoom" />
 
     <item android:id="@+id/miAdd"
           android:title="Add"
