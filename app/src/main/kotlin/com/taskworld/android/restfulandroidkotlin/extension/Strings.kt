@@ -7,7 +7,7 @@ package com.taskworld.android.restfulandroidkotlin.extension
 fun String.toStartingLetterUppercase(): String {
     if (this.isEmpty()) return this
 
-    var firstChar = this.charAt(0)
+    var firstChar = this.get(0)
     val valueOfFirstChar = firstChar.toInt()
 
     if (valueOfFirstChar in 97..122) {

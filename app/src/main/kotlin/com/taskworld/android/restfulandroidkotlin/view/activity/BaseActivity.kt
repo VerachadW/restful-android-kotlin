@@ -1,32 +1,30 @@
 package com.taskworld.android.restfulandroidkotlin.view.activity
 
-import android.os.Bundle
 import android.content.Context
 import android.content.Intent
-import de.greenrobot.event.EventBus
-import com.taskworld.android.restfulandroidkotlin.event.BaseEvent
-import android.support.v7.app.ActionBarActivity
-import android.util.Log
-import com.taskworld.android.restfulandroidkotlin.extension.tag
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.View
+import com.taskworld.android.restfulandroidkotlin.event.BaseEvent
+import de.greenrobot.event.EventBus
 
 /**
  * Created by Kittinun Vantasin on 10/17/14.
  */
 
-abstract class BaseActivity : ActionBarActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
     abstract val mContentLayoutResourceId: Int
 
     //static instantiate
-    class object {
+    companion object {
         public fun newIntent(context: Context): Intent {
-            return Intent(context, javaClass<BaseActivity>())
+            return Intent(context, BaseActivity::class.java)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super<ActionBarActivity>.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState)
 
         if (mContentLayoutResourceId != 0) {
             setContentView(mContentLayoutResourceId)
@@ -44,7 +42,6 @@ abstract class BaseActivity : ActionBarActivity() {
         }
 
         setUp()
-        Log.v(tag(), tag() + "::onCreate()")
     }
 
     open fun createContentView(): View {
@@ -52,20 +49,17 @@ abstract class BaseActivity : ActionBarActivity() {
     }
 
     override fun onResume() {
-        super<ActionBarActivity>.onResume()
+        super.onResume()
         EventBus.getDefault().register(this)
-        Log.v(tag(), tag() + "::onResume()")
     }
 
     override fun onPause() {
-        super<ActionBarActivity>.onPause()
+        super.onPause()
         EventBus.getDefault().unregister(this)
-        Log.v(tag(), tag() + "::onPause()")
     }
 
     override fun onDestroy() {
-        Log.v(tag(), tag() + "::onDestory()")
-        super<ActionBarActivity>.onDestroy()
+        super.onDestroy()
     }
 
     open fun handleSavedInstanceState(savedInstanceState: Bundle) {

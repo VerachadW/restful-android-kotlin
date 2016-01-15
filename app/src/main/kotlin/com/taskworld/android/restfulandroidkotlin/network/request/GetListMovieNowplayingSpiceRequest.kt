@@ -9,9 +9,9 @@ import com.taskworld.android.restfulandroidkotlin.network.api.TheMovieDBAPI
  */
 
 class GetListMovieNowplayingSpiceRequest(val path: String) :
-        RetrofitSpiceRequest<Movie.ResultList, TheMovieDBAPI.MovieAPI>(javaClass<Movie.ResultList>(), javaClass<TheMovieDBAPI.MovieAPI>()) {
+        RetrofitSpiceRequest<Movie.ResultList, TheMovieDBAPI.MovieAPI>(Movie.ResultList::class.java, TheMovieDBAPI.MovieAPI::class.java) {
 
     override fun loadDataFromNetwork(): Movie.ResultList? {
-        return getService().getNowPlayingList(path)
+        return service.getNowPlayingList(path)
     }
 }

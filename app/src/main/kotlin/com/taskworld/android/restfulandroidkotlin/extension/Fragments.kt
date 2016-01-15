@@ -9,5 +9,5 @@ import android.widget.Toast
 
 fun Fragment.toast(text: String?): Unit {
     if (text == null) return
-    Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show()
+    Toast.makeText(activity, text, Toast.LENGTH_LONG).show()
 }

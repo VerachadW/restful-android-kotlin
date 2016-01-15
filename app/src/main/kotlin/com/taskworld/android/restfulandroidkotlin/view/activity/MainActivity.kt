@@ -1,41 +1,29 @@
 package com.taskworld.android.restfulandroidkotlin.view.activity
 
-import com.taskworld.android.restfulandroidkotlin.R
-import kotlin.properties.Delegates
-import com.taskworld.android.restfulandroidkotlin.extension.bindView
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.widget.Toolbar
-import com.taskworld.android.restfulandroidkotlin.view.fragment.BaseDrawerFragment
-import com.taskworld.android.restfulandroidkotlin.event.OnDrawerToggledEvent
-import com.taskworld.android.restfulandroidkotlin.view.fragment.BaseDrawerFragment.Direction
-import android.widget.TextView
-import com.taskworld.android.restfulandroidkotlin.event.OnToolbarTitleChangedEvent
-import com.taskworld.android.restfulandroidkotlin.view.fragment.MovieFragment
 import android.content.Context
 import android.content.Intent
+import com.taskworld.android.restfulandroidkotlin.R
+import com.taskworld.android.restfulandroidkotlin.event.OnDrawerToggledEvent
+import com.taskworld.android.restfulandroidkotlin.event.OnToolbarTitleChangedEvent
+import com.taskworld.android.restfulandroidkotlin.view.fragment.BaseDrawerFragment
+import com.taskworld.android.restfulandroidkotlin.view.fragment.BaseDrawerFragment.Direction
+import com.taskworld.android.restfulandroidkotlin.view.fragment.MovieFragment
+
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseSpiceActivity() {
 
     override val mContentLayoutResourceId = R.layout.activity_main
 
-    //widgets
-    val tvBarTitle by Delegates.lazy { bindView<TextView>(R.id.tvBarTitle) }
-
-    val fgLeftNavigationDrawer by Delegates.lazy {
-        getSupportFragmentManager().findFragmentById(R.id.fgLeftNavigationDrawer) as BaseDrawerFragment
-    }
-
-    val dlMain by Delegates.lazy { bindView<DrawerLayout>(R.id.dlMain) }
-    val tbMain by Delegates.lazy { bindView<Toolbar>(R.id.tbMain) }
-
-    class object {
+    companion object {
         fun newIntent(context: Context): Intent {
-           return Intent(context, javaClass<MainActivity>())
+            return Intent(context, MainActivity::class.java)
         }
     }
 
     override fun setUp() {
         setSupportActionBar(tbMain)
+        val fgLeftNavigationDrawer = supportFragmentManager.findFragmentById(R.id.fgLeftNavigationDrawer) as BaseDrawerFragment
         fgLeftNavigationDrawer.setUpAsLeftDrawer(dlMain, tbMain)
 
         val popularCategory = "popular"
@@ -46,8 +34,9 @@ class MainActivity : BaseSpiceActivity() {
     }
 
     fun onEvent(event: OnDrawerToggledEvent) {
-        when (event.direction) {
-            Direction.LEFT -> fgLeftNavigationDrawer.toggleDrawer()
+        val fgLeftNavigationDrawer = supportFragmentManager.findFragmentById(R.id.fgLeftNavigationDrawer) as BaseDrawerFragment
+        if (event.direction == Direction.LEFT) {
+            fgLeftNavigationDrawer.toggleDrawer()
         }
     }
 

@@ -1,19 +1,19 @@
 package com.taskworld.android.restfulandroidkotlin.presenter
 
-import com.taskworld.android.restfulandroidkotlin.action.SignInUIAction
 import com.octo.android.robospice.SpiceManager
-import com.taskworld.android.restfulandroidkotlin.interactor.SignInInteractorImpl
-import com.taskworld.android.restfulandroidkotlin.interactor.SignInInteractor
-import de.greenrobot.event.EventBus
 import com.octo.android.robospice.persistence.exception.SpiceException
-import kotlin.properties.Delegates
+import com.taskworld.android.restfulandroidkotlin.action.SignInUIAction
+import com.taskworld.android.restfulandroidkotlin.interactor.SignInInteractor
+import com.taskworld.android.restfulandroidkotlin.interactor.SignInInteractorImpl
+import de.greenrobot.event.EventBus
 import retrofit.RetrofitError
+import kotlin.properties.Delegates
 
 /**
  * Created by Kittinun Vantasin on 11/14/14.
  */
 
-trait SignInPresenter : Presenter {
+interface SignInPresenter : Presenter {
     fun logInWithCredentials(username: String, password: String)
 }
 
@@ -24,7 +24,7 @@ class SignInPresenterImpl(val mAction: SignInUIAction, val mSpiceManager: SpiceM
 
     var mInteractor: SignInInteractor
 
-    {
+    init {
         mInteractor = SignInInteractorImpl(mSpiceManager, mBus)
     }
 
@@ -66,7 +66,7 @@ class SignInPresenterImpl(val mAction: SignInUIAction, val mSpiceManager: SpiceM
     fun onEvent(spiceException: SpiceException?) {
         mAction.hideProgress()
 
-        val error = spiceException?.getCause() as RetrofitError
+        val error = spiceException?.cause as RetrofitError
         if (error.getResponse().getStatus() == 401) {
             mAction.setUnauthorizedError()
         } else if (error.isNetworkError()) {
